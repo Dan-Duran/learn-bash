@@ -14,6 +14,7 @@ const nextConfig = {
       },
     ],
   },
+  output: 'export', // Enable static export :) 
 };
 
 const nextConfigFunction = async (phase) => {
