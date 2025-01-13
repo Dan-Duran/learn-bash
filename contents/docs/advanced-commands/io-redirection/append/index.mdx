@@ -1,0 +1,94 @@
+---
+title: "Redirection (>>)"
+date: "2025-01-12"
+description: "Append command output to the end of a file."
+videoId: "RrOHwTQfqjI"
+---
+
+### Overview
+
+Using the `>>` operator in Bash (and other Unix-like shells) redirects the standard output of a command to a file, **appending** the output to the file if it already exists (rather than overwriting). If the file doesn’t exist, it’s created.
+
+---
+
+### Basic Usage
+
+```bash
+command >> file
+```
+- **command**: Any valid command whose output you want to record.
+- **file**: The file where the output will be appended.
+
+**Example**:
+```bash
+echo "New entry" >> log.txt
+```
+- If `log.txt` exists, adds “New entry” on a new line at the end of `log.txt`.
+- If `log.txt` does not exist, it creates it and adds “New entry” as the first line.
+
+---
+
+### Important Details
+
+1. **Appending vs. Overwriting**  
+   - `>>` **appends** to a file.
+   - `>` **overwrites** a file.
+   - Be sure you use the correct operator to avoid accidental data loss.
+
+2. **File Creation**  
+   - If the file doesn’t exist, the shell creates it automatically with your current permissions.
+
+3. **Standard Error**  
+   - By default, `>>` redirects **standard output** (file descriptor 1).  
+   - Errors (standard error, file descriptor 2) still appear in the terminal unless you merge the streams or redirect them separately.
+
+4. **Permissions**  
+   - You need write permission on the file (or in the directory if the file doesn’t exist yet).
+
+---
+
+### Examples
+
+1. **Appending a Single Line**  
+   ```bash
+   echo "Backup completed at $(date)" >> backup.log
+   ```
+   Adds a timestamped entry to `backup.log` each time the command is run.
+
+2. **Appending Command Output**  
+   ```bash
+   ls -l >> files_list.txt
+   ```
+   Adds the latest directory listing to the end of `files_list.txt`.  
+
+3. **Appending Multiple Lines**  
+   ```bash
+   cat new_entries.txt >> main_database.txt
+   ```
+   If `new_entries.txt` contains several lines, they’re appended in bulk to `main_database.txt`.
+
+4. **Appending with a Pipe**  
+   ```bash
+   grep "ERROR" /var/log/syslog | tail -n 10 >> errors_summary.txt
+   ```
+   Takes the last 10 “ERROR” lines from `syslog` and appends them to `errors_summary.txt`.
+
+5. **Redirecting Only Standard Output**  
+   ```bash
+   ls nonexistent_directory >> output.txt
+   ```
+   Since `ls` will generate an error message to stderr, `output.txt` remains unchanged (the error still prints to terminal).
+
+---
+
+### Tips and Best Practices
+
+- **Know the Difference**: Use `>>` when you need to **add** data at the end of a file. Use `>` if you want to replace the file contents entirely.
+- **Check File Existence**: If you’re using `>>` in a script, it’s often safe because even if the file isn’t there, it’ll be created. Just confirm you have the right path.
+- **Combining Streams**: To capture both stdout and stderr in append mode, you could do:
+  ```bash
+  command >> file 2>&1
+  ```
+  This appends both outputs to `file`. 
+- **Logging**: `>>` is extremely useful for logging script actions or appending new records without losing historical data.
+- **Permissions**: If you see “Permission denied” errors, verify you have write access to the file or directory.

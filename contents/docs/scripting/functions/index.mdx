@@ -1,0 +1,122 @@
+---
+title: "Functions"
+date: "2025-01-12"
+description: "Learn how to create and use functions in Bash scripts."
+videoId: "RrOHwTQfqjI"
+---
+
+### Overview
+
+Functions in Bash are blocks of reusable code that can be called multiple times within a script. They help organize code, avoid repetition, and make scripts more maintainable. Functions can accept parameters and return values through exit codes.
+
+---
+
+### Basic Usage
+
+```bash
+# Function definition
+function_name() {
+    commands
+}
+
+# Alternative syntax
+function function_name {
+    commands
+}
+```
+
+**Example**:
+```bash
+greet() {
+    echo "Hello, $1!"
+}
+
+# Call the function
+greet "World"
+```
+- Defines a function that accepts one parameter and prints a greeting
+
+---
+
+### Common Patterns
+
+1. **Parameters**  
+   ```bash
+   # Access parameters with $1, $2, etc.
+   show_info() {
+       echo "Name: $1"
+       echo "Age: $2"
+   }
+   show_info "John" "25"
+   ```
+
+2. **Return Values**  
+   ```bash
+   is_number() {
+       [[ $1 =~ ^[0-9]+$ ]]
+       return $?
+   }
+   ```
+
+3. **Local Variables**  
+   ```bash
+   calculate() {
+       local result=$(($1 + $2))
+       echo $result
+   }
+   ```
+
+---
+
+### Examples
+
+1. **Basic Function**  
+   ```bash
+   log_message() {
+       echo "[$(date)]: $1"
+   }
+   log_message "Script started"
+   ```
+
+2. **Function with Multiple Parameters**  
+   ```bash
+   create_user() {
+       local username=$1
+       local password=$2
+       echo "Creating user: $username"
+       # Add user creation commands
+   }
+   ```
+
+3. **Function with Return Value**  
+   ```bash
+   check_status() {
+       if [ -f "$1" ]; then
+           return 0
+       else
+           return 1
+       fi
+   }
+   ```
+
+4. **Using Function Output**  
+   ```bash
+   get_sum() {
+       local sum=$(($1 + $2))
+       echo $sum
+   }
+   result=$(get_sum 5 3)
+   echo "Sum is: $result"
+   ```
+
+---
+
+### Tips and Best Practices
+
+- Declare local variables with 'local'
+- Choose descriptive function names
+- Document function parameters
+- Keep functions focused and small
+- Return meaningful exit codes
+- Always validate parameters
+- Use functions for repeated code

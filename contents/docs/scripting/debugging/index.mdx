@@ -1,0 +1,103 @@
+---
+title: "Debugging"
+date: "2025-01-12"
+description: "Learn debugging techniques for Bash scripts."
+videoId: "RrOHwTQfqjI"
+---
+
+### Overview
+
+Debugging in Bash scripts involves finding and fixing errors using various tools and techniques. Bash provides several built-in options and commands that help track down issues, from simple print statements to detailed execution tracing.
+
+---
+
+### Basic Usage
+
+```bash
+# Enable debug mode
+bash -x script.sh
+
+# Debug specific section
+set -x  # Start debugging
+commands
+set +x  # Stop debugging
+```
+
+**Example**:
+```bash
+set -x
+echo "Debug this section"
+ls non_existent_file
+set +x
+```
+- Shows detailed execution information for the commands
+
+---
+
+### Common Techniques
+
+1. **Debug Options**  
+   ```bash
+   set -e  # Exit on error
+   set -v  # Print input lines
+   set -x  # Print commands
+   set -u  # Error on undefined variables
+   ```
+
+2. **Print Statements**  
+   ```bash
+   echo "DEBUG: variable=$variable"
+   printf "DEBUG: %s\n" "$value"
+   ```
+
+3. **Trace Functions**  
+   ```bash
+   function debug() {
+       echo "DEBUG: $*" >&2
+   }
+   debug "Current value: $value"
+   ```
+
+---
+
+### Examples
+
+1. **Basic Debugging**  
+   ```bash
+   #!/bin/bash -x
+   # Entire script runs in debug mode
+   for i in {1..3}; do
+       echo "Loop $i"
+   done
+   ```
+
+2. **Selective Debug**  
+   ```bash
+   echo "Normal execution"
+   set -x
+   # Debug this section
+   critical_function
+   set +x
+   echo "Back to normal"
+   ```
+
+3. **Debug Function**  
+   ```bash
+   debug() {
+       [ "$DEBUG" = "true" ] && echo "DEBUG: $*"
+   }
+   DEBUG=true
+   debug "Testing connection"
+   ```
+
+---
+
+### Tips and Best Practices
+
+- Use appropriate debug levels
+- Comment debug code properly
+- Clean up debug statements
+- Use meaningful debug messages
+- Test with sample data
+- Log debug information
+- Review debug output carefully

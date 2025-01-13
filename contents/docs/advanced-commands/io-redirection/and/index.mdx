@@ -1,0 +1,117 @@
+---
+title: "AND Operator (&&)"
+date: "2025-01-12"
+description: "Chain commands to execute only if the previous command succeeds."
+videoId: "RrOHwTQfqjI"
+---
+
+### Overview
+
+In Bash (and many other shells), the **AND operator** (`&&`) allows you to chain commands so that the next command in the sequence runs **only if** the previous command completes successfully (exit status `0`). If any command in the chain fails (non-zero exit status), the shell stops executing further commands in that chain.
+
+---
+
+### Basic Usage
+
+```bash
+command1 && command2
+```
+1. **command1** is executed first.
+2. If `command1` succeeds (exit code `0`), then `command2` is executed.
+3. If `command1` fails (exit code non-zero), `command2` is **skipped**.
+
+**Example**:
+```bash
+mkdir new_project && cd new_project
+```
+- Creates a new directory called `new_project`.
+- If the directory is created successfully, changes into it.
+- If the `mkdir` command fails (e.g., the directory already exists and you don’t have permission), `cd new_project` is not executed.
+
+---
+
+### Why Use `&&`?
+
+- **Conditional Execution**: Ensures you only run subsequent commands when earlier ones succeed.  
+- **Cleaner than `if`**: For simple one-liner checks, `&&` avoids writing multi-line `if` statements.  
+- **Automation**: Great in scripts to stop immediately on an error and not proceed with dependent operations.
+
+---
+
+### Multiple Commands
+
+You can chain more than two commands:
+```bash
+command1 && command2 && command3 && command4
+```
+- Each command runs only if the previous commands return an exit status of `0`.
+
+**Example**:
+```bash
+gcc main.c -o app && ./app && echo "Program ran successfully!"
+```
+- Compiles `main.c` to produce `app`.
+- If compilation succeeds, runs `./app`.
+- If `./app` also exits normally, prints a success message.
+
+---
+
+### Comparison with `;` and `||`
+
+- **`;`** (semicolon): Runs commands sequentially **regardless** of success/failure.
+  ```bash
+  command1 ; command2
+  ```
+- **`&&`**: Runs the second command **only if** the first succeeds.
+  ```bash
+  command1 && command2
+  ```
+- **`||`**: Runs the second command **only if** the first fails.
+  ```bash
+  command1 || command2
+  ```
+
+You can mix them for more complex logic:
+```bash
+command1 && command2 || command3
+```
+- If `command1` succeeds, run `command2`. If `command2` fails, run `command3`.  
+- If `command1` fails, skip `command2` and run `command3`.
+
+---
+
+### Examples
+
+1. **Update and Install**  
+   ```bash
+   sudo apt-get update && sudo apt-get upgrade
+   ```
+   - Upgrades the system only if the update step finishes without errors.
+
+2. **Check, Then Execute**  
+   ```bash
+   [ -f script.sh ] && bash script.sh
+   ```
+   - Runs `script.sh` only if it exists (`[ -f script.sh ]` returns `0` if the file exists).
+
+3. **Compile, Run, Notify**  
+   ```bash
+   gcc main.c -o main && ./main && echo "All good!"
+   ```
+   - Only echoes “All good!” if both compilation and execution succeed.
+
+4. **Create Directory and Enter It**  
+   ```bash
+   mkdir /tmp/test_dir && cd /tmp/test_dir
+   ```
+   - Changes directory only if the directory was created successfully.
+
+---
+
+### Tips and Best Practices
+
+- **Short-Circuiting**: `&&` is sometimes called “short-circuit operator” because if a command fails, the chain stops immediately.
+- **Check Exit Status**: Commands that exit with a non-zero status trigger the chain to halt. Make sure you know which exit codes represent success/failure for the commands you’re using.
+- **Error Messages**: If you need to handle errors more gracefully, combine `&&` with `||` or explicit `if` statements to provide fallback or cleanup steps.
+- **Readability**: Overusing chained operators can make code less readable. For complex logic, consider using `if` statements or writing a small script with error handling.
+- **Scripting**: Useful when building ephemeral environments or deployments—e.g., `configure && make && make install`.

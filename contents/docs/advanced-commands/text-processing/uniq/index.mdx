@@ -1,0 +1,204 @@
+---
+title: "uniq Command"
+date: "2025-01-12"
+description: "Filter adjacent matching lines from input."
+videoId: "RrOHwTQfqjI"
+---
+
+### Overview
+
+The `uniq` command is used to filter out repeated lines in a file or from standard input. It processes input line by line, removing or reporting duplicate entries based on adjacent lines. Typically, `uniq` is used in combination with `sort` to ensure that duplicate lines are consecutive, making it effective for tasks like counting occurrences, extracting unique entries, and cleaning up data.
+
+---
+
+### Basic Usage
+
+```bash
+uniq [options] [input_file] [output_file]
+```
+
+- **input_file**: The file to process. If omitted, `uniq` reads from standard input.
+- **output_file**: The file to write the results to. If omitted, `uniq` writes to standard output.
+
+**Example**:
+```bash
+uniq names.txt
+```
+- Removes duplicate adjacent lines in `names.txt` and prints the unique lines to the terminal.
+
+```bash
+sort names.txt | uniq
+```
+- Sorts `names.txt` and then removes duplicates, ensuring all duplicates are adjacent before filtering.
+
+---
+
+### Common Options
+
+1. **`-c` (Count)**  
+   ```bash
+   uniq -c file.txt
+   ```
+   - Prefixes each unique line with the number of occurrences.
+
+2. **`-d` (Duplicates Only)**  
+   ```bash
+   uniq -d file.txt
+   ```
+   - Prints only the lines that are repeated.
+
+3. **`-u` (Unique Only)**  
+   ```bash
+   uniq -u file.txt
+   ```
+   - Prints only the lines that are not repeated.
+
+4. **`-i` (Ignore Case)**  
+   ```bash
+   uniq -i file.txt
+   ```
+   - Treats uppercase and lowercase characters as identical when determining uniqueness.
+
+5. **`-f <fields>` (Skip Fields)**  
+   ```bash
+   uniq -f2 file.txt
+   ```
+   - Skips the first 2 fields when comparing lines for uniqueness.
+
+6. **`-s <chars>` (Skip Characters)**  
+   ```bash
+   uniq -s5 file.txt
+   ```
+   - Skips the first 5 characters of each line when comparing for uniqueness.
+
+7. **`-w <chars>` (Compare Characters)**  
+   ```bash
+   uniq -w10 file.txt
+   ```
+   - Compares no more than the first 10 characters of each line for uniqueness.
+
+8. **`--check-chars=<chars>`**  
+   ```bash
+   uniq --check-chars=15 file.txt
+   ```
+   - Equivalent to `-w15`, compares the first 15 characters of each line.
+
+9. **`--help`**  
+   ```bash
+   uniq --help
+   ```
+   - Displays help information and exits.
+
+---
+
+### Examples
+
+1. **Remove Duplicate Lines**  
+   ```bash
+   uniq data.txt
+   ```
+   - Outputs `data.txt` with adjacent duplicate lines removed.
+
+2. **Count Duplicate Lines**  
+   ```bash
+   sort data.txt | uniq -c
+   ```
+   - Sorts `data.txt` and prefixes each unique line with its count.
+
+3. **Show Only Duplicates**  
+   ```bash
+   sort data.txt | uniq -d
+   ```
+   - Displays only the lines that appear more than once.
+
+4. **Show Only Unique Lines**  
+   ```bash
+   sort data.txt | uniq -u
+   ```
+   - Displays lines that appear exactly once.
+
+5. **Ignore Case When Comparing**  
+   ```bash
+   sort data.txt | uniq -i
+   ```
+   - Treats uppercase and lowercase letters as the same when removing duplicates.
+
+6. **Skip First 3 Fields**  
+   ```bash
+   sort data.txt | uniq -f3
+   ```
+   - Ignores the first 3 fields in each line when determining uniqueness.
+
+7. **Compare Only First 5 Characters**  
+   ```bash
+   sort data.txt | uniq -w5
+   ```
+   - Considers only the first 5 characters of each line for uniqueness.
+
+8. **Redirect Output to a File**  
+   ```bash
+   sort data.txt | uniq > unique_data.txt
+   ```
+   - Saves the unique lines to `unique_data.txt`.
+
+9. **Combine Options**  
+   ```bash
+   sort data.txt | uniq -ci
+   ```
+   - Counts occurrences while ignoring case differences.
+
+---
+
+### Tips and Best Practices
+
+- **Combine with `sort`**: Since `uniq` only removes adjacent duplicates, using it with `sort` ensures that all duplicates are consecutive, making `uniq` more effective.
+  
+  ```bash
+  sort data.txt | uniq
+  ```
+  
+- **Use Counting for Analysis**: The `-c` option is useful for analyzing the frequency of lines in a dataset, which can be helpful for tasks like log analysis or data cleaning.
+  
+  ```bash
+  sort logfile.txt | uniq -c
+  ```
+  
+- **Filtering Duplicates**: Depending on your needs, you can extract either duplicated lines or unique lines using the `-d` and `-u` options respectively.
+  
+  ```bash
+  uniq -d duplicates.txt
+  uniq -u unique_entries.txt
+  ```
+  
+- **Case-Insensitive Comparisons**: When dealing with data where case variations should be considered identical, the `-i` option helps in normalizing the data for accurate uniqueness checks.
+  
+  ```bash
+  sort names.txt | uniq -i
+  ```
+  
+- **Efficient Scripting**: Incorporate `uniq` into scripts for automating data processing tasks, such as generating unique lists from large datasets or removing redundant entries before further processing.
+  
+- **Understand Field and Character Skipping**: The `-f` and `-s` options allow you to customize how much of each line is considered when determining uniqueness, providing flexibility for more complex data structures.
+  
+  ```bash
+  uniq -f2 file.txt
+  uniq -s5 file.txt
+  ```
+  
+- **Avoid Unnecessary Sorting**: If your data is already sorted or arranged in a way that duplicates are adjacent, you can skip the `sort` step, saving processing time.
+  
+  ```bash
+  uniq already_sorted.txt
+  ```
+  
+- **Combine with Other Tools**: `uniq` works well with other command-line tools like `grep`, `awk`, and `cut` for powerful data manipulation and extraction workflows.
+  
+  ```bash
+  grep "pattern" file.txt | sort | uniq -c
+  ```
+  
+- **Backup Before In-Place Operations**: When redirecting output to overwrite the original file, ensure you have backups to prevent accidental data loss.
+  
+  ```bash
+  sort data.txt | uniq > temp.txt && mv temp.txt data.txt
+  ```

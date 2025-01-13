@@ -1,0 +1,102 @@
+---
+title: "Redirect All Output (&>)"
+date: "2025-01-12"
+description: "Capture both stdout and stderr in one file."
+videoId: "RrOHwTQfqjI"
+---
+
+### Overview
+
+In Bash, **`&>`** (or `&>>` for appending) is a shortcut for redirecting both **standard output** (file descriptor **1**) and **standard error** (file descriptor **2**) to the same destination. This is especially handy when you want to capture everything (all output and errors) into one place—typically a log file or for analysis.
+
+---
+
+### Basic Usage
+
+```bash
+command &> file
+```
+- Runs `command` and sends **both** standard output and standard error to `file`.  
+- **Overwrites** `file` if it exists.
+
+```bash
+command &>> file
+```
+- The **append** version, which adds new output to the existing file contents instead of overwriting.
+
+**Example**:
+```bash
+ls -l /some/dir &> output.log
+```
+- Any successful output is written to `output.log`.
+- Any error messages (like `Permission denied` or `No such file or directory`) also go to `output.log`.
+
+---
+
+### Why `&>`?
+
+1. **Simplicity**: `&>` is shorter than writing `> file 2>&1`.  
+2. **All-in-One**: You don’t need to separate your redirections for stdout and stderr.  
+3. **Troubleshooting**: When capturing logs, having everything in one file can make it easier to see the complete picture.
+
+---
+
+### Equivalents in Bash
+
+- **`> file 2>&1`**: The more explicit way to redirect both streams into the same file.  
+- **`&> file`**: Bash shorthand for `> file 2>&1`.
+
+For **append** mode:
+- **`>> file 2>&1`** vs. **`&>> file`**.
+
+---
+
+### Examples
+
+1. **Capture All Output**  
+   ```bash
+   find / -name "*.conf" &> search.log
+   ```
+   - Both matching results and errors (e.g., “Permission denied”) end up in `search.log`.
+
+2. **Append**  
+   ```bash
+   command &>> combined.log
+   ```
+   - Adds new output (stdout and stderr) to `combined.log` each time you run the command.
+
+3. **Command Chain**  
+   ```bash
+   (command1 && command2) &> everything.log
+   ```
+   - Runs `command1` and, if successful, `command2`. All messages from both commands go to `everything.log`.
+
+4. **Piping with &>**  
+   ```bash
+   ls -l /nonexistent/ &> /dev/null | grep "pattern"
+   ```
+   - Careful: the `&>` is applied before the pipe. Errors are going to `/dev/null`; the pipe won’t receive anything. Usually, you’d want to do something like:
+     ```bash
+     ls -l /nonexistent/ 2>/dev/null | grep "pattern"
+     ```
+     if you only want to silence errors but still pipe normal output.
+
+---
+
+### Error vs. Output: Important Nuances
+
+- `&>` merges **both** streams, so you can’t easily distinguish errors from normal output afterward (they’re all in one file).  
+- If you need them separate, use:
+  ```bash
+  command > out.log 2> err.log
+  ```
+
+---
+
+### Tips and Best Practices
+
+- **Be Certain You Want Everything Together**: Once merged, you can’t separate stdout from stderr in the single file.  
+- **Don’t Overuse**: If you only need to capture errors, consider `2> file`. If you only want normal output, use `> file`.  
+- **Check Your Shell**: `&>` is a Bash extension. In strictly POSIX shells, you may need the more traditional `> file 2>&1`.  
+- **Appending Logs**: Use `&>> logfile` if you want cumulative logs. Overwriting (`&> logfile`) can destroy valuable previous logs.  
+- **Permissions**: Verify you have write permissions for the target file/directory. If you get “Permission denied,” your redirection won’t work as intended.

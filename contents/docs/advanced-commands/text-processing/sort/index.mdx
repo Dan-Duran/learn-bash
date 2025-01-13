@@ -1,0 +1,162 @@
+---
+title: "sort Command"
+date: "2025-01-12"
+description: "Sort lines of text files or standard input."
+videoId: "RrOHwTQfqjI"
+---
+
+### Overview
+
+The `sort` command rearranges lines of text in a specified order, often alphabetically or numerically. It reads either from one or more files or from standard input (if no file is specified) and prints the sorted output to standard output.
+
+---
+
+### Basic Usage
+
+```bash
+sort file
+```
+- Sorts the lines of `file` in ascending alphabetical order (ASCII-based by default) and prints them.
+
+```bash
+command | sort
+```
+- Sorts the output of `command`.
+
+---
+
+### Common Options
+
+1. **`-r` (Reverse)**  
+   ```bash
+   sort -r file
+   ```
+   Sorts lines in descending order instead of ascending.
+
+2. **`-n` (Numeric Sort)**  
+   ```bash
+   sort -n numbers.txt
+   ```
+   Sorts lines numerically (1, 2, 10, 100…) rather than lexicographically (1, 10, 100, 2…).
+
+3. **`-k <field>` (Sort by Key/Column)**  
+   ```bash
+   sort -k2 file
+   ```
+   Sorts based on the 2nd field in each line (fields typically separated by whitespace).  
+   You can specify a range, e.g., `-k2,3` means sort by columns 2 through 3.
+
+4. **`-t <delimiter>` (Specify Field Delimiter)**  
+   ```bash
+   sort -t, -k2 file.csv
+   ```
+   Sets the field delimiter to a comma (`,`), then sorts by the 2nd column in a CSV file.
+
+5. **`-u` (Unique)**  
+   ```bash
+   sort -u file
+   ```
+   Outputs only unique lines. (Equivalent to running `sort file | uniq`.)
+
+6. **`-o <outfile>` (Output to a File)**  
+   ```bash
+   sort file -o sorted.txt
+   ```
+   Writes the sorted data to `sorted.txt` instead of printing to stdout.
+
+7. **`-M` (Month Sort)**  
+   ```bash
+   sort -M file
+   ```
+   Sorts lines by three-letter month abbreviations (e.g., JAN, FEB, MAR), assuming each line starts with a month.  
+
+8. **`-h` (Human-Numeric Sort)**  
+   ```bash
+   sort -h file
+   ```
+   Sorts sizes like `1K`, `2M`, `100K` in a human-friendly manner. (GNU sort extension.)
+
+9. **`--version-sort`**  
+   ```bash
+   sort --version-sort file
+   ```
+   Sorts strings in a version-aware manner (like `v2 < v10`, rather than lexicographically `v10 < v2`).
+
+---
+
+### Sorting by Multiple Columns
+
+You can specify multiple sort keys in the order you want them applied:
+```bash
+sort -k2,2 -k1,1 file
+```
+- First sorts by column 2, and if there’s a tie, sorts by column 1 within those ties.
+
+---
+
+### Examples
+
+1. **Sort Alphabetically**  
+   ```bash
+   sort fruits.txt
+   ```
+   Alphabetically orders all lines in `fruits.txt`.
+
+2. **Sort Numerically**  
+   ```bash
+   sort -n numbers.txt
+   ```
+   Orders lines by numeric value.
+
+3. **Reverse Numeric Sort**  
+   ```bash
+   sort -nr numbers.txt
+   ```
+   Largest to smallest numbers.
+
+4. **Sort CSV by 2nd Column**  
+   ```bash
+   sort -t, -k2 file.csv
+   ```
+   Uses comma as the field separator, sorts by the second column.
+
+5. **Remove Duplicates**  
+   ```bash
+   sort -u names.txt
+   ```
+   Unique lines only.
+
+6. **Combine with Other Commands**  
+   ```bash
+   ls -l | sort -k5 -n
+   ```
+   Sorts `ls -l` output by the 5th column (file size), numerically ascending.
+
+7. **Write Sorted Output to a File**  
+   ```bash
+   sort animals.txt -o sorted_animals.txt
+   ```
+   Creates/overwrites `sorted_animals.txt` with the sorted list.
+
+8. **Human-Readable Sort**  
+   ```bash
+   du -h | sort -h
+   ```
+   Sorts disk usage output by size in a human-friendly way (GNU extension).
+
+9. **Version Sort**  
+   ```bash
+   ls | sort --version-sort
+   ```
+   Sorts filenames with versions properly (e.g., `v1 < v2 < v10`).
+
+---
+
+### Tips and Best Practices
+
+- **Check Your Delimiters**: For CSV or TSV files, always specify `-t,` or `-t$'\t'` as needed.
+- **Stability**: By default, GNU `sort` is stable only if you use the `-s` flag. A stable sort preserves the order of lines that compare equally.
+- **Large Files**: Sorting massive files can be memory-intensive. Consider `sort -T /path/to/tmp/` to specify a different temp directory with enough space.  
+- **Parallel Sorting**: Some distributions have a `sort --parallel=<n>` option for multi-threaded performance.  
+- **Combining**: Often used with `uniq`, `head`, `tail`, or `cut` for advanced data manipulation.  
+- **In-Place**: `sort` doesn’t do in-place sorting. Use `-o file` or redirect (`> newfile && mv newfile file`) if you need to overwrite the original.
