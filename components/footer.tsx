@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { buttonVariants } from "./ui/button";
-import { HeartIcon, HexagonIcon, TriangleIcon } from "lucide-react";
+import { HeartIcon /*, HexagonIcon, TriangleIcon */ } from "lucide-react"; // Commented out unused imports
 
 export function Footer() {
   return (
@@ -36,6 +36,10 @@ export function FooterButtons() {
         <HeartIcon className="h-4 w-4 mr-2 text-red-600 fill-current" />
         Sponsor
       </Link>
+      {/* Future Icons:
+          <HexagonIcon className="h-4 w-4 mr-2" />
+          <TriangleIcon className="h-4 w-4 mr-2" />
+      */}
     </>
   );
 }
