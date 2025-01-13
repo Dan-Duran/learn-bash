@@ -6,11 +6,11 @@ import { notFound } from "next/navigation";
 import { getDocsForSlug } from "@/lib/markdown";
 import { Typography } from "@/components/typography";
 
-type PageProps = {
+type DocsPageProps = {
   params: { slug: string[] };
 };
 
-export default async function DocsPage({ params: { slug = [] } }: PageProps) {
+export default async function DocsPage({ params: { slug = [] } }: DocsPageProps) {
   const pathName = slug.join("/");
   const res = await getDocsForSlug(pathName);
 
@@ -33,7 +33,7 @@ export default async function DocsPage({ params: { slug = [] } }: PageProps) {
   );
 }
 
-export async function generateMetadata({ params: { slug = [] } }: PageProps) {
+export async function generateMetadata({ params: { slug = [] } }: DocsPageProps) {
   const pathName = slug.join("/");
   const res = await getDocsForSlug(pathName);
   if (!res) return null;
