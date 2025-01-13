@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from "react"
+// import { useState } from "react" // Commented out unused import
 import { Button } from "@/components/ui/button"
 import { Download } from "lucide-react"
 // import { CoolMode } from "./magicui/cool-mode" // Commented out unused import
