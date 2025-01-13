@@ -219,6 +219,7 @@ export type EachRoute = {
                 { title: "nc - NetCat", href: "/nc" },
                 { title: "dig - DNS Lookup", href: "/dig" },
                 { title: "ifconfig - Network Interface Config", href: "/ifconfig" },
+                { title: "ip - Replaces ifconfig", href: "/ip" },
                 { title: "iptables - Firewall Management", href: "/iptables" },
                 { title: "mtr - Network Diagnostic", href: "/mtr" },
                 { title: "netstat - Network Statistics", href: "/netstat" },

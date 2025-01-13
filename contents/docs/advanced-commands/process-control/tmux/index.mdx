@@ -1,0 +1,226 @@
+---
+title: "tmux Command"
+date: "2025-01-12"
+description: "Terminal multiplexer for managing multiple terminal sessions within a single window."
+videoId: "RrOHwTQfqjI"
+---
+
+### Overview
+
+`tmux` is a powerful terminal multiplexer that allows users to manage multiple terminal sessions within a single window. It enables the creation of multiple panes, windows, and sessions, making it easier to organize and navigate complex workflows. With `tmux`, users can detach from a session and reattach later, ensuring that long-running processes continue uninterrupted even if the connection is lost. This makes `tmux` an indispensable tool for system administrators, developers, and anyone who works extensively in the command line.
+
+---
+
+### Basic Usage
+
+```bash
+tmux [options] [command]
+```
+
+- **options**: Flags that modify the behavior of `tmux`.
+- **command**: Specific `tmux` commands to execute.
+
+**Example**:
+```bash
+tmux
+```
+- Starts a new `tmux` session.
+
+```bash
+tmux new -s mysession
+```
+- Creates a new `tmux` session named `mysession`.
+
+---
+
+### Common Options
+
+1. **`new` (Create a New Session)**  
+   ```bash
+   tmux new -s mysession
+   ```
+   - Starts a new session named `mysession`.
+
+2. **`attach` (Attach to an Existing Session)**  
+   ```bash
+   tmux attach -t mysession
+   ```
+   - Attaches to the session named `mysession`.
+
+3. **`list-sessions` (List All Sessions)**  
+   ```bash
+   tmux ls
+   ```
+   - Displays a list of all active `tmux` sessions.
+
+4. **`kill-session` (Terminate a Session)**  
+   ```bash
+   tmux kill-session -t mysession
+   ```
+   - Terminates the session named `mysession`.
+
+5. **`detach` (Detach from Current Session)**  
+   - Press `Ctrl+b` then `d` within a `tmux` session.
+   - Detaches from the current session, leaving it running in the background.
+
+6. **`split-window` (Split Window into Panes)**  
+   ```bash
+   tmux split-window -h
+   ```
+   - Splits the current window horizontally into two panes.
+
+   ```bash
+   tmux split-window -v
+   ```
+   - Splits the current window vertically into two panes.
+
+7. **`resize-pane` (Resize Panes)**  
+   ```bash
+   tmux resize-pane -L 10
+   ```
+   - Resizes the current pane 10 cells to the left.
+
+   ```bash
+   tmux resize-pane -U 5
+   ```
+   - Resizes the current pane 5 cells upward.
+
+8. **`new-window` (Create a New Window in a Session)**  
+   ```bash
+   tmux new-window -t mysession:1 -n mywindow
+   ```
+   - Creates a new window named `mywindow` in session `mysession` at index `1`.
+
+9. **`kill-window` (Terminate a Window)**  
+   ```bash
+   tmux kill-window -t mysession:1
+   ```
+   - Closes window `1` in session `mysession`.
+
+---
+
+### Examples
+
+1. **Start a New `tmux` Session**  
+   ```bash
+   tmux new -s development
+   ```
+   - Initiates a new session named `development`.
+
+2. **Attach to an Existing Session**  
+   ```bash
+   tmux attach -t development
+   ```
+   - Connects to the `development` session.
+
+3. **List All `tmux` Sessions**  
+   ```bash
+   tmux ls
+   ```
+   - Displays all active sessions with their names and statuses.
+
+4. **Split Window Horizontally and Vertically**  
+   ```bash
+   tmux split-window -h
+   tmux split-window -v
+   ```
+   - Creates a horizontal split followed by a vertical split, organizing the workspace into multiple panes.
+
+5. **Create and Navigate Between Windows**  
+   ```bash
+   tmux new-window -n logs
+   tmux select-window -t logs
+   ```
+   - Creates a new window named `logs` and switches to it.
+
+6. **Resize Panes for Optimal Viewing**  
+   ```bash
+   tmux resize-pane -L 15
+   tmux resize-pane -U 10
+   ```
+   - Adjusts the size of the current pane for better visibility.
+
+7. **Detach from a Session**  
+   - Press `Ctrl+b` then `d`.
+   - Leaves the session running in the background, allowing you to return later.
+
+8. **Terminate a `tmux` Session**  
+   ```bash
+   tmux kill-session -t development
+   ```
+   - Ends the `development` session, closing all associated windows and panes.
+
+9. **Automate `tmux` with Configuration Files**  
+   - Create a `.tmux.conf` file in your home directory to customize key bindings and settings.
+     ```bash
+     set -g mouse on
+     bind-key h split-window -h
+     bind-key v split-window -v
+     ```
+   - Reload the configuration within a `tmux` session:
+     ```bash
+     tmux source-file ~/.tmux.conf
+     ```
+
+---
+
+### Tips and Best Practices
+
+- **Use Descriptive Session and Window Names**: Naming your sessions and windows helps in easily identifying and managing multiple workflows.
+  ```bash
+  tmux new -s project_alpha
+  tmux new-window -n server_logs
+  ```
+
+- **Master Key Bindings**: Familiarize yourself with `tmux`'s default key bindings (`Ctrl+b` as the prefix) and consider customizing them in your `.tmux.conf` for enhanced productivity.
+
+- **Persist Sessions Across Reboots**: Use tools like `tmux-resurrect` to save and restore `tmux` sessions, ensuring that your work environment remains consistent even after system restarts.
+
+- **Leverage Panes for Multitasking**: Split your `tmux` window into multiple panes to monitor logs, edit files, and run commands simultaneously without switching contexts.
+
+- **Automate with Scripts**: Incorporate `tmux` commands into shell scripts to set up complex environments quickly.
+  ```bash
+  #!/usr/bin/env bash
+  tmux new-session -d -s mysession
+  tmux new-window -t mysession:1 -n editor 'vim'
+  tmux split-window -t mysession:1 -h 'htop'
+  tmux attach -t mysession
+  ```
+
+- **Enable Mouse Support**: Configure `tmux` to use the mouse for easier pane and window management.
+  - Add to `.tmux.conf`:
+    ```bash
+    set -g mouse on
+    ```
+  
+- **Use Copy Mode for Text Selection**: Enter copy mode (`Ctrl+b` then `[`) to navigate and copy text from the terminal output without affecting the clipboard.
+
+- **Monitor Resource Usage**: Keep an eye on system resources within `tmux` by running monitoring tools like `htop` or `glances` in separate panes.
+
+- **Secure Your `tmux` Sessions**: Protect sensitive information by locking your `tmux` sessions when stepping away.
+  ```bash
+  tmux lock-session
+  ```
+  - Unlock with your system password.
+
+- **Customize Status Bar**: Enhance the `tmux` status bar with useful information like date, time, system load, and battery status by configuring your `.tmux.conf`.
+  ```bash
+  set -g status-left 'Session: #S | Window: #I:#W '
+  set -g status-right ' %Y-%m-%d %H:%M '
+  ```
+
+- **Use Plugins for Extended Functionality**: Explore `tmux` plugins like `tmux-plugins/tmux-sensible` for sensible defaults or `tmux-plugins/tmux-resurrect` for session persistence to enhance your `tmux` experience.
+
+- **Regularly Update `tmux`**: Ensure you are using the latest version of `tmux` to benefit from performance improvements, bug fixes, and new features.
+
+- **Integrate with Other Tools**: Combine `tmux` with other command-line utilities like `vim`, `git`, and `docker` to create a powerful and efficient development environment.
+
+- **Practice Session Management**: Learn to manage multiple sessions effectively by naming them, switching between them, and detaching/attaching as needed.
+  ```bash
+  tmux list-sessions
+  tmux switch -t project_alpha
+  ```
+
+- **Backup Your Configuration**: Keep a backup of your `.tmux.conf` and any custom scripts to quickly set up your preferred `tmux` environment on new machines or after system changes.
+
+- **Explore Advanced Features**: Delve into advanced `tmux` functionalities like scripting, hooks, and conditional configurations to tailor `tmux` to your specific workflow needs.

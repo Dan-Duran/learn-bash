@@ -1,0 +1,279 @@
+---
+title: "vmstat Command"
+date: "2025-01-12"
+description: "Monitor system performance by reporting information about processes, memory, paging, block IO, traps, and CPU activity."
+videoId: "RrOHwTQfqjI"
+---
+
+### Overview
+
+The `vmstat` (virtual memory statistics) command is a versatile and essential tool in Unix-like operating systems for monitoring and analyzing system performance. It provides real-time insights into various aspects of system operation, including processes, memory usage, paging activity, block IO, system interrupts, and CPU utilization. By offering a comprehensive snapshot of system resources, `vmstat` helps system administrators, developers, and power users identify performance bottlenecks, optimize resource allocation, and maintain overall system health.
+
+**Key Features:**
+- **Process Monitoring**: Tracks the number of processes waiting for run time and those in uninterruptible sleep.
+- **Memory Usage**: Reports on free and used memory, buffers, and cache.
+- **Paging Activity**: Displays information about pages swapped in and out, which can indicate memory pressure.
+- **Block IO**: Monitors input/output operations on block devices, aiding in disk performance analysis.
+- **CPU Activity**: Breaks down CPU usage into user, system, idle, and wait times, facilitating CPU performance evaluation.
+- **System Interrupts**: Provides data on hardware and software interrupts, helping in diagnosing hardware-related issues.
+
+Understanding and effectively utilizing `vmstat` can significantly enhance your ability to maintain and optimize system performance, ensuring efficient operation and swift troubleshooting.
+
+---
+
+### Basic Usage
+
+```bash
+vmstat [OPTIONS] [DELAY [COUNT]]
+```
+
+- **OPTIONS**: Flags that modify the behavior of the `vmstat` command.
+- **DELAY**: Time interval in seconds between each report.
+- **COUNT**: Number of reports to generate.
+
+**Example:**
+```bash
+vmstat
+```
+- Displays a one-time snapshot of system performance metrics.
+
+```bash
+vmstat 5
+```
+- Continuously displays system performance metrics every 5 seconds until interrupted.
+
+```bash
+vmstat 2 10
+```
+- Generates 10 reports at 2-second intervals.
+
+---
+
+### Common Options
+
+1. **`-s` (Display Summary Statistics)**
+   ```bash
+   vmstat -s
+   ```
+   - Provides a summary of various system statistics since the last reboot, including memory usage, paging, and system calls.
+
+2. **`-d` (Display Disk Statistics)**
+   ```bash
+   vmstat -d
+   ```
+   - Shows disk activity, including reads and writes per disk.
+
+3. **`-m` (Display Slabinfo)**
+   ```bash
+   vmstat -m
+   ```
+   - Displays kernel slab cache information, useful for diagnosing memory allocation issues.
+
+4. **`-p` (Display Disk Partitions)**
+   ```bash
+   vmstat -p /dev/sda1
+   ```
+   - Shows statistics for a specific disk partition.
+
+5. **`-t` (Include Timestamp)**
+   ```bash
+   vmstat -t 5
+   ```
+   - Adds a timestamp to each report, aiding in correlating events over time.
+
+6. **`-w` (Wide Output)**
+   ```bash
+   vmstat -w 5
+   ```
+   - Provides a wide format for easier reading of columns.
+
+7. **`--help`**
+   ```bash
+   vmstat --help
+   ```
+   - Displays help information and exits.
+
+8. **`--version`**
+   ```bash
+   vmstat --version
+   ```
+   - Shows the version information of the `vmstat` command.
+
+---
+
+### Examples
+
+1. **Display a One-Time System Snapshot**
+   ```bash
+   vmstat
+   ```
+   - Outputs a single report of current system performance metrics.
+
+2. **Monitor System Performance Every 5 Seconds**
+   ```bash
+   vmstat 5
+   ```
+   - Continuously displays system metrics every 5 seconds until interrupted (e.g., by pressing `Ctrl+C`).
+
+3. **Generate 10 Reports at 2-Second Intervals**
+   ```bash
+   vmstat 2 10
+   ```
+   - Produces 10 system performance reports, each separated by 2 seconds.
+
+4. **Display Summary Statistics**
+   ```bash
+   vmstat -s
+   ```
+   - Provides a comprehensive summary of various system statistics accumulated since the last reboot.
+
+5. **Monitor Disk Activity for a Specific Partition**
+   ```bash
+   vmstat -p /dev/sda1
+   ```
+   - Shows read and write operations for the `/dev/sda1` disk partition.
+
+6. **Include Timestamps in Reports**
+   ```bash
+   vmstat -t 3
+   ```
+   - Adds a timestamp to each system performance report, updating every 3 seconds.
+
+7. **Display Slab Cache Information**
+   ```bash
+   vmstat -m
+   ```
+   - Outputs detailed information about the kernel's slab cache, useful for memory debugging.
+
+8. **Wide Output Format for Enhanced Readability**
+   ```bash
+   vmstat -w 1
+   ```
+   - Provides a wide-format report every second, making it easier to read long lines of data.
+
+9. **Display Disk Statistics**
+   ```bash
+   vmstat -d 5
+   ```
+   - Monitors and reports disk I/O activity every 5 seconds.
+
+10. **Combine Multiple Options for Detailed Monitoring**
+    ```bash
+    vmstat -t -d -p /dev/sda1 2 5
+    ```
+    - Generates 5 reports at 2-second intervals, including timestamps, disk statistics, and partition-specific data for `/dev/sda1`.
+
+---
+
+### Tips and Best Practices
+
+- **Understand the Output Columns**: Familiarize yourself with the various columns displayed by `vmstat` to interpret the data accurately. Key columns include:
+  - **procs**: Processes (`r` for runnable processes, `b` for processes in uninterruptible sleep).
+  - **memory**: Memory usage (`swpd` for virtual memory used, `free` for free memory, `buff` for buffers, `cache` for cached memory).
+  - **swap**: Swap activity (`si` for swap in, `so` for swap out).
+  - **io**: Block IO (`bi` for blocks received from a block device, `bo` for blocks sent to a block device).
+  - **system**: System activity (`in` for interrupts per second, `cs` for context switches per second).
+  - **cpu**: CPU usage (`us` for user time, `sy` for system time, `id` for idle time, `wa` for waiting for IO).
+
+- **Use Timestamps for Correlation**: Incorporate the `-t` option to include timestamps, which is invaluable when correlating system metrics with specific events or logs.
+  ```bash
+  vmstat -t 5
+  ```
+
+- **Monitor Specific Resources with Options**: Leverage options like `-d` for disk statistics or `-m` for slab cache information to focus on particular system aspects.
+  ```bash
+  vmstat -d 10
+  ```
+
+- **Combine with Other Monitoring Tools**: Use `vmstat` alongside tools like `top`, `htop`, `iostat`, and `free` for a more comprehensive view of system performance.
+  ```bash
+  vmstat 5 | tee vmstat_output.log
+  top
+  ```
+
+- **Automate Monitoring with Scripts**: Incorporate `vmstat` into shell scripts to automate regular monitoring and alerting based on specific thresholds.
+  ```bash
+  #!/bin/bash
+  vmstat 5 12 > /var/log/vmstat.log
+  ```
+
+- **Analyze Paging Activity to Detect Memory Pressure**: High values in the `si` and `so` columns indicate excessive paging, which can degrade system performance. Use `vmstat` to monitor these values and take corrective actions like adding more RAM or optimizing applications.
+  ```bash
+  vmstat 2 10 | grep -E "si|so"
+  ```
+
+- **Monitor CPU Utilization for Performance Tuning**: Observe the `us`, `sy`, `id`, and `wa` columns to understand CPU load distribution. High `wa` (waiting for IO) suggests IO bottlenecks, while high `sy` (system time) may indicate excessive kernel activity.
+  ```bash
+  vmstat 1
+  ```
+
+- **Use Recursive Options for Detailed Directory Monitoring**: When assessing memory usage related to file caching, use recursive options to gather comprehensive data across directories.
+  ```bash
+  vmstat -R /var/www/ 5 5
+  ```
+
+- **Set Appropriate Delay and Count for Balanced Monitoring**: Choose delay intervals and counts that balance the granularity of data with system performance. Short intervals provide more detailed insights but may consume more resources.
+  ```bash
+  vmstat 1 60  # Monitors for one minute with a 1-second interval
+  ```
+
+- **Leverage Summary Statistics for Quick Assessments**: Use the `-s` option to obtain a quick summary of system statistics, which is useful for rapid health checks.
+  ```bash
+  vmstat -s
+  ```
+
+- **Secure Trace Files When Automating**: If saving `vmstat` outputs to log files, ensure they are stored securely to prevent unauthorized access to system performance data.
+  ```bash
+  vmstat 5 100 > /var/log/vmstat_secure.log
+  chmod 600 /var/log/vmstat_secure.log
+  ```
+
+- **Integrate with Monitoring Dashboards**: Feed `vmstat` data into monitoring dashboards like Grafana or Kibana for real-time visualization and alerting.
+  ```bash
+  vmstat 5 | while read; do echo "$(date),$REPLY" >> /var/log/vmstat_metrics.csv; done
+  ```
+
+- **Understand Filesystem Impact on vmstat Metrics**: Different filesystems may exhibit varying behaviors in terms of caching and IO. Use `vmstat` to compare performance across different filesystem types.
+  ```bash
+  vmstat 5 10
+  ```
+
+- **Regularly Review vmstat Documentation**: Stay updated with the latest `vmstat` features and best practices by consulting the manual or official documentation.
+  ```bash
+  man vmstat
+  ```
+
+- **Use vmstat for Capacity Planning**: Analyze long-term `vmstat` data to make informed decisions about hardware upgrades or system optimizations based on usage trends.
+  ```bash
+  vmstat 60 24 > /var/log/vmstat_daily.log
+  ```
+
+- **Combine with Alerts for Proactive Management**: Set up alerts based on `vmstat` thresholds to proactively address performance issues before they escalate.
+  ```bash
+  vmstat 5 1 | awk '{ if ($15 > 80) print "High CPU idle time detected"; }' | mail -s "vmstat Alert" admin@example.com
+  ```
+
+- **Use vmstat in Virtualized Environments**: Monitor virtual machines by running `vmstat` within each VM to assess individual performance and resource allocation.
+  ```bash
+  vmstat 5 10
+  ```
+
+- **Interpret Swap Usage for Memory Optimization**: High swap usage can indicate insufficient RAM. Use `vmstat` to monitor swap activity and optimize memory allocation accordingly.
+  ```bash
+  vmstat -s | grep "swap"
+  ```
+
+- **Analyze Block IO for Disk Performance Tuning**: Use `bi` and `bo` metrics to evaluate disk performance and identify potential bottlenecks in block IO operations.
+  ```bash
+  vmstat -d 5 5
+  ```
+
+- **Understand vmstat Output Changes Over Time**: Recognize patterns and trends in `vmstat` output to anticipate system behavior under different loads and conditions.
+  ```bash
+  vmstat 1 100 | tee vmstat_trend.log
+  ```
+
+- **Securely Share vmstat Data for Collaborative Troubleshooting**: When seeking assistance, provide `vmstat` logs securely to collaborators to aid in diagnosing issues without exposing sensitive information.
+  ```bash
+  scp /var/log/vmstat.log user@remote_host:/path/to/share/
+  ```

@@ -1,0 +1,204 @@
+---
+title: "ifconfig Command"
+date: "2025-01-13"
+description: "Configure and display network interface parameters for Unix-like operating systems."
+videoId: "RrOHwTQfqjI"
+---
+
+### Overview
+
+The `ifconfig` (interface configuration) command is a fundamental networking utility in Unix-like operating systems. It is used to configure, manage, and query network interface parameters such as IP addresses, netmasks, and hardware addresses. While newer tools like `ip` have largely replaced `ifconfig` in many distributions, `ifconfig` remains widely used for its simplicity and effectiveness in basic network configuration tasks.
+
+**Key Features:**
+- **Display Network Interfaces**: View the status and configuration of all network interfaces.
+- **Configure IP Addresses**: Assign or change IP addresses and netmasks for interfaces.
+- **Enable/Disable Interfaces**: Bring network interfaces up or down.
+- **Set Hardware (MAC) Addresses**: Modify the hardware address of network interfaces.
+- **Manage Broadcast Addresses**: Configure broadcast addresses for interfaces.
+
+### Basic Usage
+
+```bash
+ifconfig [INTERFACE] [OPTIONS]
+```
+
+- **INTERFACE**: The network interface to configure or display (e.g., `eth0`, `wlan0`).
+- **OPTIONS**: Flags and parameters to modify the behavior of `ifconfig`.
+
+**Example:**
+```bash
+ifconfig
+```
+- Displays all active network interfaces and their configurations.
+
+### Common Options
+
+1. **`up` / `down`**
+   ```bash
+   ifconfig eth0 up
+   ifconfig eth0 down
+   ```
+   - Enables (`up`) or disables (`down`) the specified network interface.
+
+2. **`address`**
+   ```bash
+   ifconfig eth0 192.168.1.10
+   ```
+   - Assigns the IP address `192.168.1.10` to `eth0`.
+
+3. **`netmask`**
+   ```bash
+   ifconfig eth0 netmask 255.255.255.0
+   ```
+   - Sets the subnet mask for `eth0`.
+
+4. **`broadcast`**
+   ```bash
+   ifconfig eth0 broadcast 192.168.1.255
+   ```
+   - Configures the broadcast address for `eth0`.
+
+5. **`mtu`**
+   ```bash
+   ifconfig eth0 mtu 1500
+   ```
+   - Sets the Maximum Transmission Unit (MTU) size for `eth0`.
+
+6. **`hw ether`**
+   ```bash
+   ifconfig eth0 hw ether 00:11:22:33:44:55
+   ```
+   - Changes the hardware (MAC) address of `eth0` to `00:11:22:33:44:55`.
+
+7. **`-a`**
+   ```bash
+   ifconfig -a
+   ```
+   - Displays all network interfaces, including those that are inactive.
+
+8. **`promisc`**
+   ```bash
+   ifconfig eth0 promisc
+   ```
+   - Enables promiscuous mode on `eth0`, allowing it to receive all traffic on the network segment.
+
+9. **`-s`**
+   ```bash
+   ifconfig -s
+   ```
+   - Provides a summary of network interfaces.
+
+10. **`--help`**
+    ```bash
+    ifconfig --help
+    ```
+    - Displays help information and exits.
+
+### Examples
+
+1. **Display All Active Interfaces**
+   ```bash
+   ifconfig
+   ```
+   - Shows details like IP address, netmask, and status for each active interface.
+
+2. **Bring an Interface Up**
+   ```bash
+   sudo ifconfig wlan0 up
+   ```
+   - Activates the wireless interface `wlan0`.
+
+3. **Assign an IP Address to an Interface**
+   ```bash
+   sudo ifconfig eth0 192.168.1.20 netmask 255.255.255.0
+   ```
+   - Sets the IP address and subnet mask for `eth0`.
+
+4. **Change the MAC Address**
+   ```bash
+   sudo ifconfig eth0 hw ether AA:BB:CC:DD:EE:FF
+   ```
+   - Modifies the MAC address of `eth0` to `AA:BB:CC:DD:EE:FF`.
+
+5. **Set MTU Size**
+   ```bash
+   sudo ifconfig eth0 mtu 1400
+   ```
+   - Changes the MTU size of `eth0` to `1400` bytes.
+
+6. **Enable Promiscuous Mode**
+   ```bash
+   sudo ifconfig eth0 promisc
+   ```
+   - Puts `eth0` into promiscuous mode, useful for network sniffing.
+
+7. **Disable an Interface**
+   ```bash
+   sudo ifconfig eth0 down
+   ```
+   - Deactivates the network interface `eth0`.
+
+8. **View Summary of Interfaces**
+   ```bash
+   ifconfig -s
+   ```
+   - Provides a brief overview of each network interface.
+
+9. **Display All Interfaces Including Inactive**
+   ```bash
+   ifconfig -a
+   ```
+   - Lists all network interfaces, active or not.
+
+10. **Combine IP and Netmask in One Command**
+    ```bash
+    sudo ifconfig eth0 10.0.0.5 netmask 255.0.0.0
+    ```
+    - Assigns IP `10.0.0.5` with netmask `255.0.0.0` to `eth0`.
+
+### Tips and Best Practices
+
+- **Use with Sudo for Configuration Changes**: Modifying network settings typically requires administrative privileges.
+  ```bash
+  sudo ifconfig eth0 down
+  ```
+
+- **Verify Changes**: After configuring, use `ifconfig` to confirm that changes have been applied correctly.
+  ```bash
+  ifconfig eth0
+  ```
+
+- **Persisting Settings**: Changes made with `ifconfig` are temporary and will reset after a reboot. To make them permanent, edit network configuration files specific to your distribution (e.g., `/etc/network/interfaces` for Debian-based systems).
+
+- **Transition to `ip` Command**: While `ifconfig` is widely used, consider transitioning to the `ip` command for more advanced and modern network configurations.
+  ```bash
+  ip addr show
+  ip link set eth0 up
+  ```
+
+- **Monitor Interface Status**: Use `ifconfig` regularly to monitor the status and performance of network interfaces.
+  ```bash
+  ifconfig eth0
+  ```
+
+- **Handle Multiple Interfaces**: Configure multiple interfaces by specifying each one separately.
+  ```bash
+  sudo ifconfig eth0 192.168.1.10 netmask 255.255.255.0
+  sudo ifconfig wlan0 192.168.1.11 netmask 255.255.255.0
+  ```
+
+- **Use `grep` for Filtering Output**: Combine `ifconfig` with `grep` to filter specific information.
+  ```bash
+  ifconfig | grep inet
+  ```
+
+- **Understand Interface Naming**: Modern systems may use predictable network interface names (e.g., `enp3s0` instead of `eth0`). Use `ifconfig -a` to list all available interfaces.
+
+- **Avoid Changing MAC Addresses on Public Networks**: Modifying MAC addresses can lead to network conflicts or security issues. Use responsibly and within network policies.
+
+- **Leverage Aliases for Multiple IPs**: Assign multiple IP addresses to a single interface using aliases.
+  ```bash
+  sudo ifconfig eth0:0 192.168.1.30 up
+  ```
+
+- **Check for Deprecated Usage**: Some systems may deprecate `ifconfig` in favor of `ip`. Always check your distribution's recommended practices.
