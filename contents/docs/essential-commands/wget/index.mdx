@@ -1,0 +1,166 @@
+---
+title: "wget Command"
+date: "2025-01-12"
+description: "Retrieve and Download content from web servers."
+videoId: "RrOHwTQfqjI"
+---
+
+### Overview
+
+The `wget` command is a non-interactive tool for retrieving files from web servers. It supports HTTP, HTTPS, and FTP protocols, making it great for scripted downloads, mirroring websites, or simply grabbing a file from a URL without a browser.
+
+---
+
+### Installation
+
+Depending on your system, you might need to install `wget` first:
+
+- **Debian/Ubuntu**:
+  ```bash
+  sudo apt-get update
+  sudo apt-get install wget
+  ```
+- **Fedora/CentOS**:
+  ```bash
+  sudo dnf install wget
+  ```
+- **macOS (Homebrew)**:
+  ```bash
+  brew install wget
+  ```
+- **Windows**:
+  - Use [Chocolatey](https://chocolatey.org/) or [Scoop](https://scoop.sh/) to install, or grab a version from the official GNU Wget binaries.
+
+Once installed, verify by running:
+```bash
+wget --version
+```
+
+---
+
+### Basic Usage
+
+```bash
+wget https://example.com/file.txt
+```
+- Downloads `file.txt` from the specified URL into your current directory.
+
+```bash
+wget -O custom_name.txt https://example.com/file.txt
+```
+- **`-O`**: Saves the downloaded file with a specific filename (`custom_name.txt`).
+
+---
+
+### Resuming Downloads (`-c`)
+
+If a download is interrupted (e.g., lost connection), you can resume with:
+```bash
+wget -c https://example.com/largefile.iso
+```
+- **`-c`**: Continues a partially downloaded file (if the server supports it).
+
+---
+
+### Recursive Downloads (`-r`)
+
+To mirror or recursively download directories:
+```bash
+wget -r https://example.com/docs/
+```
+- **`-r`**: Recursively grabs files and subdirectories, within default recursion depth.  
+- Combine with `-l <level>` to set recursion depth, or `-np` to avoid descending to parent directories, etc.
+
+---
+
+### Limiting Download Speed (`--limit-rate`)
+
+```bash
+wget --limit-rate=200k https://example.com/video.mp4
+```
+- Caps the download speed at 200 KB/s to avoid saturating your network.
+
+---
+
+### Continuing in Background (`-b`)
+
+```bash
+wget -b https://example.com/largefile.iso
+```
+- **`-b`**: Runs wget in the background. Check progress with `tail -f wget-log`.
+
+---
+
+### User-Agent and Headers
+
+```bash
+wget --user-agent="MyCustomAgent/1.0" https://example.com
+```
+- Customize the `User-Agent` header. Helpful for sites restricting default wget agents or for simulating a specific browser.
+
+---
+
+### Authentication
+
+```bash
+wget --user dan --password secret123 https://example.com/protected/file.zip
+```
+- Passes HTTP Basic Authentication credentials.  
+- For safer handling, consider using an auth header or environment variables rather than exposing passwords in your shell history.
+
+---
+
+### Examples
+
+1. **Download a Single File**  
+   ```bash
+   wget https://example.com/file.txt
+   ```
+   Saves `file.txt` in the current directory.
+
+2. **Save with a Custom Filename**  
+   ```bash
+   wget -O data.json https://example.com/export
+   ```
+   The response is stored as `data.json`.
+
+3. **Resume an Interrupted Download**  
+   ```bash
+   wget -c https://example.com/large.iso
+   ```
+   Continues where it left off if possible.
+
+4. **Mirror an Entire Site (Use Cautiously!)**  
+   ```bash
+   wget -r -np -k https://example.com
+   ```
+   - **`-r`**: recursive  
+   - **`-np`**: no parent (don’t ascend above starting URL)  
+   - **`-k`**: convert links for local browsing
+
+5. **Limit Download Rate**  
+   ```bash
+   wget --limit-rate=100k https://example.com/bigdata.zip
+   ```
+   Keeps download speed around 100 KB/s.
+
+6. **Background Download**  
+   ```bash
+   wget -b https://example.com/hugefile.tar.gz
+   tail -f wget-log
+   ```
+   Continues in the background; monitor progress via `wget-log`.
+
+---
+
+### Tips and Best Practices
+
+- **Check Availability**: Before relying on `wget`, ensure it’s installed (`wget --version`).
+- **Respect Robots.txt**: Wget has options for following `robots.txt` guidelines when mirroring sites. Check `-e robots=on`.
+- **Automate Regularly**: In cron jobs or scripts, `wget` is perfect for scheduled downloads or backups.
+- **Use `--no-check-certificate`**: If you have SSL certificate errors (not recommended for production), you can bypass them:
+  ```bash
+  wget --no-check-certificate https://example.com
+  ```
+- **Combine Flags**: Wget has extensive options (cookies, proxies, timestamping). Explore `wget --help` or `man wget` for more advanced features.
+- **Secure Credentials**: Avoid placing credentials directly in the command line or in scripts. Use environment variables or netrc files to keep them safer.

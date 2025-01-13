@@ -1,0 +1,185 @@
+---
+title: "find Command"
+date: "2025-01-12"
+description: "Search for files in a directory hierarchy."
+videoId: "RrOHwTQfqjI"
+---
+
+### Overview
+
+The `find` command allows you to search for files and directories in a specified path. It’s incredibly powerful and flexible due to the variety of tests (criteria) and actions (what to do with the items found) you can combine.
+
+---
+
+### Basic Usage
+
+```bash
+find /path/to/search [options] [expression]
+```
+- **`/path/to/search`**: The directory where `find` starts its search (often `.` for the current directory).  
+- **`[options]`**: Flags that affect how `find` operates (e.g., `-L` for following symlinks).  
+- **`[expression]`**: Criteria for matching files (e.g., by name, size, modification time).
+
+**Example**:
+```bash
+find .
+```
+- Searches the current directory (and all subdirectories) for every file/directory, printing their paths.
+
+---
+
+### Common Search Criteria
+
+1. **By Name**  
+   ```bash
+   find . -name "file.txt"
+   ```
+   - Finds items named exactly `file.txt`.
+   - Case-sensitive by default; use `-iname` for case-insensitive.
+
+2. **By Pattern**  
+   ```bash
+   find . -name "*.sh"
+   ```
+   - Matches all `.sh` scripts under the current directory.
+
+3. **By Type**  
+   ```bash
+   find . -type d
+   ```
+   - Finds directories (`-type d`) only.
+   - `-type f` for regular files, `-type l` for symbolic links, etc.
+
+4. **By Size**  
+   ```bash
+   find . -size +500k
+   ```
+   - Finds files larger than 500 KB.  
+   - Use `+` for greater than, `-` for less than, and no sign for exactly.
+
+5. **By Modification Time**  
+   ```bash
+   find . -mtime -7
+   ```
+   - Finds files modified in the last 7 days.
+   - Use `+` for “more than,” `-` for “less than.”  
+   - Similarly, `-atime` for access time, `-ctime` for change time.
+
+6. **By Permissions**  
+   ```bash
+   find . -perm 644
+   ```
+   - Finds files with exact permissions of `644`.  
+   - Use `-perm /u=x` to match any file where the owner has execute permission.
+
+7. **By User/Group**  
+   ```bash
+   find . -user dan
+   ```
+   - Finds files owned by user `dan`.
+   - `-group devs` matches files owned by group `devs`.
+
+---
+
+### Logical Operators
+
+- **`-and` / `-a`**: Both conditions must be true.
+  ```bash
+  find . -type f -a -name "*.log"
+  ```
+- **`-or` / `-o`**: Either condition may be true.
+  ```bash
+  find . -type d -o -type l
+  ```
+- **`-not` / `!`**: Negates a condition.
+  ```bash
+  find . -not -name "*.txt"
+  ```
+
+---
+
+### Executing Commands on Matches
+
+One of `find`’s most powerful features is the ability to execute a command on each file that matches:
+
+```bash
+find . -type f -name "*.tmp" -exec rm {} \;
+```
+- **`-exec`**: Runs the specified command for each matching file.  
+- `{}`: Placeholder for the current file.  
+- `\;` indicates the end of the command.
+
+Another variant is `-ok`, which is like `-exec` but asks for confirmation before running each command.
+
+---
+
+### Using `xargs` with `find`
+
+You can pipe the results of `find` into `xargs` for batch processing:
+```bash
+find . -name "*.log" | xargs rm
+```
+- Deletes all `.log` files in a single `rm` invocation (more efficient than running `rm` per file).  
+- If filenames have spaces or special characters, you can use `-print0` with `-0` in `xargs` for safety:
+  ```bash
+  find . -name "*.log" -print0 | xargs -0 rm
+  ```
+
+---
+
+### Excluding Directories
+
+To skip certain directories:
+```bash
+find . -path "./node_modules" -prune -o -name "*.js" -print
+```
+- **`-path "./node_modules"`**: Matches the `node_modules` directory.  
+- **`-prune`**: Tells `find` to skip that directory.  
+- **`-o`**: Means “or else,” so if not matched by the prune condition, apply the second expression.  
+- **`-name "*.js" -print`**: Print any `.js` files found outside `node_modules`.
+
+---
+
+### Practical Examples
+
+1. **Find and List Large Files**  
+   ```bash
+   find /var -type f -size +100M
+   ```
+   Lists files over 100 MB in `/var`.
+
+2. **Delete Old Logs**  
+   ```bash
+   find /var/log -type f -name "*.log" -mtime +30 -exec rm {} \;
+   ```
+   Removes `.log` files older than 30 days.
+
+3. **Change Permissions on All Scripts**  
+   ```bash
+   find . -type f -name "*.sh" -exec chmod +x {} \;
+   ```
+   Makes every `.sh` file in the current directory executable.
+
+4. **Find Files Owned by a Specific User**  
+   ```bash
+   find /home -user dan
+   ```
+   Locates all files owned by `dan` under `/home`.
+
+5. **Backup Configuration Files**  
+   ```bash
+   find /etc -type f -name "*.conf" -exec cp {} /backup/etc-configs \;
+   ```
+   Copies all `.conf` files from `/etc` to `/backup/etc-configs`.
+
+---
+
+### Tips and Best Practices
+
+- **Narrow Your Search**: The more specific your options, the faster `find` will run (fewer matches to process).
+- **Use Quotes for Patterns**: Enclose patterns in quotes (e.g., `"*.log"`) to prevent the shell from expanding wildcards prematurely.
+- **`-exec` vs. `xargs`**: If performance is critical (large number of files), consider `xargs`. Otherwise, `-exec` is simpler and safer (especially if used with `+`, like `-exec command {} +`, which groups files into fewer invocations).
+- **Check Before You Act**: When deleting files or making major changes, list or echo the results first to ensure you’re targeting the correct items.
+- **Excluding Directories**: Mastering `-prune` can save significant time by skipping irrelevant or large directories.
+- **Combine Criteria**: You can chain multiple tests (name, size, time, etc.) to pinpoint exactly what you need. For example, “all `.log` files in `/tmp` over 10 MB, older than 7 days, not accessed recently, etc.”
+- **Permissions**: If you get “Permission denied” errors, run `find` with `sudo` if it makes sense for your use case, but be mindful of security implications.

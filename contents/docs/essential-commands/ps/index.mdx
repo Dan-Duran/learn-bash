@@ -1,0 +1,151 @@
+---
+title: "ps Command"
+date: "2025-01-12"
+description: "Report a snapshot of current processes."
+videoId: "RrOHwTQfqjI"
+---
+
+### Overview
+
+The `ps` command provides a snapshot of the currently running processes. It displays information like process IDs (PIDs), owners, CPU/memory usage, and more. By default, `ps` shows only the processes associated with the current shell session, but you can customize its output to see system-wide processes or to filter specific data.
+
+---
+
+### Basic Usage
+
+```bash
+ps
+```
+- Shows processes running in your current shell session.
+
+```bash
+ps -e
+```
+- Lists all processes running on the system (equivalent to `ps -A` on many systems).
+
+---
+
+### Common Options
+
+1. **`-f` (Full-format Listing)**  
+   ```bash
+   ps -f
+   ```
+   - Displays additional columns like PPID (parent process ID), user, and start time.  
+
+2. **`-u` (User-Oriented Format)**  
+   ```bash
+   ps -u <username>
+   ```
+   - Lists processes for a specific user, showing detailed information.
+
+3. **`-p <PID>` (Select by PID)**  
+   ```bash
+   ps -p 1234
+   ```
+   - Shows only the process with the given PID (use commas for multiple PIDs).
+
+4. **`-l` (Long Format)**  
+   ```bash
+   ps -l
+   ```
+   - Displays a more detailed listing, including flags and priority.
+
+5. **`aux` vs. `-ef`**  
+   - **`ps aux`** (BSD-style):  
+     - `a`: Show processes for all users.  
+     - `u`: Display the owner and start time.  
+     - `x`: Include processes without a controlling terminal.  
+   - **`ps -ef` (System V-style)**:  
+     - `-e`: Show all processes.  
+     - `-f`: Show full-format listing.
+
+Depending on your distribution, `ps aux` or `ps -ef` are common ways to see all running processes.
+
+---
+
+### Filtering with `grep`
+
+A common pattern is to combine `ps` with `grep` to find specific processes:
+
+```bash
+ps aux | grep nginx
+```
+- Lists all processes containing the string "nginx" in their command line or name.
+
+---
+
+### Examples
+
+1. **Show All Processes in Full-Format**  
+   ```bash
+   ps -ef
+   ```
+   Lists every process on the system with full details.
+
+2. **BSD-Style Listing**  
+   ```bash
+   ps aux
+   ```
+   Similar comprehensive view with slightly different columns (e.g., CPU/MEM usage).
+
+3. **Filter by User**  
+   ```bash
+   ps -u dan
+   ```
+   Shows processes owned by the user `dan`.
+
+4. **Combine with `grep`**  
+   ```bash
+   ps aux | grep sshd
+   ```
+   Filters running processes for "sshd".
+
+5. **Select by PID**  
+   ```bash
+   ps -p 1234
+   ```
+   Displays process 1234, useful if you already know the PID.
+
+6. **Long Format**  
+   ```bash
+   ps -l
+   ```
+   Shows more columns like state, priority, and flags.
+
+7. **Tree View (Using `pstree`)**  
+   Although not strictly part of `ps`, the `pstree` command gives you a tree view of processes:
+   ```bash
+   pstree -p
+   ```
+   Helpful for visualizing parent-child relationships.
+
+---
+
+### Tips and Best Practices
+
+- **Check for Resource Hogs**  
+  Combine `ps aux` with tools like `sort` to find top memory or CPU usage:
+  ```bash
+  ps aux | sort -nk +3 | tail
+  ```
+  Sort by the CPU or memory column to see which processes consume the most resources.
+
+- **Use `less` for Large Output**  
+  If the output is too long, pipe it into `less`:
+  ```bash
+  ps aux | less
+  ```
+- **Scripting**  
+  In scripts, prefer `ps -o` to specify columns for reliable parsing. For instance:
+  ```bash
+  ps -eo pid,user,cmd --sort=-pid
+  ```
+- **`grep` Pitfalls**  
+  When searching for a process with `grep`, you might see the `grep` process itself in the results. To avoid this, use:
+  ```bash
+  ps aux | grep [n]ginx
+  ```
+  This way, the literal string `nginx` is never matched as part of the `grep nginx` command itself.
+- **System Monitoring**  
+  For real-time monitoring, consider tools like `top`, `htop`, or `glances`. `ps` is best for static snapshots and scripting scenarios.

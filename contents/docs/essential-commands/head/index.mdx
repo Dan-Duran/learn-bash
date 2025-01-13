@@ -1,0 +1,105 @@
+---
+title: "head Command"
+date: "2025-01-12"
+description: "Output the first part of files."
+videoId: "RrOHwTQfqjI"
+---
+
+### Overview
+
+The `head` command displays the beginning of one or more files. By default, it shows the first 10 lines, but you can easily adjust how much data is shown. It's useful for quickly checking file headers or getting a snippet of data without processing the entire file.
+
+---
+
+### Basic Usage
+
+```bash
+head filename
+```
+- Prints the first 10 lines of `filename`.
+
+```bash
+head -n 20 filename
+```
+- Prints the first 20 lines instead of the default 10.
+
+---
+
+### Multiple Files
+
+```bash
+head file1 file2
+```
+- Displays the first 10 lines of each file, with a header indicating the file name before each section.
+
+---
+
+### Common Options
+
+1. **`-n <number>`**  
+   - Control how many lines are shown:
+     ```bash
+     head -n 50 largefile.log
+     ```
+     This shows the first 50 lines of `largefile.log`.
+
+2. **`-c <bytes>`**  
+   - Display the first `<bytes>` bytes of each file:
+     ```bash
+     head -c 1000 data.txt
+     ```
+     Outputs only the first 1000 bytes, regardless of line breaks.
+
+3. **`-q` (Quiet)**  
+   - Suppresses the file name headers when processing multiple files.
+
+4. **`-v` (Verbose)**  
+   - Always display file name headers, even if only one file is specified.
+
+---
+
+### Examples
+
+1. **Default Usage**  
+   ```bash
+   head /var/log/syslog
+   ```
+   Outputs the first 10 lines of `/var/log/syslog`.
+
+2. **Show 5 Lines**  
+   ```bash
+   head -n 5 notes.txt
+   ```
+   Prints just the first 5 lines of `notes.txt`.
+
+3. **View First 100 Bytes**  
+   ```bash
+   head -c 100 bigfile.dat
+   ```
+   Outputs the first 100 bytes from `bigfile.dat`.
+
+4. **Multiple Files**  
+   ```bash
+   head -n 3 file1.txt file2.txt
+   ```
+   Shows the first 3 lines of each file, with headers indicating the file names.
+
+5. **Suppress Headers**  
+   ```bash
+   head -q file1.txt file2.txt
+   ```
+   Displays the first 10 lines of `file1.txt` and `file2.txt` without labeling which file is which.
+
+---
+
+### Tips and Best Practices
+
+- **Quick Checks**: Combine `head` with `tail` to inspect the top and bottom parts of large files without opening them in an editor.
+- **Scripting**: In scripts, `head` is a lightweight way to read just enough data for processing (e.g., the first line of a CSV).
+- **Combining with Pipes**: You can pipe output into `head` to limit results, like:
+  ```bash
+  ls -l | head -n 10
+  ```
+  This displays only the first 10 lines of `ls -l`.
+- **Memory Usage**: Unlike reading the entire file, `head` only processes enough data to fulfill the requested lines/bytes—helpful with very large files.
+- **Verbose vs. Quiet**: Use `-v` or `-q` when dealing with multiple files to control file name headers in the output.

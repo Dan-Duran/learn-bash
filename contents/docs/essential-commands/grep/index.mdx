@@ -1,0 +1,186 @@
+---
+title: "grep Command"
+date: "2025-01-12"
+description: "Search text using patterns."
+videoId: "RrOHwTQfqjI"
+---
+
+### Overview
+
+The `grep` (global regular expression print) command allows you to search text or entire files for lines that match a pattern. It’s one of the most powerful tools for finding specific strings or patterns in logs, configuration files, or any text data.
+
+---
+
+### Basic Usage
+
+```bash
+grep pattern filename
+```
+- Searches `filename` for lines containing `pattern` and prints them.
+
+```bash
+grep 'error' /var/log/syslog
+```
+- Displays lines containing the word "error" in `/var/log/syslog`.
+
+---
+
+### Case Sensitivity
+
+By default, `grep` is case-sensitive. Use `-i` (ignore case) to make it case-insensitive:
+```bash
+grep -i 'error' /var/log/syslog
+```
+- Matches "error", "Error", "ERROR", etc.
+
+---
+
+### Searching Multiple Files
+
+```bash
+grep 'main' file1.c file2.c file3.c
+```
+- Searches for "main" in each file and prints matching lines from all files.
+
+Or you can use wildcards:
+```bash
+grep 'TODO' *.txt
+```
+- Looks for "TODO" in all `.txt` files in the current directory.
+
+---
+
+### Recursive Search (`-r`)
+
+Use `-r` to search through directories and their subdirectories:
+```bash
+grep -r 'TODO' /path/to/code
+```
+- Prints matches for "TODO" from all files in `/path/to/code` and below.
+
+To skip binary files and only search in text files, add the `-I` option:
+```bash
+grep -rI 'TODO' /path/to/code
+```
+
+---
+
+### Matching Whole Words (`-w`)
+
+```bash
+grep -w 'foo' myfile.txt
+```
+- Matches only lines where "foo" is a standalone word. 
+- It won’t match strings like "foobar" or "infoo".
+
+---
+
+### Invert Match (`-v`)
+
+```bash
+grep -v 'error' server.log
+```
+- Prints all lines **not** containing "error" in `server.log`.
+
+---
+
+### Line Numbers (`-n`)
+
+```bash
+grep -n 'ERROR' /var/log/syslog
+```
+- Includes the line number for each match, making it easier to locate the matched line in the file.
+
+---
+
+### Context Lines (`-C`, `-A`, `-B`)
+
+Sometimes it’s helpful to see lines before and/or after the match:
+
+- **`-C NUM`**: Shows `NUM` lines of context before and after each match.
+- **`-A NUM`**: Shows `NUM` lines **after** each match.
+- **`-B NUM`**: Shows `NUM` lines **before** each match.
+
+Example:
+```bash
+grep -C 2 'failure' application.log
+```
+- Displays 2 lines before and after each line containing "failure".
+
+---
+
+### Regular Expressions
+
+`grep` supports regular expressions (regex) for powerful pattern matching:
+
+1. **Basic Regular Expressions (BRE)**  
+   - By default, `grep` uses a simplified syntax.  
+   - Example: `grep 'c.t' file` matches "cat", "cut", "c t", etc.
+
+2. **Extended Regular Expressions (ERE)**  
+   - Use `egrep` or `grep -E` to enable extended features, like `+`, `?`, and grouping without escaping:
+   ```bash
+   grep -E 'hello|world' file.txt
+   ```
+   - Matches lines containing either "hello" or "world".
+
+3. **Escaping Special Characters**  
+   - Some characters (`.`, `*`, `+`, `?`, `|`, etc.) have special meanings.  
+   - Escape them with a backslash `\` if you want a literal match.
+
+---
+
+### Other Useful Options
+
+- **`-l`**: Print the names of files with matches, rather than the matches themselves.  
+  ```bash
+  grep -l 'TODO' *.c
+  ```
+- **`-c`**: Print the count of matching lines instead of the lines themselves.  
+  ```bash
+  grep -c 'error' app.log
+  ```
+- **`-o`**: Print only the matching part of the line, not the entire line.  
+  ```bash
+  grep -o '[0-9]\+' data.txt
+  ```
+  (Finds sequences of digits.)
+
+---
+
+### Examples
+
+1. **Search Case-Insensitive in a Single File**  
+   ```bash
+   grep -i 'warning' server.log
+   ```
+2. **Find All Occurrences in Multiple Files**  
+   ```bash
+   grep 'TODO' *.py
+   ```
+3. **Search Recursively in a Directory**  
+   ```bash
+   grep -r 'DEBUG' /var/log/
+   ```
+4. **Show Matches with Line Numbers**  
+   ```bash
+   grep -n 'function' main.c
+   ```
+5. **Only Print Filenames with Matches**  
+   ```bash
+   grep -l 'ERROR' /var/log/*.log
+   ```
+6. **Show Context Around Matches**  
+   ```bash
+   grep -A 3 'timeout' application.log
+   ```
+
+---
+
+### Tips and Best Practices
+
+- **Use Quotes**: Enclose patterns in single quotes to avoid shell interpretation of special characters.  
+- **Leverage Regular Expressions**: Mastering regex can significantly enhance your searching power.  
+- **Large Files**: For very large files, consider combining `grep` with commands like `less` or `tail -f` for a more efficient workflow.  
+- **Performance**: Recursive searches can be resource-intensive. Narrow the search by specifying file types or specific subdirectories if possible.  
+- **Filtering vs. Parsing**: `grep` is great for filtering lines, but if you need structured parsing or multi-line patterns, other tools like `awk`, `sed`, or more specialized scripts might be more appropriate.

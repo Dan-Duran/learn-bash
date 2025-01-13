@@ -1,0 +1,135 @@
+---
+title: "passwd Command"
+date: "2025-01-12"
+description: "Change user account passwords."
+videoId: "RrOHwTQfqjI"
+---
+
+### Overview
+
+The `passwd` command is used to change or manage passwords for user accounts on a Unix-like system. By default, running `passwd` without arguments changes your own password. If you have appropriate privileges (usually via `sudo`), you can change other users’ passwords as well.
+
+---
+
+### Basic Usage
+
+```bash
+passwd
+```
+- Prompts for your current password (if needed), then asks you to enter and confirm a new password.
+
+---
+
+### Changing Your Own Password
+
+1. **Run the Command**  
+   ```bash
+   passwd
+   ```
+2. **Enter Current Password**  
+   - If required, you’ll be prompted to authenticate.  
+3. **Enter New Password**  
+   - Must meet any system-imposed complexity rules (e.g., minimum length or presence of special characters).  
+4. **Re-enter New Password**  
+   - Confirm the new password to ensure there are no typos.
+
+---
+
+### Changing Another User’s Password
+
+```bash
+sudo passwd <username>
+```
+- Requires `sudo` privileges or root access.
+- Useful for system administrators who need to reset user passwords.
+
+Example:
+```bash
+sudo passwd alice
+```
+- Resets the password for `alice`.
+
+---
+
+### Password Complexity
+
+The exact rules depend on your system configuration and PAM (Pluggable Authentication Modules) settings. Common requirements might include:
+
+- Minimum length (e.g., 8 characters)
+- At least one uppercase character
+- At least one digit or symbol
+- Avoid easily guessable passwords (e.g., dictionary words, repeated characters)
+
+If your password doesn’t meet these standards, `passwd` may reject it and prompt you to try again.
+
+---
+
+### Advanced Usage and Options
+
+1. **Force User to Change Password on Next Login**  
+   ```bash
+   sudo passwd -e <username>
+   ```
+   - Sets the user’s password to expire, so they must choose a new one on their next login.
+
+2. **Lock or Unlock an Account**  
+   - **Lock**:  
+     ```bash
+     sudo passwd -l <username>
+     ```
+     Prevents the user from logging in using their password (doesn’t affect SSH keys if configured).  
+   - **Unlock**:  
+     ```bash
+     sudo passwd -u <username>
+     ```
+     Reverses the lock.
+
+3. **View Account Password Status**  
+   ```bash
+   sudo passwd -S <username>
+   ```
+   - Shows whether the account is locked, when the password was last changed, and when it expires.
+
+---
+
+### Examples
+
+1. **Change Your Own Password**  
+   ```bash
+   passwd
+   ```
+   Walks you through prompts for old and new passwords.
+
+2. **Reset Another User’s Password**  
+   ```bash
+   sudo passwd bob
+   ```
+   Sets or changes the password for user `bob`.
+
+3. **Force Password Change**  
+   ```bash
+   sudo passwd -e bob
+   ```
+   Bob must set a new password upon next login.
+
+4. **Lock a User Account**  
+   ```bash
+   sudo passwd -l bob
+   ```
+   Prevents Bob from logging in with his password.
+
+5. **Check Password Status**  
+   ```bash
+   sudo passwd -S bob
+   ```
+   Displays current lock status, last change date, and expiration info.
+
+---
+
+### Tips and Best Practices
+
+- **Use Strong Passwords**: Long, random passwords are more secure. Consider passphrases (e.g., several random words) for better memorability and strength.
+- **Password Security**: Don’t reuse passwords across systems. Change them periodically if required by policy, but avoid frequent forced rotations that can lead to weaker choices.
+- **Lock Inactive Accounts**: If a user no longer needs access, locking or removing their account is safer than leaving it with a known default password.
+- **Check PAM Settings**: For advanced password rules (like complexity or history), inspect your PAM configuration (e.g., `/etc/pam.d/common-password` on Debian-based distros).
+- **Automation**: Scripting password changes is possible but risky. Always handle credentials securely—never store plaintext passwords in logs or scripts.

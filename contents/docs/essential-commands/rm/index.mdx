@@ -1,0 +1,144 @@
+---
+title: "rm Command"
+date: "2025-01-12"
+description: "Remove files or directories."
+videoId: "RrOHwTQfqjI"
+---
+
+### Overview
+
+The `rm` (remove) command is used to delete files or directories. Unlike moving files to a “trash” folder, `rm` performs a permanent deletion—there’s no easy way to recover files removed by this command, so it’s crucial to use it carefully.
+
+---
+
+### Basic Usage
+
+```bash
+rm filename
+```
+- Removes a file named `filename` from the current directory.
+
+```bash
+rm /path/to/file
+```
+- Removes a file at an absolute or relative path.
+
+---
+
+### Removing Multiple Files
+
+You can delete multiple files in one command:
+```bash
+rm file1 file2 file3
+```
+- Removes `file1`, `file2`, and `file3` simultaneously.
+
+---
+
+### Interactive Removal (`-i`)
+
+To avoid accidental deletions, use the `-i` (interactive) option:
+```bash
+rm -i filename
+```
+- Prompts you to confirm each file before removal.
+
+---
+
+### Force Removal (`-f`)
+
+Use the `-f` (force) option to suppress warnings and ignore non-existent files:
+```bash
+rm -f filename
+```
+- Removes the file without prompts, even if you lack permissions (in conjunction with `sudo`).
+
+> **Warning:** This option can be dangerous if used carelessly.
+
+---
+
+### Removing Directories
+
+1. **Empty Directories**  
+   - Consider using `rmdir` for removing an empty directory.
+   - Alternatively, `rm -d` works for empty directories:
+     ```bash
+     rm -d dirname
+     ```
+2. **Non-Empty Directories**  
+   - The `-r` (recursive) option is required to remove directories that contain files or subdirectories:
+     ```bash
+     rm -r dirname
+     ```
+   - This will recursively remove everything inside `dirname` along with the directory itself.
+
+3. **Combine with Force**  
+   ```bash
+   rm -rf dirname
+   ```
+   - Recursively removes all contents in `dirname` without prompting.  
+   - Often used in automated scripts, but be extremely cautious.
+
+---
+
+### Common Options
+
+- **`-r` / `--recursive`**: Remove directories and their contents recursively.  
+- **`-f` / `--force`**: Remove without prompting, ignore non-existent files.  
+- **`-i`**: Interactive mode, prompts for confirmation.  
+- **`-v` / `--verbose`**: Show what’s being removed. Useful when deleting multiple items.
+
+---
+
+### Examples
+
+1. **Remove a Single File**  
+   ```bash
+   rm notes.txt
+   ```
+   Deletes `notes.txt` in the current directory.
+
+2. **Remove Multiple Files**  
+   ```bash
+   rm photo1.jpg photo2.jpg photo3.jpg
+   ```
+   Deletes all three specified files.
+
+3. **Interactive Removal**  
+   ```bash
+   rm -i *.log
+   ```
+   Asks for confirmation before removing each `*.log` file in the current directory.
+
+4. **Remove a Directory Recursively**  
+   ```bash
+   rm -r old_project
+   ```
+   Recursively removes `old_project` and its contents.
+
+5. **Forced Recursive Removal**  
+   ```bash
+   rm -rf /path/to/directory
+   ```
+   Permanently removes the target directory and all subdirectories without prompts.
+
+6. **Verbose Removal**  
+   ```bash
+   rm -rv logs/
+   ```
+   Removes the `logs` directory and displays each file as it’s removed.
+
+---
+
+### Tips and Best Practices
+
+- **Double Check Paths**  
+  Always ensure you’ve typed the correct file or directory path before pressing Enter, especially when using `-r` or wildcards.
+- **Interactive Mode**  
+  If you’re new to `rm` or deleting critical data, `rm -i` offers a safety net.
+- **Backups**  
+  If you’re not sure, consider copying or backing up important files before deleting them.
+- **Use `Trash` Utilities**  
+  Some distributions or shells offer a “trash” command that moves files to a recoverable location instead of permanently deleting them.  
+- **Scripting**  
+  In scripts, `rm -rf` is common, but use caution: a misplaced path or wildcard can cause massive data loss.

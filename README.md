@@ -1,10 +1,10 @@
-<h1 align="center">Learn Bash</h1>
+<h1 align="center">Learn Bash With Me</h1>
 <p align="center">
 Learn Bash is a free, open-source platform for mastering command line and shell scripting.
 </p>
 <div align="center">
-  <a href="https://github.com/Dan-Duran/LearnBash/stargazers"><img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/Dan-Duran/LearnBash"></a>
-  <a href="https://github.com/Dan-Duran/LearnBash/blob/main/LICENSE"><img alt="License" src="https://img.shields.io/badge/License-MIT-yellow.svg"></a>
+  <a href="https://github.com/Dan-Duran/learn-bash/stargazers"><img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/Dan-Duran/learn-bash"></a>
+  <a href="https://github.com/Dan-Duran/learn-bash/blob/main/LICENSE"><img alt="License" src="https://img.shields.io/badge/License-MIT-yellow.svg"></a>
 </div>
 <video alt="Bash Guide" src="https://github.com/user-attachments/assets/ea2661ad-59dc-4427-87cd-ceb3b09f78c1" width="100%"></video>
 
@@ -12,7 +12,7 @@ Learn Bash is a free, open-source platform for mastering command line and shell 
 
 Try it out for yourself!
 
-Visit: <https://bash.getcyber.me>
+Visit: [https://bash.getcyber.me](https://bash.getcyber.me)
 
 ## ⭐ Features
 
@@ -48,7 +48,7 @@ Visit: <https://bash.getcyber.me>
 
 ## Contributing
 
-Visit our [contributing guide](https://github.com/Dan-Duran/LearnBash/blob/main/CONTRIBUTING.md) to learn how to contribute.
+Visit our [contributing guide](https://github.com/Dan-Duran/learn-bash/blob/main/CONTRIBUTING.md) to learn how to contribute.
 - Your feedback and contributions are welcome!
 
 ## 📜 License
@@ -56,3 +56,7 @@ Visit our [contributing guide](https://github.com/Dan-Duran/LearnBash/blob/main/
 This project is licensed under the MIT License. For more information, see the [LICENSE](./LICENSE) file.
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/)
+
+## ❤️ Kudos  
+
+Many thanks to [Vicky/spaciousejar](https://github.com/spaciousejar) for building this amazing Open Source app! Learn Git with her at [Vicky/spaciousejar](https://github.com/spaciousejar/learn-git-with-me)

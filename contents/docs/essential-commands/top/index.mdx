@@ -1,0 +1,125 @@
+---
+title: "top Command"
+date: "2025-01-12"
+description: "Display Linux processes."
+videoId: "RrOHwTQfqjI"
+---
+
+### Overview
+
+The `top` command provides a real-time, dynamic view of the running processes on your system. It displays system resource usage (CPU, memory, load averages) and allows you to interactively manage or kill processes.
+
+---
+
+### Basic Usage
+
+```bash
+top
+```
+- Launches the interactive process viewer.  
+- By default, it sorts processes by CPU usage (highest first).  
+- Press `q` to quit.
+
+---
+
+### Key Information Displayed
+
+1. **System Summary** (top of the screen)  
+   - **Uptime**: How long the system has been running.  
+   - **Load Averages**: Average number of processes waiting to run over the last 1, 5, and 15 minutes.  
+   - **Tasks**: Number of processes running, sleeping, stopped, or zombie.  
+   - **CPU Usage**: Percentages of user, system, idle, I/O wait, etc.  
+   - **Memory Usage**: Total, used, free, buffers, and cache.  
+
+2. **Process List** (below the summary)  
+   - **PID**: Process ID.  
+   - **USER**: Owner of the process.  
+   - **PR** / **NI**: Process priority / nice value.  
+   - **VIRT** / **RES** / **SHR**: Virtual, resident, and shared memory used by the process.  
+   - **%CPU** / **%MEM**: CPU and memory usage percentage.  
+   - **TIME+**: Total CPU time the process has consumed.  
+   - **COMMAND**: The command used to run the process.
+
+---
+
+### Interactive Controls
+
+While `top` is running, you can press various keys to change the display or perform actions:
+
+- **k**: Prompt for a PID to kill. Enter the PID and optionally a signal (default is SIGTERM).  
+- **r**: Prompt for a PID to renice. Adjust the priority of a running process.  
+- **h** or **?**: Show help menu with all shortcuts.  
+- **Space** or **Enter**: Refresh the display immediately.  
+- **Arrow Keys** (or **Page Up/Down**): Scroll through the list of processes (depending on your terminal).  
+- **q**: Quit `top`.
+
+---
+
+### Sorting and Fields
+
+- Press **F** or **o** to enter the field management menu.  
+- Use **Up/Down** arrows to select a field, and **`d`** to toggle whether it’s displayed.  
+- Press **s** to sort by a selected field.  
+- Press **q** to return to the main display.
+
+Alternatively, shortcuts like **\<** or **>** can shift the sort column left or right (depending on the distribution).
+
+---
+
+### Changing Refresh Interval (`-d`)
+
+```bash
+top -d 2
+```
+- Updates the display every 2 seconds instead of the default (usually 3 seconds).
+
+---
+
+### Batch Mode (Non-Interactive)
+
+```bash
+top -b -n 1
+```
+- Runs `top` in batch mode for one iteration, then exits.  
+- Useful in scripts to capture a snapshot of running processes:
+  ```bash
+  top -b -n 1 | grep python
+  ```
+  Filters the output for processes containing “python”.
+
+---
+
+### Examples
+
+1. **Run in Batch Mode and Sort by Memory**  
+   ```bash
+   top -b -o +%MEM -n 1
+   ```
+   Produces a single snapshot (`-n 1`) sorted by memory usage (`-o +%MEM`).
+
+2. **Specify Refresh Interval**  
+   ```bash
+   top -d 5
+   ```
+   Updates every 5 seconds, making it less CPU-intensive for monitoring.
+
+3. **Kill a Process**  
+   - Press `k` during `top`, type in the PID, then press **Enter**.  
+   - If no signal is specified, it defaults to `SIGTERM`.
+
+4. **Renice a Process**  
+   - Press `r`, type in the PID, and specify a new nice value (e.g., 10 to lower its priority).
+
+5. **Show Help**  
+   - Press `h` (or `?`) inside `top` for a quick reference to all interactive commands.
+
+---
+
+### Tips and Best Practices
+
+- **Real-Time System Monitoring**: Use `top` for a quick overview of CPU/memory usage. For more advanced functionality (like color-coded output or better interaction), try `htop` or `glances`.  
+- **Batch Mode for Logging**: Automate performance snapshots using `top -b` in scripts or cron jobs.  
+- **Sort by Different Fields**: Press `F`, then choose the field to sort by (e.g., `%MEM`) to quickly locate memory-heavy processes.  
+- **Interact Safely**: Be cautious when killing processes from `top`. Always verify the PID and process name.  
+- **Refresh Interval**: Increase the delay (`top -d <seconds>`) if you don’t need frequent updates, reducing overhead on busy systems.  
+- **Customization**: The `.toprc` file in your home directory (for many distros) stores configurations, like default fields or sort order, if you choose to save your `top` settings.  

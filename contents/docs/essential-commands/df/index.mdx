@@ -1,0 +1,127 @@
+---
+title: "df Command"
+date: "2025-01-12"
+description: "Report file system disk space usage."
+videoId: "RrOHwTQfqjI"
+---
+
+### Overview
+
+The `df` command (short for *disk free*) displays information about the available and used disk space on your mounted file systems. By default, it shows the usage in 1-kilobyte blocks and lists each file system with its mount point.
+
+---
+
+### Basic Usage
+
+```bash
+df
+```
+- Prints disk space usage for all currently mounted file systems.
+
+---
+
+### Human-Readable Output (`-h`)
+
+```bash
+df -h
+```
+- Shows sizes in a human-readable format (e.g., KB, MB, GB).
+- Often the most commonly used option, making disk usage easier to interpret.
+
+---
+
+### Specifying a File System or Path
+
+```bash
+df /path/to/directory
+```
+- Displays information for the file system on which the directory resides.
+
+```bash
+df -h /dev/sda1
+```
+- Shows usage for a specific device or partition.
+
+---
+
+### Including File System Type (`-T`)
+
+```bash
+df -T
+```
+- Adds a column to indicate the file system type (e.g., ext4, xfs, tmpfs).
+
+---
+
+### Inodes Usage (`-i`)
+
+```bash
+df -i
+```
+- Shows information about inodes (index nodes) instead of block usage. 
+- If you have many small files, you could run out of inodes before disk space.
+
+---
+
+### Excluding or Including Certain File Systems
+
+- **`-x`** *type*  
+  ```bash
+  df -x tmpfs
+  ```
+  Excludes file systems of type `tmpfs`.
+- **`-t`** *type*  
+  ```bash
+  df -t ext4
+  ```
+  Shows only `ext4` file systems.
+
+---
+
+### Examples
+
+1. **Standard, All File Systems**  
+   ```bash
+   df
+   ```
+   Prints usage in 1K blocks for everything mounted.
+
+2. **Human-Readable for All File Systems**  
+   ```bash
+   df -h
+   ```
+   Displays usage in KB, MB, or GB for each mount point.
+
+3. **Disk Usage for a Specific Directory**  
+   ```bash
+   df -h /home/dan
+   ```
+   Shows usage of the file system containing `/home/dan`.
+
+4. **Show Inode Usage**  
+   ```bash
+   df -i
+   ```
+   Displays how many inodes are used and free on each file system.
+
+5. **Show File System Type**  
+   ```bash
+   df -hT
+   ```
+   Combines human-readable format with a column for file system type.
+
+6. **Exclude tmpfs**  
+   ```bash
+   df -h -x tmpfs
+   ```
+   Displays usage for all mounted file systems except those mounted as `tmpfs`.
+
+---
+
+### Tips and Best Practices
+
+- **Combine with Other Commands**: Pair `df` with `du` (disk usage) for a fuller picture of disk consumption. `df` shows the file system summary, while `du` can drill down into directory sizes.
+- **Watch for Full Partitions**: Regularly check `df -h` to ensure you have enough space. Running out of disk space can cause system instability.
+- **Inode Constraints**: If `df -i` shows a high inode usage (100%), you might need to remove or consolidate numerous small files.
+- **Scripting**: Use `df -h | grep /mountpoint` in scripts to programmatically check for low disk space and send alerts if thresholds are exceeded.
+- **Network Filesystems**: When working with NFS or other network-mounted storage, check if `df` output is accurate. Sometimes network issues or permissions can cause inaccurate or delayed data.

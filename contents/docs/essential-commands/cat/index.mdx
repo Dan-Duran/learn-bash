@@ -1,0 +1,122 @@
+---
+title: "cat Command"
+date: "2025-01-12"
+description: "Concatenate files and print on the standard output."
+videoId: "RrOHwTQfqjI"
+---
+
+### Overview
+
+The `cat` command reads files sequentially, writing their contents to standard output. Its name comes from "concatenate", which it can do when given multiple files—combining them into a single output stream. It’s often used for quickly viewing file contents or piping them into other commands.
+
+---
+
+### Basic Usage
+
+```bash
+cat filename
+```
+- Prints the contents of `filename` to your terminal.
+
+```bash
+cat file1 file2
+```
+- Concatenates `file1` and `file2` and displays them in sequence.
+
+---
+
+### Combining and Redirecting
+
+`cat` excels when you want to merge multiple files into one or redirect output:
+
+```bash
+cat file1 file2 > combined.txt
+```
+- Reads `file1` and `file2` and writes their contents to a new file `combined.txt`.  
+- If `combined.txt` already exists, it will be overwritten.
+
+```bash
+cat file1 file2 >> combined.txt
+```
+- Appends the contents of `file1` and `file2` to the end of `combined.txt`.
+
+---
+
+### Displaying Line Numbers (`-n`)
+
+```bash
+cat -n filename
+```
+- Shows each line with a line number in front, useful for referencing specific lines.
+
+---
+
+### Squeezing Blank Lines (`-s`)
+
+```bash
+cat -s document.txt
+```
+- Merges consecutive blank lines into a single blank line, making text easier to read.
+
+---
+
+### Showing Non-Printing Characters (`-v`)
+
+```bash
+cat -v file
+```
+- Displays non-printing characters (like control characters) in a visible format.  
+- Often used for troubleshooting text encoding or formatting issues.
+
+---
+
+### Example Workflows
+
+1. **Quickly View a File**  
+   ```bash
+   cat /etc/hosts
+   ```
+   Prints the contents of the `/etc/hosts` file to standard output.
+
+2. **Combine Multiple Files**  
+   ```bash
+   cat part1.txt part2.txt > full_document.txt
+   ```
+   Creates (or overwrites) `full_document.txt` containing the combined text.
+
+3. **Add Line Numbers**  
+   ```bash
+   cat -n script.sh
+   ```
+   Displays every line from `script.sh` with a preceding number.
+
+4. **Pipe into Other Commands**  
+   ```bash
+   cat data.csv | grep "ERROR"
+   ```
+   Feeds `data.csv` into `grep`, showing lines containing the string "ERROR."
+
+5. **Suppress or Squeeze Blank Lines**  
+   ```bash
+   cat -s article.md
+   ```
+   Merges consecutive blank lines in `article.md`, helpful for reading clarity.
+
+---
+
+### Alternatives and Best Practices
+
+- **`less` or `more`**: For large files, consider `less filename` or `more filename` instead of `cat` so you can scroll through the contents.
+- **`head` and `tail`**: If you only need the beginning or end of a file, `head -n X filename` or `tail -n X filename` might be more efficient.
+- **`tac`**: Displays file contents in reverse order (last line first).  
+- **`>>` vs. `>`**: Use `>>` to append rather than overwrite when concatenating multiple files into one destination.
+
+---
+
+### Tips and Best Practices
+
+- **Check File Sizes**: Catting an extremely large file can flood your terminal. Use `less` if you need to scroll.  
+- **Use `-n`**: Adding line numbers (`-n`) is handy when reviewing scripts or logs.  
+- **Redirection**: Combine `cat` with redirection operators (`>`, `>>`) to easily create or append files.  
+- **Piping**: `cat` is frequently used to pipe data into other commands (e.g., `grep`, `awk`, `sed`).  
+- **Avoid Useless Cat**: If you’re only passing a single file to another command, you can often use that file directly. For example, `grep "ERROR" data.csv` is usually preferred over `cat data.csv | grep "ERROR"`. 

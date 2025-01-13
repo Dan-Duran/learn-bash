@@ -1,0 +1,119 @@
+---
+title: "mkdir Command"
+date: "2025-01-12"
+description: "Create directories."
+videoId: "RrOHwTQfqjI"
+---
+
+### Overview
+
+The `mkdir` (make directory) command creates one or more directories in your file system. It’s a straightforward yet crucial tool when organizing files or setting up a project structure.
+
+---
+
+### Basic Usage
+
+```bash
+mkdir dirname
+```
+- Creates a directory named `dirname` in the current working directory.
+
+```bash
+mkdir /path/to/dirname
+```
+- Creates a directory at the specified absolute path.
+
+---
+
+### Creating Multiple Directories
+
+You can create multiple directories with one command:
+```bash
+mkdir dir1 dir2 dir3
+```
+- Creates `dir1`, `dir2`, and `dir3` within your current directory.
+
+---
+
+### Parent Directories (`-p`)
+
+Use the `-p` (parents) option to create nested directories without manually creating each parent directory first:
+```bash
+mkdir -p /path/to/subdir
+```
+- If `/path/to` doesn’t exist, it will create all necessary parent directories.
+
+---
+
+### Verifying Creation (`-v`)
+
+Use the `-v` (verbose) option for visual confirmation:
+```bash
+mkdir -v dirname
+```
+- Prints a message for each directory created. Useful when you’re making multiple directories at once.
+
+---
+
+### Error Handling
+
+1. **Directory Already Exists**  
+   If you try to create a directory that already exists, `mkdir` will throw an error unless you use the `-p` option, which silently ignores existing directories.
+
+2. **Permissions**  
+   If you don’t have permissions in the target location, you’ll receive a “Permission denied” error. You may need `sudo` or adjust directory permissions.
+
+---
+
+### Custom Permissions (`-m`)
+
+You can specify permissions (in octal notation) for newly created directories with the `-m` (mode) option:
+```bash
+mkdir -m 755 dirname
+```
+- Sets directory permissions to `rwxr-xr-x`. 
+- If omitted, the permissions are determined by the default `umask` of your system.
+
+---
+
+### Examples
+
+1. **Creating a Single Directory**  
+   ```bash
+   mkdir my_project
+   ```
+
+2. **Creating Multiple Directories**  
+   ```bash
+   mkdir docs images scripts
+   ```
+
+3. **Nested Directories with Parents**  
+   ```bash
+   mkdir -p /home/dan/projects/bash/guide
+   ```
+   Ensures all intermediate directories (`projects`, `bash`) are created.
+
+4. **Creating a Directory with Custom Permissions**  
+   ```bash
+   mkdir -m 700 private_folder
+   ```
+   Gives the owner full access, and no permissions to others.
+
+5. **Verbose Creation**  
+   ```bash
+   mkdir -v -p /var/www/app/{logs,uploads}
+   ```
+   - Creates nested directories and shows a line of output for each one.
+   - The curly braces are a shell expansion shortcut to create both `/var/www/app/logs` and `/var/www/app/uploads`.
+
+---
+
+### Tips and Best Practices
+
+- **Use `ls` to Confirm**  
+  After creating a directory, you can run `ls` to ensure it’s been created successfully.  
+- **Combine with Other Commands**  
+  Often used with commands like `cp` or `mv` to organize files into newly created directories.  
+- **Automation**  
+  In scripts, use `mkdir -p` to avoid errors if the directory already exists.

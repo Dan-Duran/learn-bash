@@ -1,0 +1,116 @@
+---
+title: "watch Command"
+date: "2025-01-12"
+description: "Execute a program periodically, showing output in fullscreen."
+videoId: "RrOHwTQfqjI"
+---
+
+### Overview
+
+The `watch` command repeatedly runs another command at a specified interval and displays its output on the screen in real time. This is particularly useful for monitoring changes—such as file listings, disk usage, or log entries—without manually re-running a command over and over.
+
+---
+
+### Basic Usage
+
+```bash
+watch <command>
+```
+- By default, `watch` runs `<command>` every 2 seconds and updates the display.
+
+**Examples**:
+```bash
+watch ls -l
+```
+Continuously lists files in the current directory, refreshing every 2 seconds.
+
+```bash
+watch -n 5 df -h
+```
+Runs `df -h` every 5 seconds to see changing disk space usage.
+
+---
+
+### Common Options
+
+1. **Interval (`-n` or `--interval`)**  
+   ```bash
+   watch -n <seconds> <command>
+   ```
+   Sets the refresh interval (in seconds). Example:
+   ```bash
+   watch -n 1 date
+   ```
+   Displays the current date, updating every second.
+
+2. **Differences Highlighting (`-d` or `--differences`)**  
+   ```bash
+   watch -d <command>
+   ```
+   Highlights differences between consecutive command outputs. This makes it easier to spot what changed.
+
+3. **No Title Bar (`-t` or `--no-title`)**  
+   ```bash
+   watch -t ls
+   ```
+   Hides the header that shows the interval, command, and current time. Good for full-screen displays.
+
+4. **Monitor Only Changes (`-g` or `--chgexit`)**  
+   ```bash
+   watch -g "ls /some/dir"
+   ```
+   Exits as soon as the output of the command changes. Could be used in scripts or automated tasks where you only care if a command’s output differs from the previous run.
+
+---
+
+### Combining Options
+
+You can combine multiple options to customize behavior. For instance:
+```bash
+watch -n 3 -d df -h
+```
+- Refresh interval of 3 seconds (`-n 3`), highlighting differences (`-d`), running `df -h`.
+
+---
+
+### Practical Examples
+
+1. **Monitoring Log Growth**  
+   ```bash
+   watch tail -n 20 /var/log/syslog
+   ```
+   Automatically shows the last 20 lines of `/var/log/syslog` every 2 seconds.
+
+2. **Keeping an Eye on Memory Usage**  
+   ```bash
+   watch -n 1 free -m
+   ```
+   Prints memory usage in megabytes, updating once per second.
+
+3. **Spotting File Changes**  
+   ```bash
+   watch -d 'ls -lh /some/directory'
+   ```
+   Whenever new files appear or sizes change, the differences get highlighted.
+
+4. **Monitoring Disk Space until it Changes**  
+   ```bash
+   watch -g df -h
+   ```
+   Continually checks `df -h` and exits immediately when the output changes (i.e., when disk usage shifts).
+
+5. **Removing the Header**  
+   ```bash
+   watch -t sensors
+   ```
+   Uses the `sensors` command to read temperature/voltage data, hiding the header for a cleaner display.
+
+---
+
+### Tips and Best Practices
+
+- **Interval Awareness**: Keep the interval reasonable. If you run an expensive command too frequently, it can impact system performance.
+- **Highlight Changes**: The `-d` (differences) option is extremely handy for quickly spotting what’s new or altered.
+- **Automation**: Pair `watch -g` with a script to trigger actions as soon as some output changes.
+- **Color Output**: Some commands produce colored output, but `watch` might strip away ANSI codes unless you use `--color=always` with your command (depending on your shell). Alternatively, `watch` has an option `-c` or `--color` in some distributions to attempt passing colors through.
+- **Combining with Other Commands**: If you need refined data in real time, combine `watch` with filtering tools like `grep`, `sed`, or `awk`.

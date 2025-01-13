@@ -1,0 +1,135 @@
+---
+title: "kill Command"
+date: "2025-01-12"
+description: "Send signals to processes."
+videoId: "RrOHwTQfqjI"
+---
+
+### Overview
+
+The `kill` command sends a signal to a process, typically to terminate it. In Unix-like systems, signals are a way to communicate with processes. The most common signal is `SIGTERM` (signal 15), which politely asks a process to stop. If that fails, you can escalate to `SIGKILL` (signal 9) which forces the process to end immediately.
+
+---
+
+### Basic Usage
+
+```bash
+kill PID
+```
+- Sends the default signal (`SIGTERM`) to the process with the specified process ID (PID).
+
+```bash
+kill -SIGKILL PID
+```
+- Sends the `SIGKILL` signal, forcibly terminating the process.
+
+```bash
+kill -9 PID
+```
+- Equivalent to `kill -SIGKILL PID`.
+
+---
+
+### Finding Process IDs
+
+1. **Using `ps`**  
+   ```bash
+   ps aux | grep program_name
+   ```
+   Note the PID in the first or second column (depending on your `ps` options).
+
+2. **Using `pgrep`**  
+   ```bash
+   pgrep program_name
+   ```
+   Displays the PID(s) of the matching process name.  
+   Add `-l` for a listing with process names, or `-u username` to narrow down by user.
+
+3. **Using `pidof`**  
+   ```bash
+   pidof program_name
+   ```
+   Shows the PID(s) of a running program by name (not always installed by default on all distros).
+
+---
+
+### Signals
+
+- **`SIGTERM` (15)**: The default signal. Asks a process to stop gracefully so it can clean up resources.
+- **`SIGKILL` (9)**: Immediately terminates the process, bypassing any cleanup or finalization.
+- **`SIGHUP` (1)**: Often used to tell a process to reload configuration files.
+- **`SIGINT` (2)**: Equivalent to pressing `Ctrl + C` in a terminal.
+- **`SIGSTOP` (19)**: Pauses (stops) a process without terminating it.
+- **`SIGCONT` (18)**: Resumes a stopped process.
+
+Example of specifying a signal by name:
+```bash
+kill -SIGUSR1 PID
+```
+Sends the user-defined signal 1, which some programs use for custom behaviors.
+
+---
+
+### Multiple Targets
+
+You can kill multiple processes by specifying multiple PIDs in one command:
+```bash
+kill 1234 5678 91011
+```
+Sends the default `SIGTERM` to each of these PIDs.
+
+---
+
+### Kill by Process Name (`killall` and `pkill`)
+
+1. **`killall program_name`**  
+   - Terminates all processes matching `program_name`.  
+   - Equivalent to sending a signal to each PID of the target process(es).
+2. **`pkill program_name`**  
+   - Sends a signal to processes based on name or other attributes.  
+   - Use `pkill -f pattern` to match the entire command line.
+
+---
+
+### Examples
+
+1. **Graceful Termination**  
+   ```bash
+   kill 4321
+   ```
+   Sends `SIGTERM` to PID 4321.
+
+2. **Forceful Termination**  
+   ```bash
+   kill -9 4321
+   ```
+   Sends `SIGKILL` to PID 4321, bypassing any cleanup.
+
+3. **Terminate by Name**  
+   ```bash
+   killall firefox
+   ```
+   Tries to kill all processes named `firefox`.
+
+4. **Send a Hangup Signal**  
+   ```bash
+   kill -SIGHUP 4321
+   ```
+   Often used to tell daemons to reload configuration.
+
+5. **Stop and Resume**  
+   ```bash
+   kill -SIGSTOP 4321
+   kill -SIGCONT 4321
+   ```
+   Pauses then continues process 4321.
+
+---
+
+### Tips and Best Practices
+
+- **Use `SIGTERM` First**: Always try a graceful shutdown before resorting to `SIGKILL`. Some programs need cleanup steps to avoid data corruption.  
+- **Check Ownership**: You can only kill processes you own unless you’re running as `root` or using `sudo`.  
+- **Use `pkill` / `killall` Cautiously**: Matching a process name that’s too broad can kill unintended processes.  
+- **Identify the Right Process**: Ensure you have the correct PID or process name before issuing a kill command. Mistakes can lead to system instability if you terminate critical services.  
+- **Scripting**: In scripts, check if the process is running (`pgrep`) before killing it, and handle success/failure cases properly.

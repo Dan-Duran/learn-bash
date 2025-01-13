@@ -1,0 +1,105 @@
+---
+title: "man Command"
+date: "2025-01-12"
+description: "View the manual pages for commands and utilities."
+videoId: "RrOHwTQfqjI"
+---
+
+### Overview
+
+The `man` (manual) command is used to view the reference manuals for other commands and utilities on a Unix-like system. Each command typically has its own “man page” that describes its purpose, usage, options, and other essential details.
+
+---
+
+### Basic Usage
+
+```bash
+man <command>
+```
+- Opens the manual page for the specified `<command>`.
+- Example:
+  ```bash
+  man ls
+  ```
+  Views the documentation for `ls`.
+
+---
+
+### Navigation in Man Pages
+
+- **Arrow Keys / Page Up / Page Down**: Scroll through the page.  
+- **Space**: Moves down one screenful.  
+- **Enter**: Moves down one line.  
+- **b**: Moves up one screenful.  
+- **g**: Jumps to the beginning of the page.  
+- **G**: Jumps to the end of the page.  
+- **/pattern**: Search forward for `pattern`.  
+  - Press `n` to find the next occurrence, `N` for the previous occurrence.  
+- **q**: Quit the man page.
+
+---
+
+### Sections
+
+Manual pages are typically divided into numbered sections to group categories of documentation:
+
+1. **User commands** (e.g., executable programs)  
+2. **System calls**  
+3. **Library functions**  
+4. **Special files** (device files, etc.)  
+5. **File formats and conventions**  
+6. **Games**  
+7. **Miscellaneous** (overviews, conventions)  
+8. **System administration commands** (root-only commands)  
+
+When you open a man page, `man` typically searches these sections in a specific order. If there’s a name conflict, specify the section:
+
+```bash
+man 5 crontab
+```
+- Views the man page for the file format of `crontab` (section 5).
+
+---
+
+### Searching for Commands by Keyword
+
+```bash
+man -k <keyword>
+```
+- Searches the short descriptions in the man database for `<keyword>`.  
+- Alternatively, `apropos <keyword>` does the same thing.
+
+---
+
+### Examples
+
+1. **View the Man Page for `grep`**  
+   ```bash
+   man grep
+   ```
+2. **Search for “network” Related Commands**  
+   ```bash
+   man -k network
+   ```
+   or
+   ```bash
+   apropos network
+   ```
+3. **Specify Section**  
+   ```bash
+   man 2 open
+   ```
+   Shows the system call (`open`) rather than a user command.
+
+4. **Quit the Man Page**  
+   - Press `q` at any time to exit the manual viewer.
+
+---
+
+### Tips and Best Practices
+
+- **Start with `man`**: If you’re unsure how a command works or what flags are available, `man <command>` is your best first step.  
+- **Combine with Search**: Open the man page, then type `/pattern` to find specifics. For instance, `/verbose` to jump directly to where “verbose” is mentioned.  
+- **Use `-k` or `apropos`**: If you don’t recall the exact command name, search by keyword.  
+- **HTML Versions**: Some distributions have online or local HTML versions of man pages, accessible via a web browser, but the command-line `man` remains the quickest way to look things up.  
+- **Custom Man Pages**: You can write your own man pages for internal tools or scripts; place them in directories recognized by `$MANPATH`.  
