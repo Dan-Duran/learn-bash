@@ -6,19 +6,15 @@ import { notFound } from "next/navigation";
 import { getDocsForSlug } from "@/lib/markdown";
 import { Typography } from "@/components/typography";
 
-// Explicitly extend Next.js PageProps for compatibility
 type PageProps = {
-  params: { slug?: string[] }; // `slug` can be undefined if no params are passed
+  params: { slug: string[] };
 };
 
 export default async function DocsPage({ params: { slug = [] } }: PageProps) {
   const pathName = slug.join("/");
   const res = await getDocsForSlug(pathName);
 
-  if (!res) {
-    notFound(); // Return a 404 page if the document doesn't exist
-  }
-
+  if (!res) notFound();
   return (
     <div className="flex items-start gap-10">
       <div className="flex-[3] pt-10">
@@ -37,13 +33,10 @@ export default async function DocsPage({ params: { slug = [] } }: PageProps) {
   );
 }
 
-// Generate metadata for SEO
 export async function generateMetadata({ params: { slug = [] } }: PageProps) {
   const pathName = slug.join("/");
   const res = await getDocsForSlug(pathName);
-
   if (!res) return null;
-
   const { frontmatter } = res;
   return {
     title: frontmatter.title,
@@ -51,10 +44,8 @@ export async function generateMetadata({ params: { slug = [] } }: PageProps) {
   };
 }
 
-// Generate static paths for all available routes
 export function generateStaticParams() {
-  // Map all routes to a `slug` array
   return page_routes.map((item) => ({
-    slug: item.href.split("/").slice(1), // Split the path into slug parts
+    slug: item.href.split("/").slice(1),
   }));
 }
