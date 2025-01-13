@@ -37,17 +37,22 @@ export type EachRoute = {
         {
             title: "Getting Help",
             href: "/help",
+            noLink: true,
             items: [
                 { title: "man - View Manual", href: "/man" },
-                { title: "help - Command Help", href: "/help" }
+                { title: "help - Command Help", href: "/help" },
+                { title: "tldr - Displays simplified commands", href: "/tldr" },
+                { title: "apropos - Search manual names", href: "/apropos" }
             ]
         },
         {
             title: "Navigation & Basic Operations",
             href: "/navigation",
+            noLink: true,
             items: [
                 { title: "pwd - Print Working Directory", href: "/pwd" },
                 { title: "ls - List Directory Contents", href: "/ls" },
+                { title: "tree - List in tree-like Format", href: "/tree" },
                 { title: "cd - Change Directory", href: "/cd" },
                 { title: "clear - Clear Terminal", href: "/clear" }
             ]
@@ -55,6 +60,7 @@ export type EachRoute = {
         {
             title: "File Management",
             href: "/file-management",
+            noLink: true,
             items: [
                 { title: "mkdir - Make Directory", href: "/mkdir" },
                 { title: "touch - Create Empty Files", href: "/touch" },
@@ -67,6 +73,7 @@ export type EachRoute = {
         {
             title: "File Content & Search",
             href: "/file-content",
+            noLink: true,
             items: [
                 { title: "cat - Concatenate Files", href: "/cat" },
                 { title: "echo - Display a Line", href: "/echo" },
@@ -79,6 +86,7 @@ export type EachRoute = {
         {
             title: "System & Processes",
             href: "/system",
+            noLink: true,
             items: [
                 { title: "sudo - Execute with Superuser", href: "/sudo" },
                 { title: "ps - Process Status", href: "/ps" },
@@ -90,6 +98,7 @@ export type EachRoute = {
         {
             title: "System Information",
             href: "/system-info",
+            noLink: true,
             items: [
                 { title: "df - Disk Free Space", href: "/df" },
                 { title: "du - Disk Usage", href: "/du" },
@@ -99,6 +108,7 @@ export type EachRoute = {
         {
             title: "Permissions & Users",
             href: "/permissions",
+            noLink: true,
             items: [
                 { title: "chmod - Change Permissions", href: "/chmod" },
                 { title: "chown - Change Ownership", href: "/chown" },
@@ -108,6 +118,7 @@ export type EachRoute = {
         {
             title: "Network & Downloads",
             href: "/network",
+            noLink: true,
             items: [
                 { title: "ping - Network Testing", href: "/ping" },
                 { title: "curl - Transfer Data", href: "/curl" },
@@ -121,44 +132,105 @@ export type EachRoute = {
     href: "/advanced-commands",
     noLink: true,
     items: [
-      { title: "Overview", href: "/overview" },
-      { title: "| - Pipe Output Between Commands", href: "/pipe" },
-      { title: "> - Redirect Output to File", href: "/redirect" },
-      { title: ">> - Append Output to File", href: "/append" },
-      { title: "< - Input from File", href: "/input" },
-      { title: "&& - AND Operator", href: "/and" },
-      { title: "|| - OR Operator", href: "/or" },
-      { title: "2> - Redirect Error Output", href: "/error" },
-      { title: "&> - Redirect All Output", href: "/all-output" },
-      { title: "sed - Stream Editor", href: "/sed" },
-      { title: "awk - Text Processing Language", href: "/awk" },
-      { title: "xargs - Build Command Lines", href: "/xargs" },
-      { title: "sort - Sort Text Lines", href: "/sort" },
-      { title: "uniq - Report Repeated Lines", href: "/uniq" },
-      { title: "tr - Translate Characters", href: "/tr" },
-      { title: "cut - Remove Sections", href: "/cut" },
-      { title: "tee - Read and Write Output", href: "/tee" },
-      { title: "rsync - Remote Sync", href: "/rsync" },
-      { title: "ssh - Secure Shell", href: "/ssh" },
-      { title: "scp - Secure Copy", href: "/scp" },
-      { title: "screen - Terminal Multiplexer", href: "/screen" },
-      { title: "tmux - Terminal Multiplexer", href: "/tmux" },
-      { title: "bg - Background Process", href: "/bg" },
-      { title: "fg - Foreground Process", href: "/fg" },
-      { title: "jobs - List Background Jobs", href: "/jobs" },
-      { title: "dd - Convert and Copy", href: "/dd" },
-      { title: "diff - Compare Files", href: "/diff" },
-      { title: "patch - Apply Diff File", href: "/patch" },
-      { title: "ln - Create Links", href: "/ln" },
-      { title: "chattr - Change Attributes", href: "/chattr" },
-      { title: "lsattr - List Attributes", href: "/lsattr" },
-      { title: "strace - Trace System Calls", href: "/strace" },
-      { title: "ltrace - Trace Library Calls", href: "/ltrace" },
-      { title: "vmstat - Virtual Memory Stats", href: "/vmstat" },
-      { title: "iostat - IO Statistics", href: "/iostat" },
-      { title: "nc - NetCat", href: "/nc" },
+        { title: "Overview", href: "/overview" },
+        {
+            title: "I/O Redirection",
+            href: "/io-redirection",
+            noLink: true,
+            items: [
+                { title: "| - Pipe Output Between Commands", href: "/pipe" },
+                { title: "> - Redirect Output to File", href: "/redirect" },
+                { title: ">> - Append Output to File", href: "/append" },
+                { title: "< - Redirection", href: "/input" },
+                { title: "&& - AND Operator", href: "/and" },
+                { title: "; - Semicolon", href: "/semicolon" },
+                { title: "|| - OR Operator", href: "/or" },
+                { title: "2> - Redirect Error Output", href: "/error" },
+                { title: "&> - Redirect All Output", href: "/all-output" }
+            ]
+        },
+        {
+            title: "Text Processing",
+            href: "/text-processing",
+            noLink: true,
+            items: [
+                { title: "sed - Stream Editor", href: "/sed" },
+                { title: "awk - Text Processing Language", href: "/awk" },
+                { title: "xargs - Build Command Lines", href: "/xargs" },
+                { title: "sort - Sort Text Lines", href: "/sort" },
+                { title: "uniq - Report Repeated Lines", href: "/uniq" },
+                { title: "tr - Translate Characters", href: "/tr" },
+                { title: "cut - Remove Sections", href: "/cut" },
+                { title: "tee - Read and Write Output", href: "/tee" }
+            ]
+        },
+        {
+            title: "Remote Operations",
+            href: "/remote-operations",
+            noLink: true,
+            items: [
+                { title: "rsync - Remote Sync", href: "/rsync" },
+                { title: "ssh - Secure Shell", href: "/ssh" },
+                { title: "ftp - File Transfer Protocol", href: "/ftp" },
+                { title: "scp - Secure Copy", href: "/scp" }
+            ]
+        },
+        {
+            title: "Process Control",
+            href: "/process-control",
+            noLink: true,
+            items: [
+                { title: "screen - Terminal Multiplexer", href: "/screen" },
+                { title: "tmux - Terminal Multiplexer", href: "/tmux" },
+                { title: "bg - Background Process", href: "/bg" },
+                { title: "fg - Foreground Process", href: "/fg" },
+                { title: "jobs - List Background Jobs", href: "/jobs" }
+            ]
+        },
+        {
+            title: "File Operations",
+            href: "/file-operations",
+            noLink: true,
+            items: [
+                { title: "dd - Convert and Copy", href: "/dd" },
+                { title: "diff - Compare Files", href: "/diff" },
+                { title: "patch - Apply Diff File", href: "/patch" },
+                { title: "ln - Create Links", href: "/ln" },
+                { title: "chattr - Change Attributes", href: "/chattr" },
+                { title: "lsattr - List Attributes", href: "/lsattr" }
+            ]
+        },
+        {
+            title: "System Monitoring",
+            href: "/system-monitoring",
+            noLink: true,
+            items: [
+                { title: "strace - Trace System Calls", href: "/strace" },
+                { title: "ltrace - Trace Library Calls", href: "/ltrace" },
+                { title: "vmstat - Virtual Memory Stats", href: "/vmstat" },
+                { title: "iostat - IO Statistics", href: "/iostat" }
+            ]
+        },
+        {
+            title: "Network Tools",
+            href: "/network-tools",
+            noLink: true,
+            items: [
+                { title: "nc - NetCat", href: "/nc" },
+                { title: "dig - DNS Lookup", href: "/dig" },
+                { title: "ifconfig - Network Interface Config", href: "/ifconfig" },
+                { title: "iptables - Firewall Management", href: "/iptables" },
+                { title: "mtr - Network Diagnostic", href: "/mtr" },
+                { title: "netstat - Network Statistics", href: "/netstat" },
+                { title: "nmap - Network Scanner", href: "/nmap" },
+                { title: "nslookup - DNS Query", href: "/nslookup" },
+                { title: "route - Network Route Table", href: "/route" },
+                { title: "tcpdump - Packet Analyzer", href: "/tcpdump" },
+                { title: "traceroute - Trace Network Route", href: "/traceroute" }
+            ]
+        }
     ]
-  },
+},
   {
     title: "Bash Scripting",
     href: "/scripting", 

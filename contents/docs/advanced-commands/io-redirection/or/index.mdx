@@ -1,0 +1,124 @@
+---
+title: "OR Operator (||)"
+date: "2025-01-12"
+description: "Chain commands to execute the second command only if the first command fails."
+videoId: "RrOHwTQfqjI"
+---
+
+### Overview
+
+The **OR operator** (`||`) in Bash (and many other shells) allows you to chain commands so that the next command in the sequence is executed **only if** the previous command fails (i.e., returns a non-zero exit status). If the first command succeeds (exit code `0`), the next command is skipped.
+
+---
+
+### Basic Usage
+
+```bash
+command1 || command2
+```
+
+1. **command1** runs first.
+2. If `command1` returns a **non-zero** exit status (indicating error/failure), then **command2** executes.
+3. If `command1` returns `0` (success), **command2** is **not** executed.
+
+**Example**:
+```bash
+cd /nonexistent-directory || echo "Failed to enter directory!"
+```
+- Attempts to `cd` into a folder that doesn’t exist.
+- If `cd` fails, Bash prints “Failed to enter directory!”.
+- If somehow `cd` succeeded, it would skip the `echo`.
+
+---
+
+### Why Use `||`?
+
+- **Error Handling**: Run an alternate command if the first command fails.  
+- **Fallback**: Provide a fallback action when something didn’t go as planned.  
+- **Concise**: For a simple “if fail then do something” logic, `||` can be shorter than an `if` statement.
+
+---
+
+### Comparison with `&&` and `;`
+
+- **`&&` (AND)**: Runs the second command **only if** the first command **succeeds** (`exit code 0`).
+  ```bash
+  command1 && command2
+  ```
+- **`||` (OR)**: Runs the second command **only if** the first command **fails** (non-zero exit code).
+  ```bash
+  command1 || command2
+  ```
+- **`;` (semicolon)**: Runs the second command **unconditionally**, regardless of success or failure.
+  ```bash
+  command1 ; command2
+  ```
+
+---
+
+### Multiple Commands
+
+You can chain more than two commands:
+```bash
+command1 || command2 || command3
+```
+- If `command1` fails, `command2` will run.  
+- If `command2` also fails, `command3` will run.  
+- If any command succeeds, the chain stops there.
+
+**Example**:
+```bash
+false || echo "First failed" || echo "Second also failed"
+```
+- `false` always returns a non-zero exit code, so `echo "First failed"` will run.
+- If `echo` for some reason failed (which is unlikely), then the second echo would run.
+
+---
+
+### Examples
+
+1. **Check Existence, Then Fallback**  
+   ```bash
+   [ -f important-file.txt ] || echo "File missing!"
+   ```
+   - If `important-file.txt` does not exist, prints “File missing!”.
+   - If it does exist, does nothing.
+
+2. **Try One Command, Then Another**  
+   ```bash
+   grep "pattern" file.txt || echo "Pattern not found"
+   ```
+   - If grep finds the pattern (exit code 0), it shows matches and the echo is skipped.
+   - If grep fails to find matches (exit code non-zero), the echo command runs.
+
+3. **Compile or Warn**  
+   ```bash
+   gcc program.c -o program || echo "Compilation failed!"
+   ```
+   - If compilation fails, prints “Compilation failed!”.
+
+4. **Fallback Action**  
+   ```bash
+   cd /path/to/dir || cd /fallback/dir
+   ```
+   - If the first `cd` fails, attempts the fallback path.
+
+5. **Stop Service or Complain**  
+   ```bash
+   sudo systemctl stop myservice || echo "Failed to stop service!"
+   ```
+   - If `systemctl stop` fails (maybe the service doesn’t exist), prints a complaint.
+
+---
+
+### Tips and Best Practices
+
+- **Exit Codes**: Know which commands produce which exit codes. `||` depends on non-zero exit codes to trigger the second command.
+- **Error Messages**: This is a concise way to log errors. For more sophisticated error handling, you might use `if` statements or scripts with structured checks.
+- **Short-Circuiting**: As soon as a command in the chain succeeds, subsequent `||` commands are skipped. This can be an efficient fallback mechanism.
+- **Mix and Match**: Combine `||` with `&&` to build more complex logic:
+  ```bash
+  command1 && command2 || command3
+  ```
+  - If `command1` succeeds, run `command2`; if either fails, run `command3`.
+- **Readability**: Long chains of `||` and `&&` can be confusing. For more intricate logic, consider an actual `if-else` structure in a script.

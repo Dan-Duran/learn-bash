@@ -1,0 +1,194 @@
+---
+title: "awk Command"
+date: "2025-01-12"
+description: "Pattern scanning and data manipulation."
+videoId: "RrOHwTQfqjI"
+---
+
+### Overview
+
+The `awk` command is a pattern scanning and text processing language that excels at manipulating structured data (like columns in a file). It reads each line of input, divides it into fields (often delimited by whitespace), and allows you to run actions on matching patterns or on every line. Its concise syntax makes it a go-to for many data extraction and reporting tasks.
+
+---
+
+### Basic Usage
+
+```bash
+awk 'pattern { action }' file
+```
+- **pattern**: Specifies which lines to match (e.g., `/ERROR/`, `NR==5`, `$3 > 100`, etc.).  
+- **action**: Code block (in `{}`) that runs on lines matching `pattern`.
+
+**Example**:
+```bash
+awk '/ERROR/ { print $0 }' logfile.txt
+```
+- Prints any line containing “ERROR” from `logfile.txt`.
+
+If no pattern is given, the action applies to **every** line.
+
+---
+
+### Fields and Records
+
+- **$0**: The entire line (record).
+- **$1, $2, $3 …**: The individual fields (columns) in a line (default delimiter: whitespace).
+- **FS** (Field Separator): The variable that determines how fields are split (e.g., comma for CSV).  
+- **NF**: Number of fields in the current record.
+- **NR**: The line number (record number) in the input.
+
+**Example**:
+```bash
+awk '{ print $1, $3 }' data.txt
+```
+- Prints the 1st and 3rd fields of each line in `data.txt`.
+
+---
+
+### Changing the Field Separator (FS)
+
+If your data is CSV-like, you can set the field separator to a comma:
+```bash
+awk -F, '{ print $1, $2 }' file.csv
+```
+- **-F,** sets the delimiter to `,`.
+- You can also do `BEGIN { FS="," }` within the script section if you want to define it in-line.
+
+---
+
+### Common Operations
+
+1. **Print Specific Columns**  
+   ```bash
+   awk '{ print $2, $5 }' logfile.txt
+   ```
+   Prints columns 2 and 5 from each line.
+
+2. **Filter by Condition**  
+   ```bash
+   awk '$3 > 1000 { print $1, $3 }' data.txt
+   ```
+   Prints columns 1 and 3 **only** for lines where column 3 is greater than 1000.
+
+3. **Patterns Using Regular Expressions**  
+   ```bash
+   awk '/^ERROR/ { print $0 }' logfile.txt
+   ```
+   Matches lines that start (`^`) with “ERROR”.
+
+4. **Line Numbers**  
+   ```bash
+   awk '{ print NR, $0 }' file.txt
+   ```
+   Prints the line number followed by the entire line.
+
+5. **Count Lines**  
+   ```bash
+   awk 'END { print NR }' file.txt
+   ```
+   After reading all lines, prints the total number of records (lines).
+
+6. **Calculate Averages**  
+   ```bash
+   awk '{ sum += $2 } END { print "Average:", sum/NR }' data.txt
+   ```
+   Accumulates the 2nd column values in `sum`. After reading all lines, prints the average.
+
+---
+
+### BEGIN and END Blocks
+
+**BEGIN** and **END** blocks let you run code before reading any lines or after processing all lines:
+
+```bash
+awk 'BEGIN { print "Start processing..." }
+           { print $1 }
+     END   { print "Done!" }' file.txt
+```
+- **BEGIN** block executes once, before any line is read.  
+- The main block (`{ print $1 }`) executes for each line.  
+- **END** block executes once, after all lines are processed.
+
+---
+
+### In-Place Editing? Not Exactly
+
+`awk` generally doesn’t overwrite files directly like `sed -i`. Instead, you usually redirect output to a new file. However, you can do something like:
+
+```bash
+awk '... code ...' oldfile > newfile && mv newfile oldfile
+```
+- Process the data and then rename the file back if needed.
+
+---
+
+### Using Awk Scripts
+
+For more complex tasks, place your Awk commands into a file (e.g., `script.awk`):
+```awk
+BEGIN {
+  FS=","
+  print "Reading data..."
+}
+$3 > 100 {
+  total += $3
+  count++
+}
+END {
+  print "Average:", total/count
+}
+```
+
+Run it with:
+```bash
+awk -f script.awk data.csv
+```
+- **-f**: Reads Awk commands from `script.awk`.
+
+---
+
+### Examples
+
+1. **Extract IP Addresses**  
+   ```bash
+   awk '/IP:/ { print $NF }' access.log
+   ```
+   - If lines contain `IP:`, prints the **last field** (`$NF`) which might be the IP.
+
+2. **Sum a Column, Print Total**  
+   ```bash
+   awk '{ sum += $5 } END { print "Total:", sum }' transactions.txt
+   ```
+   - Totals the 5th column from `transactions.txt`.
+
+3. **Conditional Print**  
+   ```bash
+   awk '$2 == "FAILED" { print $0 }' results.csv
+   ```
+   - Prints any line whose second field exactly matches “FAILED”.
+
+4. **Count Matching Lines**  
+   ```bash
+   awk '/ERROR/ { count++ } END { print count }' syslog
+   ```
+   - Counts how many lines contain “ERROR” in `syslog`.
+
+5. **Change Field Separator**  
+   ```bash
+   awk -F: '{ print $1 }' /etc/passwd
+   ```
+   - Using `:` as the delimiter (common in `/etc/passwd`).
+
+---
+
+### Tips and Best Practices
+
+- **Mastering Patterns**: Learning basic to advanced regex can unleash the full potential of Awk filtering.
+- **Debugging**: Some Awk versions have a `--sandbox` option or you can rely on printing debug statements via `print`.
+- **Performance**: Awk is fast for moderate-size data but can be slower than specialized tools (like `grep`, `join`, or `sort`) for huge datasets. Combine them wisely.
+- **Portability**: Awk is nearly universal on Unix-like systems, but there are variations (original awk, nawk, gawk, mawk). Gawk (GNU Awk) is the most feature-rich.
+- **Formatting Output**: `printf` inside Awk can be used to create nicely aligned columns or custom formatting:
+  ```bash
+  awk '{ printf "%-10s %5d\n", $1, $2 }' table.txt
+  ```
+- **Scripting**: For anything beyond a one-liner, consider writing a small Awk script file for clarity.

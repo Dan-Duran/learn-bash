@@ -1,0 +1,86 @@
+---
+title: "Redirection (>)"
+date: "2025-01-12"
+description: "Redirect command output to a file, overwriting existing content."
+videoId: "RrOHwTQfqjI"
+---
+
+### Overview
+
+The `>` operator (redirection symbol) takes the standard output (stdout) of a command and writes it to a file, overwriting the file’s existing contents. It’s commonly used to save or record the output of a command into a file.
+
+---
+
+### Basic Usage
+
+```bash
+command > file
+```
+
+- **command**: Any valid command whose output you want to capture.
+- **file**: The file where the output will be written (created if it doesn’t exist, overwritten if it does).
+
+**Example**:
+```bash
+ls -l > listing.txt
+```
+- Runs `ls -l` and places the output into a new file called `listing.txt` (or overwrites it if `listing.txt` already exists).
+
+---
+
+### Important Details
+
+1. **Overwriting**  
+   - Using `>` always **overwrites** the file content. If you want to **append** instead of overwrite, use `>>` (not covered here).
+
+2. **File Creation**  
+   - If the target file doesn’t exist, the shell creates it automatically (provided you have write permissions in that directory).
+
+3. **Permissions**  
+   - You must have write permissions for the directory where you create the file or for the file itself if it already exists.
+
+4. **Standard Error vs. Standard Output**  
+   - `>` redirects **standard output** (file descriptor 1).  
+   - Errors (standard error, file descriptor 2) won’t go into the file unless you combine them, e.g., `2>&1`.  
+   - For strictly `>`, any errors from the command still print in the terminal.
+
+---
+
+### Examples
+
+1. **Overwriting a File**  
+   ```bash
+   echo "Hello World" > greeting.txt
+   ```
+   Creates (or overwrites) `greeting.txt` with `Hello World`.
+
+2. **Saving Command Output**  
+   ```bash
+   ps aux > processes.txt
+   ```
+   Saves a list of running processes to `processes.txt`.
+
+3. **Redirecting Only Standard Output**  
+   ```bash
+   ls nonexistent-directory > output.txt
+   ```
+   Since `ls` will print an error to standard error, `output.txt` ends up empty. The error message appears in the terminal.
+
+4. **Combining Commands**  
+   ```bash
+   grep "pattern" file.txt > matches.txt
+   ```
+   Writes all matching lines from `file.txt` into `matches.txt`, overwriting any previous content.
+
+---
+
+### Tips and Best Practices
+
+- **Be Mindful of Overwrites**: `>` destroys previous data in the target file. Double-check your file name or path to avoid accidental data loss.
+- **Check for Errors**: Remember that `>` captures only standard output, not standard error. If a command fails, you may see no output in the file and error messages in the terminal.
+- **Use Quoting When Needed**: If your command or file path includes special characters or spaces, wrap them in quotes:
+  ```bash
+  echo "Some text" > "my file with spaces.txt"
+  ```
+- **Permissions**: If you see “Permission denied,” ensure you have the right to write to that directory/file or use `sudo` (carefully).
+- **Automation**: In scripts, redirecting output can help log progress, capture results for further processing, or feed data to other commands later.

@@ -48,12 +48,14 @@ export default function SubLink({
   if (!items) {
     return <div className="flex flex-col">{titleOrLink}</div>;
   }
-
   return (
     <div className="flex flex-col gap-1 w-full">
       <Collapsible open={isOpen} onOpenChange={setIsOpen}>
         <CollapsibleTrigger className="w-full pr-5">
-          <div className="flex items-center justify-between cursor-pointer w-full">
+          <div className={cn(
+            "flex items-center justify-between cursor-pointer w-full",
+            (level === 1 || (!items && level > 0)) && "pl-2 "
+          )}>
             {titleOrLink}
             <span>
               {!isOpen ? (
@@ -67,8 +69,8 @@ export default function SubLink({
         <CollapsibleContent>
           <div
             className={cn(
-              "flex flex-col items-start sm:text-sm dark:text-stone-300/85 text-stone-800 ml-0.5 mt-2.5 gap-3",
-              level > 0 && "pl-4 border-l ml-1.5"
+              "flex flex-col items-start sm:text-sm dark:text-stone-300/85 text-stone-800 ml-0.5 mt-2.5 gap-3 pl-2 border-l ml-1.5",
+              level > 0 && "pl-2 border-l ml-1.5"
             )}
           >
             {items?.map((innerLink) => {
