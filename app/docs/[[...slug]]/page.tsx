@@ -6,15 +6,19 @@ import { notFound } from "next/navigation";
 import { getDocsForSlug } from "@/lib/markdown";
 import { Typography } from "@/components/typography";
 
-type DocsPageProps = {
-  params: { slug: string[] };
+// Explicitly extend Next.js PageProps for compatibility
+type PageProps = {
+  params: { slug?: string[] }; // `slug` can be undefined if no params are passed
 };
 
-export default async function DocsPage({ params: { slug = [] } }: DocsPageProps) {
+export default async function DocsPage({ params: { slug = [] } }: PageProps) {
   const pathName = slug.join("/");
   const res = await getDocsForSlug(pathName);
 
-  if (!res) notFound();
+  if (!res) {
+    notFound(); // Return a 404 page if the document doesn't exist
+  }
+
   return (
     <div className="flex items-start gap-10">
       <div className="flex-[3] pt-10">
@@ -33,10 +37,13 @@ export default async function DocsPage({ params: { slug = [] } }: DocsPageProps)
   );
 }
 
-export async function generateMetadata({ params: { slug = [] } }: DocsPageProps) {
+// Generate metadata for SEO
+export async function generateMetadata({ params: { slug = [] } }: PageProps) {
   const pathName = slug.join("/");
   const res = await getDocsForSlug(pathName);
+
   if (!res) return null;
+
   const { frontmatter } = res;
   return {
     title: frontmatter.title,
@@ -44,8 +51,10 @@ export async function generateMetadata({ params: { slug = [] } }: DocsPageProps)
   };
 }
 
+// Generate static paths for all available routes
 export function generateStaticParams() {
+  // Map all routes to a `slug` array
   return page_routes.map((item) => ({
-    slug: item.href.split("/").slice(1),
+    slug: item.href.split("/").slice(1), // Split the path into slug parts
   }));
 }
