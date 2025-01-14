@@ -20,7 +20,7 @@ Visit: [https://bash.getcyber.me](https://bash.getcyber.me)
 
 ### 🐭 Frameworks
 
-- **[Next.js](https://nextjs.org/)** - The React Framework for the Web (with **App Directory**)
+- **[Next.js 14.2.22](https://nextjs.org/)** - The React Framework for the Web (with **App Directory**)
 
 ### 🐮 Platforms
 
