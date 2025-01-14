@@ -1,0 +1,117 @@
+---
+title: "Input/Output"
+date: "2025-01-12"
+description: "Learn how to handle input and output in Bash scripts."
+videoId: ""
+---
+
+### Overview
+
+Input/Output (I/O) in Bash involves reading input from users or files and writing output to the screen or files. Bash provides various methods to handle I/O operations, including standard input (stdin), standard output (stdout), and standard error (stderr).
+
+---
+
+### Basic Usage
+
+```bash
+# Read user input
+read variable_name
+
+# Write output
+echo "Some text"
+
+# Write to file
+echo "content" > file.txt
+```
+
+**Example**:
+```bash
+echo "What's your name?"
+read name
+echo "Hello, $name!"
+```
+- Prompts for user input and displays a greeting
+
+---
+
+### Common Operations
+
+1. **Read Input**  
+   ```bash
+   # Basic read
+   read answer
+   
+   # Read with prompt
+   read -p "Enter value: " input
+   
+   # Read with timeout
+   read -t 5 response
+   
+   # Read password (hidden input)
+   read -s password
+   ```
+
+2. **Write Output**  
+   ```bash
+   # To stdout
+   echo "Normal output"
+   
+   # To stderr
+   echo "Error message" >&2
+   
+   # To file
+   echo "Log entry" >> logfile.txt
+   ```
+
+3. **File Operations**  
+   ```bash
+   # Read file content
+   while IFS= read -r line; do
+       echo "$line"
+   done < input.txt
+   
+   # Write multiple lines
+   cat << EOF > output.txt
+   Line 1
+   Line 2
+   EOF
+   ```
+
+---
+
+### Examples
+
+1. **Interactive Script**  
+   ```bash
+   read -p "Username: " username
+   read -sp "Password: " password
+   echo
+   echo "Welcome, $username!"
+   ```
+
+2. **Process File Input**  
+   ```bash
+   while IFS=, read -r name age; do
+       echo "Name: $name, Age: $age"
+   done < users.csv
+   ```
+
+3. **Logging**  
+   ```bash
+   log_message() {
+       echo "[$(date)]: $1" >> app.log
+   }
+   log_message "Script started"
+   ```
+
+---
+
+### Tips and Best Practices
+
+- Always validate user input
+- Handle empty input appropriately
+- Use appropriate redirection operators
+- Check file operations for errors
+- Consider using descriptive prompts
+- Handle special characters in input
+- Create meaningful error messages

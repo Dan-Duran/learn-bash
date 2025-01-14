@@ -1,0 +1,169 @@
+---
+title: "ip Command"
+date: "2025-01-13"
+description: "Manage and configure network interfaces, routing, and tunnels in Unix-like operating systems."
+videoId: ""
+---
+
+### Overview
+
+The `ip` command is a versatile tool used in Unix-like operating systems for network interface configuration, routing, and managing tunnels. It is part of the `iproute2` package and has largely replaced older tools like `ifconfig` and `route`. `ip` provides comprehensive control over networking components, making it essential for system administrators and users who need to configure and troubleshoot network settings.
+
+**Key Features:**
+- **Interface Management**: Configure, enable, or disable network interfaces.
+- **Address Assignment**: Assign or remove IP addresses and manage IPv6 settings.
+- **Routing Control**: Add, delete, and display routing tables.
+- **Neighbor Discovery**: Manage ARP and NDP (Neighbor Discovery Protocol) entries.
+- **Tunnel Configuration**: Set up and manage network tunnels like GRE and IPIP.
+- **Traffic Control**: Configure QoS and traffic shaping parameters.
+
+### Basic Usage
+
+```bash
+ip [ OPTIONS ] OBJECT { COMMAND | help }
+```
+
+- **OBJECT**: The network component to interact with (e.g., `link`, `addr`, `route`).
+- **COMMAND**: The action to perform on the OBJECT (e.g., `add`, `delete`, `show`).
+- **OPTIONS**: Flags that modify the behavior of the command.
+
+**Example:**
+```bash
+ip addr show
+```
+- Displays all IP addresses assigned to network interfaces.
+
+### Common Objects and Commands
+
+1. **link**: Manage network interfaces.
+   - **Show Interfaces**
+     ```bash
+     ip link show
+     ```
+   - **Bring Interface Up**
+     ```bash
+     sudo ip link set eth0 up
+     ```
+   - **Bring Interface Down**
+     ```bash
+     sudo ip link set eth0 down
+     ```
+
+2. **addr**: Manage IP addresses.
+   - **Add IP Address**
+     ```bash
+     sudo ip addr add 192.168.1.10/24 dev eth0
+     ```
+   - **Delete IP Address**
+     ```bash
+     sudo ip addr del 192.168.1.10/24 dev eth0
+     ```
+
+3. **route**: Manage routing tables.
+   - **Show Routing Table**
+     ```bash
+     ip route show
+     ```
+   - **Add Default Gateway**
+     ```bash
+     sudo ip route add default via 192.168.1.1
+     ```
+   - **Delete Route**
+     ```bash
+     sudo ip route del 192.168.1.0/24
+     ```
+
+4. **neigh**: Manage neighbor (ARP/NDP) entries.
+   - **Show Neighbor Table**
+     ```bash
+     ip neigh show
+     ```
+   - **Add Static ARP Entry**
+     ```bash
+     sudo ip neigh add 192.168.1.20 lladdr AA:BB:CC:DD:EE:FF dev eth0 nud permanent
+     ```
+   - **Delete Neighbor Entry**
+     ```bash
+     sudo ip neigh del 192.168.1.20 dev eth0
+     ```
+
+5. **tunnel**: Manage network tunnels.
+   - **Create a GRE Tunnel**
+     ```bash
+     sudo ip tunnel add gre1 mode gre remote 192.168.1.2 local 192.168.1.1 ttl 255
+     sudo ip link set gre1 up
+     sudo ip addr add 10.0.0.1/24 dev gre1
+     ```
+   - **Delete a Tunnel**
+     ```bash
+     sudo ip tunnel del gre1
+     ```
+
+### Examples
+
+1. **List All Network Interfaces with Details**
+   ```bash
+   ip addr show
+   ```
+   
+2. **Assign an IPv6 Address**
+   ```bash
+   sudo ip -6 addr add 2001:db8::1/64 dev eth0
+   ```
+
+3. **Add a Static Route**
+   ```bash
+   sudo ip route add 10.0.0.0/8 via 192.168.1.1 dev eth0
+   ```
+
+4. **Flush All IP Addresses from an Interface**
+   ```bash
+   sudo ip addr flush dev eth0
+   ```
+
+5. **Monitor Real-Time Network Events**
+   ```bash
+   ip monitor
+   ```
+   - Continuously displays changes to networking configurations.
+
+### Tips and Best Practices
+
+- **Use `sudo` for Configuration Changes**: Most `ip` commands require administrative privileges.
+  ```bash
+  sudo ip link set eth0 up
+  ```
+
+- **Leverage Tab Completion**: Utilize shell tab completion to discover available objects and commands.
+
+- **Combine with `grep` for Filtering**: Pipe output to `grep` for focused information retrieval.
+  ```bash
+  ip addr show | grep inet
+  ```
+
+- **Persisting Configurations**: Changes made with `ip` are temporary. To make them permanent, edit your distribution's network configuration files (e.g., `/etc/network/interfaces` or NetworkManager settings).
+
+- **Transition from `ifconfig` and `route`**: While `ifconfig` and `route` are deprecated, `ip` provides more functionality and should be used for all network configuration tasks.
+
+- **Understand CIDR Notation**: When assigning IP addresses or defining routes, use CIDR (Classless Inter-Domain Routing) notation for subnet masks.
+  ```bash
+  sudo ip addr add 192.168.1.10/24 dev eth0
+  ```
+
+- **Use `ip help` for Quick Reference**: Access help for specific objects and commands.
+  ```bash
+  ip addr help
+  ```
+
+- **Monitor Changes in Real-Time**: The `ip monitor` command is useful for tracking networking changes as they happen.
+  ```bash
+  ip monitor all
+  ```
+
+- **Backup Current Configuration**: Before making significant changes, backup existing network settings.
+  ```bash
+  ip addr show > current_config.txt
+  ip route show >> current_config.txt
+  ```
+
+- **Utilize Scripts for Repetitive Tasks**: Automate common network configurations using shell scripts incorporating `ip` commands.

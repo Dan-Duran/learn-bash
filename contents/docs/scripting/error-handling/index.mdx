@@ -1,0 +1,115 @@
+---
+title: "Error Handling"
+date: "2025-01-12"
+description: "Learn how to handle errors and exceptions in Bash scripts."
+videoId: ""
+---
+
+### Overview
+
+Error handling in Bash scripts is crucial for creating robust and reliable scripts. It involves detecting errors, handling exceptions, and ensuring your script fails gracefully when something goes wrong. Proper error handling helps in debugging and maintains script reliability.
+
+---
+
+### Basic Usage
+
+```bash
+# Exit on error
+set -e
+
+# Basic error check
+if ! command; then
+    echo "Error occurred"
+    exit 1
+fi
+```
+
+**Example**:
+```bash
+if ! mkdir new_directory; then
+    echo "Failed to create directory"
+    exit 1
+fi
+```
+- Attempts to create a directory and handles potential failure
+
+---
+
+### Common Techniques
+
+1. **Exit Codes**  
+   ```bash
+   # Check last command status
+   command
+   if [ $? -ne 0 ]; then
+       echo "Command failed"
+       exit 1
+   fi
+   ```
+
+2. **Error Trapping**  
+   ```bash
+   # Set error trap
+   trap 'echo "Error on line $LINENO"' ERR
+   
+   # Cleanup on exit
+   trap 'cleanup_function' EXIT
+   ```
+
+3. **Set Options**  
+   ```bash
+   set -e  # Exit on error
+   set -u  # Exit on undefined variable
+   set -x  # Print commands for debugging
+   ```
+
+---
+
+### Examples
+
+1. **Function Error Handling**  
+   ```bash
+   process_file() {
+       if [ ! -f "$1" ]; then
+           echo "Error: File not found" >&2
+           return 1
+       fi
+       cat "$1"
+       return 0
+   }
+   ```
+
+2. **Command Validation**  
+   ```bash
+   command_exists() {
+       command -v "$1" >/dev/null 2>&1
+   }
+
+   if ! command_exists git; then
+       echo "Error: git is not installed"
+       exit 1
+   fi
+   ```
+
+3. **Cleanup on Error**  
+   ```bash
+   cleanup() {
+       rm -f temp_file
+       echo "Cleanup completed"
+   }
+   trap cleanup EXIT
+
+   # Rest of script
+   ```
+
+---
+
+### Tips and Best Practices
+
+- Always use exit codes
+- Handle edge cases
+- Log errors appropriately
+- Clean up temporary files
+- Use descriptive error messages
+- Test error conditions
+- Implement proper cleanup handlers

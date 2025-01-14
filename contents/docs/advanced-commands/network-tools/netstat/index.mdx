@@ -1,0 +1,185 @@
+---
+title: "netstat Command"
+date: "2025-01-13"
+description: "Display network connections, routing tables, interface statistics, and more."
+videoId: ""
+---
+
+### Overview
+
+The `netstat` (network statistics) command is a versatile tool for monitoring and diagnosing network configurations and activity in Unix-like operating systems. It provides detailed information about network connections, routing tables, interface statistics, and protocol usage, making it invaluable for system administrators and network troubleshooting.
+
+> **Note**: In many modern Linux distributions, `netstat` is deprecated and replaced by the `ss` command, which offers similar functionality with improved performance.
+
+---
+
+### Basic Usage
+
+```bash
+netstat [OPTIONS]
+```
+
+- **OPTIONS**: Flags to modify the behavior and output of the command.
+
+**Example:**
+```bash
+netstat -tuln
+```
+- Displays all active listening ports with numeric addresses.
+
+---
+
+### Common Options
+
+1. **`-a`**
+   ```bash
+   netstat -a
+   ```
+   - Displays all active connections and listening ports.
+
+2. **`-t`**
+   ```bash
+   netstat -t
+   ```
+   - Shows TCP connections only.
+
+3. **`-u`**
+   ```bash
+   netstat -u
+   ```
+   - Displays UDP connections.
+
+4. **`-n`**
+   ```bash
+   netstat -n
+   ```
+   - Outputs addresses and ports in numeric format, skipping DNS resolution.
+
+5. **`-l`**
+   ```bash
+   netstat -l
+   ```
+   - Lists only listening ports.
+
+6. **`-p`**
+   ```bash
+   sudo netstat -p
+   ```
+   - Displays the PID and name of the program using the connection.
+
+7. **`-r`**
+   ```bash
+   netstat -r
+   ```
+   - Shows the system's routing table.
+
+8. **`-e`**
+   ```bash
+   netstat -e
+   ```
+   - Provides detailed information about network interfaces, including packet statistics.
+
+9. **`-c`**
+   ```bash
+   netstat -c
+   ```
+   - Continuously updates the output.
+
+10. **`--help`**
+    ```bash
+    netstat --help
+    ```
+    - Displays help information and exits.
+
+---
+
+### Examples
+
+1. **Display All Active Connections**
+   ```bash
+   netstat -a
+   ```
+
+2. **Show All Listening Ports**
+   ```bash
+   netstat -l
+   ```
+
+3. **Display TCP Connections**
+   ```bash
+   netstat -t
+   ```
+
+4. **List UDP Connections**
+   ```bash
+   netstat -u
+   ```
+
+5. **Show Routing Table**
+   ```bash
+   netstat -r
+   ```
+
+6. **Include Program Names**
+   ```bash
+   sudo netstat -p
+   ```
+   - Displays the processes using network connections.
+
+7. **Show Numeric Addresses**
+   ```bash
+   netstat -n
+   ```
+   - Avoids resolving hostnames for faster results.
+
+8. **Monitor Connections in Real-Time**
+   ```bash
+   netstat -c
+   ```
+   - Continuously updates the network statistics.
+
+9. **Combine Options for Detailed Output**
+   ```bash
+   sudo netstat -tuln
+   ```
+   - Displays listening ports for TCP and UDP with numeric addresses.
+
+10. **Interface Statistics**
+    ```bash
+    netstat -i
+    ```
+    - Shows information about network interfaces.
+
+---
+
+### Tips and Best Practices
+
+- **Use `sudo` for Full Output**: Some information, such as process details (`-p`), requires administrative privileges.
+  ```bash
+  sudo netstat -p
+  ```
+
+- **Filter Output with `grep`**: Combine `netstat` with `grep` to focus on specific ports or protocols.
+  ```bash
+  netstat -tuln | grep 22
+  ```
+
+- **Transition to `ss`**: For better performance and additional features, consider using the `ss` command, which is a modern replacement for `netstat`.
+  ```bash
+  ss -tuln
+  ```
+
+- **Use with Other Tools**: Pair `netstat` with tools like `iptables`, `tcpdump`, or `nmap` for comprehensive network diagnostics.
+
+- **Monitor Real-Time Changes**: Use the `-c` option to observe live network activity.
+  ```bash
+  netstat -c
+  ```
+
+- **Understand Listening Ports**: Use the `-l` option to identify services running on the system and ensure only necessary ports are exposed.
+
+- **Check Routing Tables Regularly**: Use `netstat -r` to verify and troubleshoot routing issues.
+
+- **Avoid DNS Delays**: Use the `-n` option to skip hostname resolution for faster output.
+
+- **Audit Network Traffic**: Regularly monitor active connections and listening ports to detect suspicious activity or unauthorized services.

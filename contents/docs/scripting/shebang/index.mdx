@@ -1,0 +1,85 @@
+---
+title: "Shebang (#!)"
+date: "2025-01-12"
+description: "Learn about the shebang line in shell scripts."
+videoId: ""
+---
+
+### Overview
+
+The **shebang** (also known as hashbang) is a special line at the beginning of a script that tells the system which interpreter to use for executing the script. It always starts with `#!` followed by the path to the interpreter.
+
+---
+
+### Basic Usage
+
+```bash
+#!/bin/bash
+```
+**Example**:
+```bash
+#!/bin/bash
+echo "Hello, World!"
+```
+- The script will execute using the bash interpreter located at `/bin/bash`
+
+Without a shebang, the script would run with the default shell, which might not be bash.
+
+---
+
+### Common Options
+
+1. **`#!/bin/sh`**  
+   - Uses the system's default shell (usually a simpler shell)
+   - More portable but fewer features
+
+2. **`#!/usr/bin/env bash`**  
+   - Uses the first bash in the user's PATH
+   - More portable across different Unix-like systems
+   - Recommended for most bash scripts
+
+3. **`#!/bin/bash -x`**  
+   - Runs bash in debug mode
+   - Prints each command before execution
+
+4. **`#!/bin/bash -e`**  
+   - Exits on any error
+   - Good for catching script failures
+
+---
+
+### Examples
+
+1. **Basic Script**  
+   ```bash
+   #!/bin/bash
+   echo "This is a bash script"
+   ```
+
+2. **Portable Script**  
+   ```bash
+   #!/usr/bin/env bash
+   echo "This will find bash in PATH"
+   ```
+
+3. **Debug Mode**  
+   ```bash
+   #!/bin/bash -x
+   echo "Watch each command execute"
+   ```
+
+4. **Exit on Error**  
+   ```bash
+   #!/bin/bash -e
+   echo "Script will stop if any command fails"
+   ```
+
+---
+
+### Tips and Best Practices
+
+- Always include a shebang in your scripts
+- Use `#!/usr/bin/env bash` for better portability
+- Add script permissions with `chmod +x script.sh`
+- Choose the right interpreter for your needs
+- Comment the shebang choice if it's not obvious

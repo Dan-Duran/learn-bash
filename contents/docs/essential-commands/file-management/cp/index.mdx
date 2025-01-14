@@ -1,0 +1,286 @@
+---
+title: "cp Command"
+date: "2025-01-12"
+description: "Copy files and directories."
+videoId: ""
+---
+
+### Overview
+
+The `cp` (copy) command allows you to duplicate files or directories from one location to another. It’s essential for organizing, backing up, or migrating data across your file system.
+
+---
+
+### Basic Usage
+
+```bash
+cp source_file target_file
+```
+- Copies `source_file` to `target_file`.  
+- If `target_file` exists, it will be overwritten without a prompt (unless you use the `-i` option).
+
+```bash
+cp source_file /path/to/directory
+```
+- Copies `source_file` into the specified directory, preserving the original filename.
+
+---
+
+### Copying Multiple Files
+
+```bash
+cp file1 file2 file3 /path/to/directory
+```
+- Copies `file1`, `file2`, and `file3` into `/path/to/directory`.
+
+You can also use wildcards to match multiple files:
+```bash
+cp *.txt /path/to/destination
+```
+- Copies all `.txt` files in the current directory to `/path/to/destination`.
+
+---
+
+### Overwriting Behavior
+
+By default, `cp` overwrites files without asking. To enable confirmation:
+
+- **Interactive Mode (`-i`)**  
+  ```bash
+  cp -i source_file target_file
+  ```
+  Prompts you before overwriting an existing file.
+
+- **No Overwrite (`-n`)**  
+  ```bash
+  cp -n source_file target_file
+  ```
+  Skips copying if the destination file exists.
+
+---
+
+### Recursive Copy (`-r` or `-R`)
+
+To copy directories (including all subdirectories and files), use the recursive flag:
+```bash
+cp -r source_directory target_directory
+```
+- Creates `target_directory` if it doesn’t exist, then copies everything from `source_directory` into it.  
+
+> **Note**: `-r` or `-R` might behave slightly differently on some systems; they are generally interchangeable for most modern distributions.
+
+---
+
+### Preserve Attributes (`-p`)
+
+Use `-p` (preserve) to retain file attributes such as permissions, ownership, and timestamps:
+```bash
+cp -p source_file target_file
+```
+- Helps keep metadata intact when transferring files.
+
+---
+
+### Verbose Output (`-v`)
+
+To see what’s being copied in real time:
+```bash
+cp -v source_file target_file
+```
+- Prints out each file as it’s processed.
+
+---
+
+### Examples
+
+1. **Copy a Single File**  
+   ```bash
+   cp notes.txt backup_notes.txt
+   ```
+   Creates `backup_notes.txt` from `notes.txt`.
+
+2. **Copy Multiple Files into a Directory**  
+   ```bash
+   cp report1.pdf report2.pdf /home/dan/reports/
+   ```
+   Places both PDFs into `/home/dan/reports/`.
+
+3. **Recursive Copy of a Directory**  
+   ```bash
+   cp -r my_folder /home/dan/backup_folder/
+   ```
+   Copies all contents of `my_folder` into `backup_folder/`.
+
+4. **Copy with Overwrite Confirmation**  
+   ```bash
+   cp -i config.yaml /etc/app/
+   ```
+   Asks before overwriting if `config.yaml` already exists in `/etc/app/`.
+
+5. **Preserve File Attributes**  
+   ```bash
+   cp -p script.sh /usr/local/bin/
+   ```
+   Keeps ownership, permissions, and timestamps intact.
+
+6. **Show Each Copy Operation**  
+   ```bash
+   cp -rv images /home/dan/pictures/
+   ```
+   Recursively copies `images` to the `pictures` directory while displaying each copied file.
+
+---
+
+### Tips and Best Practices
+
+- **Check Before Overwriting**: If you regularly deal with important files, consider `-i` or `-n` to avoid accidental overwrites.  
+- **Use the Right Tool**: For large-scale backups or synchronizations, commands like `rsync` may offer more efficient options (incremental copying, checksums, etc.).  
+- **Combine Flags**: `cp -rpv` preserves attributes, copies recursively, and shows each file’s transfer—helpful for larger operations.  
+- **Avoid Confusion with Wildcards**: Always verify that your wildcards (`*`, `?`) match the files you intend to copy.  
+- **Automation**: In scripting, using `cp -r` ensures directories are handled properly; add `-f` or `-n` based on how you want to handle existing files.  
+- **Verify Permissions**: If you get a “Permission denied” error, check directory ownership or use `sudo` if necessary.
+Dan, here's the complete `index.mdx` file for **cp** with a comprehensive guide:
+
+```bash
+# docs/essential-commands/cp/index.mdx
+---
+title: "cp Command"
+date: "2025-01-12"
+description: "Copy files and directories."
+videoId: ""
+---
+
+### Overview
+
+The `cp` (copy) command allows you to duplicate files or directories from one location to another. It’s essential for organizing, backing up, or migrating data across your file system.
+
+---
+
+### Basic Usage
+
+```bash
+cp source_file target_file
+```
+- Copies `source_file` to `target_file`.  
+- If `target_file` exists, it will be overwritten without a prompt (unless you use the `-i` option).
+
+```bash
+cp source_file /path/to/directory
+```
+- Copies `source_file` into the specified directory, preserving the original filename.
+
+---
+
+### Copying Multiple Files
+
+```bash
+cp file1 file2 file3 /path/to/directory
+```
+- Copies `file1`, `file2`, and `file3` into `/path/to/directory`.
+
+You can also use wildcards to match multiple files:
+```bash
+cp *.txt /path/to/destination
+```
+- Copies all `.txt` files in the current directory to `/path/to/destination`.
+
+---
+
+### Overwriting Behavior
+
+By default, `cp` overwrites files without asking. To enable confirmation:
+
+- **Interactive Mode (`-i`)**  
+  ```bash
+  cp -i source_file target_file
+  ```
+  Prompts you before overwriting an existing file.
+
+- **No Overwrite (`-n`)**  
+  ```bash
+  cp -n source_file target_file
+  ```
+  Skips copying if the destination file exists.
+
+---
+
+### Recursive Copy (`-r` or `-R`)
+
+To copy directories (including all subdirectories and files), use the recursive flag:
+```bash
+cp -r source_directory target_directory
+```
+- Creates `target_directory` if it doesn’t exist, then copies everything from `source_directory` into it.  
+
+> **Note**: `-r` or `-R` might behave slightly differently on some systems; they are generally interchangeable for most modern distributions.
+
+---
+
+### Preserve Attributes (`-p`)
+
+Use `-p` (preserve) to retain file attributes such as permissions, ownership, and timestamps:
+```bash
+cp -p source_file target_file
+```
+- Helps keep metadata intact when transferring files.
+
+---
+
+### Verbose Output (`-v`)
+
+To see what’s being copied in real time:
+```bash
+cp -v source_file target_file
+```
+- Prints out each file as it’s processed.
+
+---
+
+### Examples
+
+1. **Copy a Single File**  
+   ```bash
+   cp notes.txt backup_notes.txt
+   ```
+   Creates `backup_notes.txt` from `notes.txt`.
+
+2. **Copy Multiple Files into a Directory**  
+   ```bash
+   cp report1.pdf report2.pdf /home/dan/reports/
+   ```
+   Places both PDFs into `/home/dan/reports/`.
+
+3. **Recursive Copy of a Directory**  
+   ```bash
+   cp -r my_folder /home/dan/backup_folder/
+   ```
+   Copies all contents of `my_folder` into `backup_folder/`.
+
+4. **Copy with Overwrite Confirmation**  
+   ```bash
+   cp -i config.yaml /etc/app/
+   ```
+   Asks before overwriting if `config.yaml` already exists in `/etc/app/`.
+
+5. **Preserve File Attributes**  
+   ```bash
+   cp -p script.sh /usr/local/bin/
+   ```
+   Keeps ownership, permissions, and timestamps intact.
+
+6. **Show Each Copy Operation**  
+   ```bash
+   cp -rv images /home/dan/pictures/
+   ```
+   Recursively copies `images` to the `pictures` directory while displaying each copied file.
+
+---
+
+### Tips and Best Practices
+
+- **Check Before Overwriting**: If you regularly deal with important files, consider `-i` or `-n` to avoid accidental overwrites.  
+- **Use the Right Tool**: For large-scale backups or synchronizations, commands like `rsync` may offer more efficient options (incremental copying, checksums, etc.).  
+- **Combine Flags**: `cp -rpv` preserves attributes, copies recursively, and shows each file’s transfer—helpful for larger operations.  
+- **Avoid Confusion with Wildcards**: Always verify that your wildcards (`*`, `?`) match the files you intend to copy.  
+- **Automation**: In scripting, using `cp -r` ensures directories are handled properly; add `-f` or `-n` based on how you want to handle existing files.  
+- **Verify Permissions**: If you get a “Permission denied” error, check directory ownership or use `sudo` if necessary.

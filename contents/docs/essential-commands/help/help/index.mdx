@@ -1,0 +1,68 @@
+---
+title: "help Command"
+date: "2025-01-12"
+description: "Display information about shell built-in commands."
+videoId: ""
+---
+
+### Overview
+
+The `help` command displays information about Bash's built-in commands. Unlike `man` which shows external command documentation, `help` is specifically for commands that are part of the shell itself.
+
+---
+
+### Basic Usage
+
+```bash
+help [pattern]
+```
+- Without arguments, lists all available shell commands
+- With a pattern, shows detailed help for matching commands
+  ```bash
+  help cd
+  ```
+  Views the documentation for the `cd` built-in command.
+
+---
+
+### Common Options
+
+- `-d`: Output short description for each topic
+- `-m`: Display usage in pseudo-manpage format
+- `-s`: Output only a short usage synopsis
+- `-i`: Output in a format designed for Info readers
+
+---
+
+### Examples
+
+1. **List All Built-in Commands**  
+   ```bash
+   help
+   ```
+
+2. **Get Help for Specific Command**  
+   ```bash
+   help cd
+   help test
+   ```
+
+3. **Display Short Description**  
+   ```bash
+   help -d cd
+   ```
+
+4. **Show Man-style Format**  
+   ```bash
+   help -m test
+   ```
+
+---
+
+### Tips and Best Practices
+
+- **Use for Built-ins**: Always use `help` for shell built-in commands
+- **Quick Reference**: The `-d` option is perfect for quick command lookups
+- **Man-style Reading**: Use `-m` when you prefer the traditional man page format
+- **Verification**: Use `type command` to check if something is a built-in
+- **Comprehensive Help**: Combine with `man` and `info` for complete documentation

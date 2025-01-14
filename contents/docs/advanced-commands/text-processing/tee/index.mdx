@@ -1,0 +1,183 @@
+---
+title: "tee Command"
+date: "2025-01-12"
+description: "Read from standard input and write to standard output and files."
+videoId: ""
+---
+
+### Overview
+
+The `tee` command in Unix-like systems reads from standard input and writes to both standard output and one or more files simultaneously. This is particularly useful in scenarios where you want to view the output of a command in the terminal while also saving it to a file for later use. By allowing the duplication of output streams, `tee` facilitates logging, monitoring, and data processing without disrupting the flow of information.
+
+---
+
+### Basic Usage
+
+```bash
+command | tee file.txt
+```
+- Executes `command`, displays its output in the terminal, and writes the same output to `file.txt`.
+
+```bash
+command | tee file1.txt file2.txt
+```
+- Writes the output of `command` to both `file1.txt` and `file2.txt` while displaying it in the terminal.
+
+---
+
+### Common Options
+
+1. **`-a` (Append)**  
+   ```bash
+   command | tee -a log.txt
+   ```
+   - Appends the output to `log.txt` instead of overwriting it.
+
+2. **`-i` (Ignore Interrupts)**  
+   ```bash
+   command | tee -i file.txt
+   ```
+   - Ignores interrupt signals (e.g., Ctrl+C), allowing the command to complete.
+
+3. **`--help`**  
+   ```bash
+   tee --help
+   ```
+   - Displays help information and exits.
+
+4. **`--version`**  
+   ```bash
+   tee --version
+   ```
+   - Displays version information and exits.
+
+---
+
+### Examples
+
+1. **Save Command Output to a File and Display It**  
+   ```bash
+   ls -l | tee directory_listing.txt
+   ```
+   - Lists directory contents, displays them in the terminal, and saves the listing to `directory_listing.txt`.
+
+2. **Append Output to an Existing Log File**  
+   ```bash
+   echo "Backup completed" | tee -a backup.log
+   ```
+   - Adds "Backup completed" to the end of `backup.log` while displaying the message.
+
+3. **Write Output to Multiple Files**  
+   ```bash
+   echo "Configuration settings" | tee config1.conf config2.conf
+   ```
+   - Writes "Configuration settings" to both `config1.conf` and `config2.conf` and displays it in the terminal.
+
+4. **Use `tee` with `sudo` to Write Protected Files**  
+   ```bash
+   echo "New entry" | sudo tee /etc/example.conf
+   ```
+   - Writes "New entry" to `/etc/example.conf` with elevated permissions and displays it.
+
+5. **Combine with Other Commands for Logging**  
+   ```bash
+   make | tee build.log
+   ```
+   - Runs `make`, logs the build output to `build.log`, and displays it in real-time.
+
+6. **Suppress Output to Terminal While Logging**  
+   ```bash
+   command | tee file.txt > /dev/null
+   ```
+   - Writes the output of `command` to `file.txt` without displaying it in the terminal.
+
+7. **Monitor and Save Logs Simultaneously**  
+   ```bash
+   tail -f /var/log/syslog | tee syslog_backup.log
+   ```
+   - Continuously monitors `/var/log/syslog`, displays new entries in the terminal, and appends them to `syslog_backup.log`.
+
+8. **Use `tee` in a Pipeline for Multiple Actions**  
+   ```bash
+   cat data.txt | tee intermediate.txt | grep "pattern" > results.txt
+   ```
+   - Reads `data.txt`, saves a copy to `intermediate.txt`, filters lines containing "pattern", and writes the results to `results.txt`.
+
+9. **Overwrite a File with Command Output**  
+   ```bash
+   echo "Overwrite content" | tee existing_file.txt
+   ```
+   - Replaces the contents of `existing_file.txt` with "Overwrite content" and displays it.
+
+---
+
+### Tips and Best Practices
+
+- **Use `-a` to Prevent Data Loss**: When you want to preserve existing data in a file, always use the `-a` option to append instead of overwriting.
+  
+  ```bash
+  echo "Additional log entry" | tee -a log.txt
+  ```
+  
+- **Combine with `sudo` for Protected Files**: To write to files that require elevated permissions without leaving your shell session elevated, use `sudo` with `tee`.
+  
+  ```bash
+  echo "Permit user access" | sudo tee /etc/access.conf
+  ```
+  
+- **Suppress Terminal Output When Needed**: If you only want to save the output to a file without displaying it, redirect the standard output to `/dev/null`.
+  
+  ```bash
+  command | tee output.txt > /dev/null
+  ```
+  
+- **Leverage `tee` in Scripts for Logging**: Incorporate `tee` into your shell scripts to maintain logs of script execution while still providing real-time feedback to the user.
+  
+  ```bash
+  #!/usr/bin/env bash
+  ./deploy.sh | tee deploy.log
+  ```
+  
+- **Monitor Real-Time Logs While Saving**: Use `tee` with commands like `tail -f` to both monitor logs in real-time and save them for later analysis.
+  
+  ```bash
+  tail -f /var/log/application.log | tee application_backup.log
+  ```
+  
+- **Use Multiple Files for Different Outputs**: When you need to save outputs to various destinations, specify multiple filenames with `tee`.
+  
+  ```bash
+  command | tee output1.txt output2.txt
+  ```
+  
+- **Understand Buffering Behavior**: Be aware that `tee` may buffer output, which can affect the real-time display of logs. Use options like `stdbuf` if necessary to adjust buffering.
+  
+  ```bash
+  command | stdbuf -oL tee output.log
+  ```
+  
+- **Combine with Other Tools for Enhanced Functionality**: `tee` can be combined with tools like `grep`, `awk`, or `sed` to create powerful data processing pipelines.
+  
+  ```bash
+  cat data.csv | tee intermediate.csv | grep "active" > active_data.csv
+  ```
+  
+- **Ensure Proper Permissions**: When writing to files, especially in system directories, ensure you have the necessary permissions to avoid errors. Using `sudo` with `tee` can help manage this.
+  
+  ```bash
+  echo "Enable feature X" | sudo tee /etc/features.conf
+  ```
+  
+- **Avoid Overusing `tee`**: While `tee` is powerful, using it excessively can clutter your command pipeline and make scripts harder to read. Use it judiciously for tasks that truly benefit from dual-output streams.
+  
+- **Test Commands Before Deployment**: Especially when using `tee` in scripts that modify important files, test your commands on sample data to ensure they behave as expected without causing unintended changes.
+  
+  ```bash
+  echo "Test entry" | tee test_file.txt
+  ```
+  
+- **Use Descriptive Filenames**: When saving outputs, choose filenames that clearly indicate their purpose or the content they contain, enhancing the readability and maintainability of your logs and data files.
+  
+  ```bash
+  command | tee error_log.txt
+  ```

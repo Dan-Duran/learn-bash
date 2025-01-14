@@ -1,0 +1,122 @@
+---
+title: "echo Command"
+date: "2025-01-12"
+description: "Display a line of text."
+videoId: ""
+---
+
+### Overview
+
+The `echo` command writes its arguments to standard output, making it useful for printing messages, environment variables, and more. It’s often used in shell scripts to output textual information or to pass simple data between commands.
+
+---
+
+### Basic Usage
+
+```bash
+echo "Hello World"
+```
+- Prints `Hello World` to the terminal.
+
+```bash
+echo This is a test
+```
+- Prints `This is a test` (quotes are optional if no special characters or spaces need escaping).
+
+---
+
+### Special Characters and Quoting
+
+- **Double Quotes**: Enclose text with special characters or spaces.
+  ```bash
+  echo "Hello, $USER!"
+  ```
+  Expands `$USER` variable to the current username.
+
+- **Single Quotes**: Prevent variable expansion and interpretation of special characters.
+  ```bash
+  echo 'Hello, $USER!'
+  ```
+  Literally prints `Hello, $USER!` rather than substituting `$USER`.
+
+- **Escaping**: Use the backslash `\` to escape special characters.
+  ```bash
+  echo "He said, \"Hello there!\""
+  ```
+  Prints `He said, "Hello there!"`.
+
+---
+
+### Common Options
+
+1. **`-n`**: Omit the trailing newline.
+   ```bash
+   echo -n "No newline here"
+   ```
+   Prints text without automatically adding a line break.
+
+2. **`-e`**: Interpret escape sequences.
+   ```bash
+   echo -e "Line1\nLine2\nLine3"
+   ```
+   Interprets `\n` as a new line, `\t` as a tab, etc.
+
+3. **`-E`**: Disables interpretation of escape sequences (this is often the default in many shells).
+
+---
+
+### Examples
+
+1. **Basic Output**
+   ```bash
+   echo "Hello World!"
+   ```
+   Outputs `Hello World!`.
+
+2. **No Newline**
+   ```bash
+   echo -n "Hello"
+   echo " World!"
+   ```
+   Prints `Hello World!` on one line without a line break after `Hello`.
+
+3. **Use Escape Sequences**
+   ```bash
+   echo -e "First line\nSecond line\n\tIndented third line"
+   ```
+   Produces a multi-line output with an indent.
+
+4. **Variable Expansion**
+   ```bash
+   MYVAR="Echo Demo"
+   echo "This is a $MYVAR"
+   ```
+   Substitutes `$MYVAR` before printing.
+
+5. **Literal Dollar Sign**
+   ```bash
+   echo "\$HOME is the home directory."
+   ```
+   Prints `$HOME is the home directory.` without expanding `$HOME`.
+
+6. **Writing to a File**
+   ```bash
+   echo "Important data" > info.txt
+   ```
+   Overwrites (or creates) `info.txt` with the text `Important data`.
+
+7. **Appending to a File**
+   ```bash
+   echo "New line" >> info.txt
+   ```
+   Appends `New line` to `info.txt`.
+
+---
+
+### Tips and Best Practices
+
+- **Scripting**: `echo` is often used to show script progress or to output data that can be piped into other commands.
+- **Avoid Ambiguous Output**: If your string has special characters, consider quoting or escaping to ensure it prints as intended.
+- **Check Shell Built-ins**: Many shells have a built-in version of `echo`. Behavior can slightly vary across shells if not using the `/bin/echo` binary.
+- **Use `printf` for Complex Formatting**: For more control over spacing, padding, or numeric formats, `printf` is often preferred, though `echo` is simpler for basic output.
+- **Redirection**: Combine `echo` with `>` or `>>` for quick file writes. Just be mindful that `>` overwrites while `>>` appends.

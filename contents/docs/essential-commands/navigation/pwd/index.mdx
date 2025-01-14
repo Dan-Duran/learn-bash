@@ -1,0 +1,107 @@
+---
+title: "pwd Command"
+date: "2025-01-12"
+description: "Print name of current/working directory."
+videoId: ""
+---
+
+### Overview
+
+The `pwd` (print working directory) command displays the absolute path of the directory you’re currently in. This is particularly helpful when you need to confirm your location within the file system before executing commands that reference relative paths.
+
+---
+
+### Basic Usage
+
+```bash
+pwd
+```
+- Prints the full absolute path of your current working directory.  
+- For example, if you’re in `/home/dan/projects/bash-guide`, it will display that exact path.
+
+---
+
+### Common Options
+
+1. **Logical vs. Physical Path**  
+   - **`-L` (logical)**: Follows your shell’s notion of the current directory, including any symbolic links.  
+   - **`-P` (physical)**: Resolves the actual physical path on the file system, bypassing symbolic links.
+   
+   ```bash
+   pwd -L
+   pwd -P
+   ```
+
+2. **Version Information**  
+   ```bash
+   pwd --version
+   ```
+   - Shows version details of the `pwd` command.
+
+---
+
+### Symlinks and `-P` vs. `-L`
+
+- When you navigate into a directory that is actually a symbolic link, `pwd` without options (or with `-L`) may display the link’s path.  
+- Using `pwd -P` ensures you see the real directory path on disk (the link’s target).
+
+Example:
+```bash
+cd /tmp
+ln -s /home/dan/real_folder link_folder
+cd link_folder
+
+pwd         # might show /tmp/link_folder
+pwd -P      # shows /home/dan/real_folder
+```
+
+---
+
+### When to Use `pwd`
+
+- **Verification**: After a complex series of `cd` commands, use `pwd` to confirm you’re in the correct directory before running important commands (like moving or deleting files).
+- **Scripting**: In scripts, store the output of `pwd` in a variable to log your script’s current location or to construct paths programmatically.
+
+---
+
+### Examples
+
+1. **Standard Usage**  
+   ```bash
+   pwd
+   ```
+   Prints your current directory.
+
+2. **Following Symlinks**  
+   ```bash
+   pwd -L
+   ```
+   Displays the path as the shell sees it (including symlinks).
+
+3. **Physical Directory**  
+   ```bash
+   pwd -P
+   ```
+   Resolves all symlinks and shows the actual path on the file system.
+
+4. **Using `pwd` in a Script**  
+   ```bash
+   #!/usr/bin/env bash
+   CURRENT_DIR=$(pwd)
+   echo "Running script in: $CURRENT_DIR"
+   ```
+   Logs the current directory where the script is running.
+
+---
+
+### Tips and Best Practices
+
+- **Combine with Other Commands**:  
+  You can combine `pwd` with other commands, for example, to create a new file in the current directory:
+  ```bash
+  touch "$(pwd)/newfile.txt"
+  ```
+- **Maintain Awareness**:  
+  Always keep track of your current directory when you’re doing tasks like editing configuration files, performing backups, or scripting.  
+- **Symlink Implications**:  
+  If you’re working with symlinks often, remember that `pwd -P` can help avoid confusion about where files physically reside.

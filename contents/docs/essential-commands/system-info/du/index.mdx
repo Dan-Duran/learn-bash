@@ -1,0 +1,117 @@
+---
+title: "du Command"
+date: "2025-01-12"
+description: "Estimate file space usage."
+videoId: ""
+---
+
+### Overview
+
+The `du` (disk usage) command displays the estimated file space used by files and directories. It recursively checks directory contents and sums their sizes, helping you understand where your disk space is allocated.
+
+---
+
+### Basic Usage
+
+```bash
+du
+```
+- Shows the size for the current directory and all its subdirectories in 1K-blocks by default.
+
+```bash
+du /path/to/directory
+```
+- Displays disk usage for the specified directory and its subdirectories.
+
+---
+
+### Common Options
+
+1. **Human-Readable (`-h`)**  
+   ```bash
+   du -h
+   ```
+   Prints sizes in KB, MB, or GB, making them easier to interpret.
+
+2. **Summaries Only (`-s`)**  
+   ```bash
+   du -s /path/to/directory
+   ```
+   Shows the total size of the directory without listing subdirectories.
+
+3. **Max Depth (`--max-depth`)**  
+   ```bash
+   du -h --max-depth=1 /path/to/directory
+   ```
+   Limits how deep `du` traverses. In this example, only top-level subdirectories are displayed, making the output more concise.
+
+4. **All Files (`-a`)**  
+   ```bash
+   du -a
+   ```
+   Prints disk usage for all files, not just directories.
+
+5. **Combined Use**  
+   ```bash
+   du -sh *
+   ```
+   - `-s`: Summaries only  
+   - `-h`: Human-readable  
+   - `*`: All items in the current directory  
+   Displays the size of each item in human-readable form.
+
+6. **Exclude Certain Files/Directories (`--exclude`)**  
+   ```bash
+   du -h --exclude=node_modules .
+   ```
+   Skips any file or directory named `node_modules`.
+
+---
+
+### Examples
+
+1. **Show Disk Usage in Human-Readable Format**  
+   ```bash
+   du -h /var/log
+   ```
+   Lists the size of each subdirectory within `/var/log` in KB, MB, or GB.
+
+2. **Total Size of a Folder**  
+   ```bash
+   du -sh /home/dan/videos
+   ```
+   Quickly get the total size of `/home/dan/videos` without listing everything inside.
+
+3. **Limit Depth**  
+   ```bash
+   du -h --max-depth=2 /home/dan
+   ```
+   Displays the sizes of directories up to two levels deep in `/home/dan`.
+
+4. **All Files, Not Just Directories**  
+   ```bash
+   du -ah /etc
+   ```
+   Prints sizes for every file and directory under `/etc`, with human-readable output.
+
+5. **Exclude a Specific Folder**  
+   ```bash
+   du -sh /home/dan --exclude='*.tmp'
+   ```
+   Skips files ending in `.tmp`, providing a tidier total usage.
+
+6. **Pipe to Sort**  
+   ```bash
+   du -h /path/to/directory | sort -h
+   ```
+   Sorts the output by size (using human-readable sorting).
+
+---
+
+### Tips and Best Practices
+
+- **Combining with `df`**: Use `df` to see overall disk usage and `du` to pinpoint the largest directories or files.
+- **Watch Out for Mount Points**: If you have multiple partitions or network mounts, `du` might traverse them unless you exclude them or specify a max depth.
+- **Use `--max-depth` for Clarity**: Large directory structures can create a lot of output; limiting depth makes the results more digestible.
+- **Exclude Irrelevant Data**: Avoid scanning huge or irrelevant directories (like `.git` or `node_modules`) by using `--exclude`.
+- **Scripting**: In automated tasks, use `du -sh` to generate quick size summaries and parse them as needed. 

@@ -1,0 +1,69 @@
+---
+title: "apropos Command"
+date: "2025-01-12"
+description: "Search manual page names and descriptions."
+videoId: ""
+---
+
+### Overview
+
+The `apropos` command searches the manual pages for a specified keyword, displaying commands that match in their names or descriptions. It's particularly useful when you know what you want to do but don't know the exact command.
+
+---
+
+### Basic Usage
+
+```bash
+apropos <keyword>
+```
+- Searches for manual pages containing the specified keyword
+- Example:
+  ```bash
+  apropos password
+  ```
+  Shows all commands related to password management.
+
+---
+
+### Common Options
+
+- `-a`: Display only entries that match all keywords
+- `-r`: Use basic regular expressions in search
+- `-s`: Search only specified manual sections
+- `-l`: Display only page names, not descriptions
+- `-e`: Use extended regular expressions
+
+---
+
+### Examples
+
+1. **Basic Keyword Search**  
+   ```bash
+   apropos printer
+   apropos "change password"
+   ```
+
+2. **Search Multiple Keywords**  
+   ```bash
+   apropos -a user password
+   ```
+
+3. **Search Specific Section**  
+   ```bash
+   apropos -s 1 editor
+   ```
+
+4. **Use Regular Expressions**  
+   ```bash
+   apropos -r '^zip.*'
+   ```
+
+---
+
+### Tips and Best Practices
+
+- **Update Database**: Run `sudo mandb` if searches return nothing
+- **Quotes for Phrases**: Use quotes for multi-word searches
+- **Combine with man**: Use findings with `man` for detailed info
+- **Case Sensitivity**: Searches are case-insensitive by default
+- **Similar to man -k**: `apropos` is equivalent to `man -k`

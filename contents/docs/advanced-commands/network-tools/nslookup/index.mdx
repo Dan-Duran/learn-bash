@@ -1,0 +1,198 @@
+---
+title: "nslookup Command"
+date: "2025-01-13"
+description: "Query DNS servers to resolve domain names to IP addresses and vice versa."
+videoId: ""
+---
+
+### Overview
+
+The `nslookup` command is a network utility used to query Domain Name System (DNS) servers for resolving domain names to IP addresses and retrieving various DNS records. It is widely used for troubleshooting DNS-related issues, verifying DNS configurations, and gathering information about DNS records.
+
+**Key Features:**
+- Resolve domain names to IP addresses and vice versa.
+- Retrieve DNS records like A, AAAA, MX, CNAME, NS, and TXT.
+- Test and troubleshoot DNS server configurations.
+- Query specific DNS servers.
+
+---
+
+### Basic Usage
+
+```bash
+nslookup [OPTIONS] [DOMAIN]
+```
+
+- **DOMAIN**: The domain name or IP address to query.
+- **OPTIONS**: Flags to modify the behavior of the command.
+
+**Example:**
+```bash
+nslookup example.com
+```
+- Resolves the IP address of `example.com` using the system's default DNS server.
+
+---
+
+### Interactive Mode
+
+Launch `nslookup` in interactive mode by entering the command without any arguments:
+```bash
+nslookup
+```
+
+In interactive mode, you can issue multiple queries without restarting the command. To exit, type `exit`.
+
+---
+
+### Common Options and Commands
+
+1. **Query a Domain**
+   ```bash
+   nslookup example.com
+   ```
+   - Resolves the IP address of `example.com`.
+
+2. **Query a Specific DNS Server**
+   ```bash
+   nslookup example.com 8.8.8.8
+   ```
+   - Resolves `example.com` using Google's public DNS server (`8.8.8.8`).
+
+3. **Reverse DNS Lookup**
+   ```bash
+   nslookup 93.184.216.34
+   ```
+   - Resolves the IP address `93.184.216.34` to its domain name.
+
+4. **Retrieve Specific Record Types**
+   - **Interactive Mode:**
+     ```bash
+     > set type=MX
+     > example.com
+     ```
+   - **Non-Interactive Mode:**
+     ```bash
+     nslookup -type=MX example.com
+     ```
+   - Retrieves the mail exchange (MX) records for `example.com`.
+
+5. **Change DNS Server in Interactive Mode**
+   ```bash
+   > server 1.1.1.1
+   ```
+   - Queries DNS using Cloudflare's server (`1.1.1.1`).
+
+6. **Debug Mode**
+   ```bash
+   nslookup -debug example.com
+   ```
+   - Outputs detailed DNS query information for troubleshooting.
+
+7. **Set Timeout**
+   ```bash
+   > set timeout=5
+   ```
+   - Sets the timeout for DNS queries to 5 seconds.
+
+8. **Disable Recursion**
+   ```bash
+   > set norecurse
+   ```
+   - Sends a non-recursive query to the DNS server.
+
+---
+
+### Examples
+
+1. **Basic Domain Lookup**
+   ```bash
+   nslookup example.com
+   ```
+
+2. **Query Using a Specific DNS Server**
+   ```bash
+   nslookup example.com 8.8.8.8
+   ```
+
+3. **Retrieve MX Records**
+   ```bash
+   nslookup -type=MX example.com
+   ```
+
+4. **Reverse Lookup**
+   ```bash
+   nslookup 93.184.216.34
+   ```
+
+5. **Debug DNS Query**
+   ```bash
+   nslookup -debug example.com
+   ```
+
+6. **Retrieve TXT Records**
+   ```bash
+   nslookup -type=TXT example.com
+   ```
+
+7. **Query Nameservers**
+   ```bash
+   nslookup -type=NS example.com
+   ```
+
+8. **Interactive Mode Example**
+   ```bash
+   nslookup
+   > server 8.8.8.8
+   > set type=AAAA
+   > example.com
+   > exit
+   ```
+
+---
+
+### Tips and Best Practices
+
+- **Use Specific DNS Servers for Testing**: Specify DNS servers like Google (`8.8.8.8`) or Cloudflare (`1.1.1.1`) to verify resolutions across different providers.
+  ```bash
+  nslookup example.com 8.8.8.8
+  ```
+
+- **Check Reverse DNS Configurations**: Use reverse lookups to verify PTR records for IP addresses.
+  ```bash
+  nslookup 192.168.1.1
+  ```
+
+- **Retrieve Record Types Explicitly**: Use `-type` to query specific DNS records (e.g., `A`, `MX`, `TXT`).
+  ```bash
+  nslookup -type=TXT example.com
+  ```
+
+- **Debug DNS Issues**: Use the `-debug` option to analyze DNS queries and responses in detail.
+  ```bash
+  nslookup -debug example.com
+  ```
+
+- **Test Non-Recursive Queries**: Disable recursion for authoritative server testing.
+  ```bash
+  nslookup
+  > set norecurse
+  > example.com
+  ```
+
+- **Combine with Scripts**: Automate DNS lookups by integrating `nslookup` into shell scripts for bulk queries.
+
+- **Verify Email Settings**: Check MX records to troubleshoot email delivery issues.
+  ```bash
+  nslookup -type=MX example.com
+  ```
+
+- **Test DNS Propagation**: Query different DNS servers to verify changes have propagated.
+  ```bash
+  nslookup example.com 1.1.1.1
+  ```
+
+- **Use Alternative Tools**: While `nslookup` is widely used, consider `dig` for more detailed output and flexibility.
+  ```bash
+  dig example.com
+  ```

@@ -1,0 +1,79 @@
+---
+title: "Redirection (<)"
+date: "2025-01-12"
+description: "Read command input from a file instead of standard input."
+videoId: ""
+---
+
+### Overview
+
+When you use the `<` operator (often called input redirection), a command will read its standard input (stdin) from a specified file. Normally, commands read from the terminal (keyboard), but `<` allows you to automate or script the process by feeding data directly from a file.
+
+---
+
+### Basic Usage
+
+```bash
+command < file
+```
+- **command**: Any command that reads from standard input.
+- **file**: The file from which you want the command to read.
+
+**Example**:
+```bash
+cat < sample.txt
+```
+- Reads the contents of `sample.txt` and displays them (just like `cat sample.txt`).
+
+---
+
+### Common Examples
+
+1. **Using `sort`**  
+   ```bash
+   sort < unsorted.txt
+   ```
+   Sorts the contents of `unsorted.txt` and prints the result to the terminal.
+
+2. **Feeding Data to `wc`**  
+   ```bash
+   wc -l < log.txt
+   ```
+   Counts the lines of `log.txt` without typing `wc -l log.txt`. Both approaches are equivalent.
+
+3. **Automating Interactive Commands**  
+   Some commands prompt for user input. You can feed them data with `<`, though many such commands now prefer more secure or structured input methods:
+   ```bash
+   some_command < answers.txt
+   ```
+   This can fill in answers that `some_command` expects from stdin.
+
+---
+
+### Why Use `<`?
+
+- **Automation**: Scripts can provide prewritten inputs to interactive commands without manual typing.  
+- **Consistency**: In many shells, `command < file` is equivalent to writing `command file` if the command naturally accepts a file argument, but `<` is more universally applicable.  
+- **Piping Alternative**: You might prefer `cat file | command`, but `< file` often uses fewer resources and avoids the “useless cat” pattern when a command can already read stdin.
+
+---
+
+### Advanced Notes
+
+- **Here Documents**: A related concept uses `<<` to embed multi-line input directly in scripts. (Not covered here, but it’s another form of input redirection.)
+- **Combining Redirections**: You can combine `<` with output redirection `>` or append `>>`. For example:
+  ```bash
+  sort < unsorted.txt > sorted.txt
+  ```
+  Reads from `unsorted.txt` and writes the sorted output to `sorted.txt`.
+- **Error Stream**: Remember that `<` only deals with standard input (file descriptor 0); it doesn’t automatically handle errors or other streams.
+
+---
+
+### Tips and Best Practices
+
+- **Keep It Simple**: If a command allows specifying the file as an argument (like `grep pattern file`), that’s often simpler than `grep pattern < file`. But `<` is a good fallback when no direct file argument is supported.
+- **Check Permissions**: You must have read permissions on the file to redirect from it. If you see “Permission denied,” ensure you have the correct file permissions or use `sudo` carefully.
+- **Compare with Pipes**: If you want to process data in stages (like `grep pattern | sort | uniq`), a pipe is your friend. For single-file input to one command, `<` suffices.
+- **Scripting**: In scripts, using `< file` can keep your code easier to read. Also, you can handle errors (e.g., `if [ ! -r file ]; then echo "Cannot read file"; exit 1; fi`) before redirecting.
+- **Don’t Confuse with `>`**: `>` writes to a file; `<` reads from a file. Mixing them up can accidentally overwrite data.

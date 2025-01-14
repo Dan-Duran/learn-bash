@@ -1,0 +1,102 @@
+---
+title: "Variables"
+date: "2025-01-12"
+description: "Understanding variables in Bash scripting."
+videoId: ""
+---
+
+### Overview
+
+Variables in Bash are used to store data that can be referenced and manipulated throughout your script. They can hold strings, numbers, arrays, and command outputs. All variables in Bash are stored internally as strings.
+
+---
+
+### Basic Usage
+
+```bash
+# Assignment (no spaces around =)
+name="John"
+age=25
+
+# Reference with $
+echo "$name is $age years old"
+```
+**Example**:
+```bash
+greeting="Hello"
+name="World"
+echo "$greeting, $name!"
+```
+- Assigns values to variables and prints "Hello, World!"
+
+---
+
+### Common Types
+
+1. **String Variables**  
+   ```bash
+   message="Hello World"
+   name='John Doe'      # Single or double quotes
+   ```
+
+2. **Numeric Variables**  
+   ```bash
+   count=42
+   price=9.99          # Still stored as string
+   ```
+
+3. **Arrays**  
+   ```bash
+   colors=("red" "blue" "green")
+   echo "${colors[0]}"  # Access first element
+   ```
+
+4. **Command Substitution**  
+   ```bash
+   current_date=$(date)
+   files_count=$(ls | wc -l)
+   ```
+
+---
+
+### Examples
+
+1. **User Input**  
+   ```bash
+   echo "What's your name?"
+   read username
+   echo "Hello, $username!"
+   ```
+
+2. **Command Result**  
+   ```bash
+   uptime=$(uptime -p)
+   echo "System has been up for: $uptime"
+   ```
+
+3. **Arithmetic**  
+   ```bash
+   x=5
+   y=3
+   sum=$((x + y))
+   echo "Sum is: $sum"
+   ```
+
+4. **Array Operations**  
+   ```bash
+   fruits=("apple" "banana" "orange")
+   echo "First fruit: ${fruits[0]}"
+   echo "All fruits: ${fruits[@]}"
+   ```
+
+---
+
+### Tips and Best Practices
+
+- Always quote variable references: "$variable"
+- Use meaningful variable names
+- Variables are case-sensitive
+- Avoid spaces in assignments
+- Use readonly for constants
+- Clear variables when no longer needed
+- Use local variables in functions

@@ -1,0 +1,197 @@
+---
+title: "chmod Command"
+date: "2025-01-12"
+description: "Change file access permissions."
+videoId: ""
+---
+
+### Overview
+
+The `chmod` command (short for *change mode*) modifies file or directory permissions. In Unix-like systems, permissions determine who can read, write, or execute a file or directory.
+
+- **Owner (u)**: The person who owns the file.
+- **Group (g)**: Other users who belong to the file’s group.
+- **Others (o)**: Everyone else on the system.
+
+Each permission is represented by one of three letters:
+- **r** for *read*  
+- **w** for *write*  
+- **x** for *execute*  
+
+---
+
+### Basic Usage
+
+```bash
+chmod [options] mode file
+```
+
+- `mode` can be specified in **symbolic** or **numeric** (octal) notation.
+- You can apply different modes to multiple files at once:  
+  ```bash
+  chmod 755 file1 file2 directory
+  ```
+
+---
+
+### Symbolic Notation
+
+Symbolic notation uses letters to represent operations. The general format is:
+
+```bash
+chmod [u/g/o/a][+/-/=][r/w/x] filename
+```
+
+1. **Entities**:  
+   - **u** (user/owner)  
+   - **g** (group)  
+   - **o** (others)  
+   - **a** (all: user, group, and others)
+
+2. **Operators**:  
+   - **+** (adds a permission)  
+   - **-** (removes a permission)  
+   - **=** (sets exact permissions)
+
+3. **Permissions**:  
+   - **r** (read)  
+   - **w** (write)  
+   - **x** (execute)
+
+Examples:
+```bash
+# Give the owner execute permission
+chmod u+x script.sh
+
+# Remove write permission from group
+chmod g-w document.txt
+
+# Give read permission to everyone
+chmod a+r notes.md
+
+# Set file so that only the owner can read, write, and execute; remove all perms for others
+chmod u=rwx,go= file.sh
+```
+
+---
+
+### Numeric (Octal) Notation
+
+Numeric notation uses three digits, each ranging from 0 to 7, representing **owner**, **group**, and **others**, in that order:
+
+| Permission | Octal Value |
+|------------|-------------|
+| ---        | 0           |
+| --x        | 1           |
+| -w-        | 2           |
+| -wx        | 3           |
+| r--        | 4           |
+| r-x        | 5           |
+| rw-        | 6           |
+| rwx        | 7           |
+
+So `chmod 755 file` means:
+- **7** (rwx) for the owner
+- **5** (r-x) for the group
+- **5** (r-x) for others
+
+Examples:
+```bash
+# rwxr-xr-x
+chmod 755 file.sh
+
+# rw-r--r--
+chmod 644 document.txt
+
+# rwxrwxrwx (full permissions for everyone)
+chmod 777 public_script.sh
+```
+
+---
+
+### Directories vs. Files
+
+- For **directories**, the **x** permission allows you to enter the directory and list its contents. Without it, you can’t `cd` into that directory.
+- For **files**, **x** means you can execute the file as a program or script.
+
+---
+
+### Special Modes (Setuid, Setgid, Sticky Bit)
+
+In addition to basic permissions, `chmod` can set special bits:
+1. **Setuid (4xxx)**: When an executable file with setuid is run, it executes with the privileges of the file’s owner.  
+2. **Setgid (2xxx)**: For directories, new files inherit the group ownership of the directory. For executables, they run with the file’s group privileges.  
+3. **Sticky Bit (1xxx)**: Commonly used on directories like `/tmp`; users can only remove or rename files they own.
+
+Example for setting a directory’s setgid bit:
+```bash
+chmod g+s shared_folder
+```
+Or in numeric notation (using `2` for setgid):
+```bash
+chmod 2775 shared_folder
+```
+
+---
+
+### Common Options
+
+- **`-R` (recursive)**: Apply permissions to all subdirectories and files.
+  ```bash
+  chmod -R 755 /path/to/directory
+  ```
+- **`-v` (verbose)**: Show which files are being changed.
+  ```bash
+  chmod -v 644 *.txt
+  ```
+- **`-c` (changes)**: Like verbose, but only reports changes that were actually made (no output if nothing changed).
+
+---
+
+### Examples
+
+1. **Make a Script Executable**  
+   ```bash
+   chmod +x script.sh
+   ```
+   (Equivalent to `chmod u+x script.sh`)
+
+2. **Restrict Access to Owner Only**  
+   ```bash
+   chmod 700 secrets.txt
+   ```
+   Gives the owner full access, no permissions for group or others.
+
+3. **Grant Read/Write to Owner and Group**  
+   ```bash
+   chmod 660 data.csv
+   ```
+   Owner and group can read/write, others have no permission.
+
+4. **Add Execute Permission to Everyone**  
+   ```bash
+   chmod a+x run.sh
+   ```
+   Now any user can run `run.sh`.
+
+5. **Recursively Set Permissions**  
+   ```bash
+   chmod -R 755 public_html
+   ```
+   All files in `public_html` become readable/executable by all, writable only by owner.
+
+6. **Set the Sticky Bit**  
+   ```bash
+   chmod 1777 /var/shared
+   ```
+   Only the owner of a file can delete or rename it, even if others have write access.
+
+---
+
+### Tips and Best Practices
+
+- **Double-Check Before 777**: Granting `rwx` to everyone can create security risks. Make sure it’s necessary before using `chmod 777`.  
+- **Symbolic vs Numeric**: Symbolic notation is often easier to remember for small changes (`u+x`, etc.), while numeric notation is great for quickly setting complete permissions.  
+- **Directories Need Execute**: Remember that to traverse a directory, you need execute (`x`) permission on it.  
+- **Scripts and Execution**: For a script to be run directly (`./script.sh`), it must be executable. Otherwise, you must call it via an interpreter (`bash script.sh`).  
+- **Check Ownership**: Permissions alone don’t override file ownership. If you don’t own a file (or aren’t in the correct group), you may need `sudo` to change permissions.  

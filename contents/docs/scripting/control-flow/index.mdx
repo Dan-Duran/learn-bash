@@ -1,0 +1,131 @@
+---
+title: "Control Flow"
+date: "2025-01-12"
+description: "Learn about conditional statements and decision making in Bash scripts."
+videoId: ""
+---
+
+### Overview
+
+Control flow statements in Bash allow you to make decisions, execute commands conditionally, and create logical branches in your scripts. The main constructs are if statements, case statements, and test conditions.
+
+---
+
+### Basic Usage
+
+```bash
+# Basic if statement
+if [ condition ]; then
+    command
+fi
+
+# if-else statement
+if [ condition ]; then
+    command1
+else
+    command2
+fi
+```
+
+**Example**:
+```bash
+if [ "$age" -ge 18 ]; then
+    echo "Adult"
+else
+    echo "Minor"
+fi
+```
+- Checks if age is greater than or equal to 18
+
+---
+
+### Common Constructs
+
+1. **if-elif-else**  
+   ```bash
+   if [ condition1 ]; then
+       command1
+   elif [ condition2 ]; then
+       command2
+   else
+       command3
+   fi
+   ```
+
+2. **case Statement**  
+   ```bash
+   case "$variable" in
+       pattern1)
+           command1
+           ;;
+       pattern2)
+           command2
+           ;;
+       *)
+           default_command
+           ;;
+   esac
+   ```
+
+3. **Test Conditions**  
+   ```bash
+   # File tests
+   [ -f file ]     # File exists and is regular file
+   [ -d dir ]      # Directory exists
+   
+   # String tests
+   [ -z string ]   # String is empty
+   [ -n string ]   # String is not empty
+   
+   # Numeric comparisons
+   [ "$a" -eq "$b" ]  # Equal to
+   [ "$a" -lt "$b" ]  # Less than
+   ```
+
+---
+
+### Examples
+
+1. **Check File Existence**  
+   ```bash
+   if [ -f "config.txt" ]; then
+       echo "Config file exists"
+   else
+       echo "Config file not found"
+   fi
+   ```
+
+2. **Menu System**  
+   ```bash
+   case "$choice" in
+       1)
+           echo "Selected option 1"
+           ;;
+       2)
+           echo "Selected option 2"
+           ;;
+       *)
+           echo "Invalid option"
+           ;;
+   esac
+   ```
+
+3. **Multiple Conditions**  
+   ```bash
+   if [ "$age" -ge 18 ] && [ "$has_id" = true ]; then
+       echo "Access granted"
+   else
+       echo "Access denied"
+   fi
+   ```
+
+---
+
+### Tips and Best Practices
+
+- Always quote variables in conditions
+- Use appropriate test operators
+- Double brackets [[ ]] for advanced operations
+- Indent code blocks for readability
+- Consider using case for multiple conditions
+- Test your conditions thoroughly

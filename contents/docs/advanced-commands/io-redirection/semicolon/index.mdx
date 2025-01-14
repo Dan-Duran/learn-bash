@@ -1,0 +1,102 @@
+---
+title: "Semicolon (;)"
+date: "2025-01-12"
+description: "Run multiple commands in sequence, regardless of success or failure."
+videoId: ""
+---
+
+### Overview
+
+In Bash and many other shells, the **semicolon** (`;`) allows you to place multiple commands on a single line, running them in sequence **regardless** of whether the previous command succeeds or fails. Each command separated by `;` runs unconditionally, one after the other.
+
+---
+
+### Basic Usage
+
+```bash
+command1 ; command2
+```
+
+1. **command1** executes first.
+2. Whether `command1` succeeds or fails, **command2** still executes afterward.
+
+**Example**:
+```bash
+echo "Starting..." ; ls nonexistent_dir ; echo "Done."
+```
+- Displays “Starting…”
+- Attempts to list `nonexistent_dir` (will likely fail and print an error)
+- Then displays “Done.”  
+Nothing stops the sequence—`ls` error does not prevent the final `echo` command.
+
+---
+
+### Comparison with `&&` and `||`
+
+- **`;` (semicolon)**: Runs commands in sequence **unconditionally**.
+  ```bash
+  command1 ; command2
+  ```
+- **`&&`**: Runs the second command **only if** the first command succeeds (exit code `0`).
+  ```bash
+  command1 && command2
+  ```
+- **`||`**: Runs the second command **only if** the first command fails (exit code non-zero).
+  ```bash
+  command1 || command2
+  ```
+
+You can mix them for more complex logic, but be mindful of readability.
+
+---
+
+### Multiple Commands
+
+You can place several commands in a row:
+```bash
+command1 ; command2 ; command3 ; command4
+```
+Each one executes in order:
+1. `command1`  
+2. `command2` (regardless of `command1`’s exit code)  
+3. `command3` (regardless of previous successes/failures)  
+4. `command4`, etc.
+
+---
+
+### Examples
+
+1. **Unconditional Execution**  
+   ```bash
+   echo "Hello" ; echo "World"
+   ```
+   Prints “Hello” then “World” no matter what.
+
+2. **Build and Remove**  
+   ```bash
+   make ; rm *.o
+   ```
+   Even if `make` fails, `.o` files are still removed.
+
+3. **Update and Check**  
+   ```bash
+   sudo apt-get update ; sudo apt-get upgrade
+   ```
+   Runs upgrade whether or not `update` completes successfully.
+
+4. **Mixing with `&&`**  
+   ```bash
+   mkdir newdir && cd newdir ; echo "Inside new directory"
+   ```
+   - `mkdir newdir && cd newdir`: only enter `newdir` if creation succeeds.
+   - `; echo "Inside new directory"`: runs afterward no matter what.
+
+---
+
+### Tips and Best Practices
+
+- **Unconditional Nature**: Remember that semicolon-chained commands ignore success or failure of previous commands. Use `&&` if you need conditional execution.
+- **Readability**: For long command sequences, consider writing a script or using multiple lines instead of packing everything in one line.  
+- **Logging and Cleanup**: If you need guaranteed cleanup tasks (e.g., removing temporary files) after a command—whether it succeeds or fails—a semicolon can be appropriate.  
+- **Testing Exit Codes**: If you need different actions based on success or failure, use `&&` and `||`, or an `if` statement. `;` always proceeds, so it’s not suitable for error-dependent logic.
+- **Scripting**: In scripts, you might see multiple semicolon-separated commands in a single line for brevity. However, too many commands in one line can reduce clarity.

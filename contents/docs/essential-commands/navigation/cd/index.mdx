@@ -1,0 +1,156 @@
+---
+title: "cd Command"
+date: "2025-01-12"
+description: "Change the current working directory."
+videoId: ""
+---
+
+### Overview
+
+The `cd` (change directory) command is used to navigate between directories in a file system. It’s one of the most fundamental commands in Bash, making it essential to understand how it works and what options are available.
+
+---
+
+### Basic Usage
+
+```bash
+cd /path/to/directory
+```
+- Changes the current working directory to the specified path.
+
+```bash
+cd
+```
+- If used with no arguments, it takes you to your home directory (usually `/home/username` on Linux or `/Users/username` on macOS).
+
+```bash
+cd -
+```
+- Switches back to the previous directory you were in.
+
+---
+
+### Relative vs. Absolute Paths
+
+1. **Absolute Path**  
+   - An absolute path starts with `/` (the root directory). Example: `/home/dan/Documents`.
+   - Always references the same location, regardless of the current directory.
+
+2. **Relative Path**  
+   - A relative path is based on the current working directory. Example: `cd Documents` might work if you’re already in `/home/dan`.
+   - Does not start with `/`; it looks for a subdirectory of your current directory.
+
+---
+
+### Special Directories
+
+- `.` (dot) refers to the **current** directory.  
+- `..` (double dot) refers to the **parent** directory.  
+
+Examples:
+```bash
+cd ..
+```
+Moves one level up in the directory structure.
+
+```bash
+cd ./scripts
+```
+Enters the `scripts` folder inside the current directory.
+
+---
+
+### Useful Environment Variables
+
+- **$HOME**  
+  Refers to your home directory. Generally used with `cd` to quickly return:
+  ```bash
+  cd $HOME
+  ```
+- **$OLDPWD**  
+  Contains the previous working directory. This is how `cd -` knows where you came from:
+  ```bash
+  cd -  # effectively does 'cd $OLDPWD'
+  ```
+
+---
+
+### Advanced Usage & Tips
+
+1. **Tab Completion**  
+   - Press `Tab` to auto-complete directory names.
+   - If multiple matches exist, press `Tab` twice to see suggestions.
+
+2. **Aliases**  
+   - You can create shortcuts in your shell configuration. For example:
+     ```bash
+     alias ..="cd .."
+     ```
+     After this, typing `..` alone acts like `cd ..`.
+
+3. **Path with Spaces**  
+   - If a directory name includes spaces, enclose it in quotes or escape the space:
+     ```bash
+     cd "My Documents"
+     cd My\ Documents
+     ```
+4. **Using cd in Scripts**  
+   - Remember that changing directories in a script usually won’t affect your parent shell’s working directory unless you source the script. If you run `bash script.sh`, the directory change happens in a subshell.
+
+5. **Symlinks**  
+   - If navigating through symbolic links, the shell might keep the link path in `$PWD`. Use `cd -P` to resolve to the physical path of the directory:
+     ```bash
+     cd -P /path/to/symlink
+     ```
+
+---
+
+### Common Pitfalls
+
+- **Forgetting Quotes**  
+  - If the directory name has spaces or special characters, forgetting quotes can result in an error or unexpected behavior.
+- **Missing Permissions**  
+  - If you lack permissions to enter a directory, `cd` will fail. You might need elevated privileges or file permission changes.
+
+---
+
+### Examples
+
+1. **Moving to a Subdirectory**  
+   ```bash
+   cd projects
+   ```
+   Assumes `projects` is within your current directory.
+
+2. **Going Back One Directory**  
+   ```bash
+   cd ..
+   ```
+   Moves you to the parent directory.
+
+3. **Jumping to Your Home Directory**  
+   ```bash
+   cd
+   ```
+   Takes you back to `/home/<username>` or `/Users/<username>`.
+
+4. **Returning to the Previous Directory**  
+   ```bash
+   cd -
+   ```
+   If you were in `/usr/local/bin` and moved to `/etc`, typing `cd -` will return you to `/usr/local/bin`.
+
+5. **Moving Directly to an Absolute Path**  
+   ```bash
+   cd /usr/local/bin
+   ```
+   Relocates your current working directory to `/usr/local/bin`.
+
+---
+
+### Tips and Best Practices
+
+- **cd** is crucial for navigation in Bash.
+- Familiarize yourself with relative vs. absolute paths to move around efficiently.
+- Use special directories (`.`, `..`) and environment variables (`$HOME`, `$OLDPWD`) to speed up navigation.
+- Remember to handle directories with spaces carefully using quotes or escape characters.

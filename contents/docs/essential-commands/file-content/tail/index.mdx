@@ -1,0 +1,109 @@
+---
+title: "tail Command"
+date: "2025-01-12"
+description: "Output the last part of files."
+videoId: ""
+---
+
+### Overview
+
+The `tail` command shows the end of one or more files. By default, it displays the last 10 lines, but it offers many options for adjusting how much data is shown or for monitoring files in real time.
+
+---
+
+### Basic Usage
+
+```bash
+tail filename
+```
+- Prints the last 10 lines of `filename`.
+
+```bash
+tail -n 20 filename
+```
+- Prints the last 20 lines instead of 10.
+
+---
+
+### Following a File in Real Time (`-f`)
+
+```bash
+tail -f /var/log/syslog
+```
+- Continues to display new lines as they’re added to the file.  
+- Useful for real-time monitoring of log files or output from background processes.  
+- Press `Ctrl + C` to stop following.
+
+```bash
+tail -F /var/log/syslog
+```
+- Similar to `-f` but also handles cases where the file is rotated (e.g., log rotation).  
+- If the file is moved or recreated, `tail -F` keeps tracking the new file.
+
+---
+
+### Combining Options
+
+```bash
+tail -f -n 50 /var/log/syslog
+```
+- Shows the last 50 lines of the file, then continues to follow new entries as they appear.
+
+---
+
+### Multiple Files
+
+```bash
+tail file1 file2
+```
+- Displays the last 10 lines of each file, prefixed with a header indicating which file the lines came from.
+
+---
+
+### Examples
+
+1. **Show Last 10 Lines of a File**  
+   ```bash
+   tail /var/log/messages
+   ```
+   The default behavior: 10 lines from the end.
+
+2. **Show 100 Lines**  
+   ```bash
+   tail -n 100 bigfile.log
+   ```
+   Retrieves a larger chunk, useful if you need more context.
+
+3. **Real-Time Log Monitoring**  
+   ```bash
+   tail -f /var/log/nginx/access.log
+   ```
+   Outputs new lines as visitors hit the server.
+
+4. **Handle Log Rotation**  
+   ```bash
+   tail -F /var/log/nginx/error.log
+   ```
+   Continues following logs even if they get rotated (renamed, moved, etc.).
+
+5. **Tail Two Files**  
+   ```bash
+   tail -n 5 app.log errors.log
+   ```
+   Displays the last 5 lines of both `app.log` and `errors.log`.
+
+6. **Grep in Tail**  
+   ```bash
+   tail -f /var/log/syslog | grep "ERROR"
+   ```
+   Prints only lines containing “ERROR” in real time.
+
+---
+
+### Tips and Best Practices
+
+- **Use `-f` for Monitoring**: Watch logs or other continuously written files in real time. Ideal for troubleshooting or debugging.  
+- **Combine with Other Tools**: Pipe `tail -f` into commands like `grep` or `awk` to filter or format log data on the fly.  
+- **Check Log Rotation**: If you frequently watch logs that rotate, use `-F` over `-f` so you don’t lose the stream when the log file is rotated.  
+- **Memory Concerns**: `tail` loads only the requested portion of a file. It’s more efficient than `cat` when dealing with very large files.  
+- **Multiple File Monitoring**: If you need to watch multiple logs, run `tail -f file1 file2 ...`; each file’s output will be interleaved in the terminal.  

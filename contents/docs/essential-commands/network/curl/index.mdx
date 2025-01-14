@@ -1,0 +1,181 @@
+---
+title: "curl Command"
+date: "2025-01-12"
+description: "Transfer a URL using a variety of protocols."
+videoId: ""
+---
+
+### Overview
+
+The `curl` (client URL) command is a versatile tool for transferring data to and from servers. It supports a wide range of protocols (HTTP, HTTPS, FTP, SFTP, etc.), making it invaluable for tasks like downloading files, troubleshooting APIs, and sending custom requests.
+
+---
+
+### Basic Usage
+
+```bash
+curl https://example.com
+```
+- Fetches the HTML content of `https://example.com` and prints it to standard output.  
+- By default, `curl` uses an HTTP `GET` request if no other method is specified.
+
+```bash
+curl -O https://example.com/file.zip
+```
+- Saves the file (`file.zip`) with the same name as the remote server provides.
+- **`-O`**: Write output to a file with the remote filename.
+
+---
+
+### Common Options
+
+1. **Download to a Specific File (`-o`)**  
+   ```bash
+   curl -o local_file.zip https://example.com/file.zip
+   ```
+   Names the downloaded file `local_file.zip`.
+
+2. **Show Headers Only (`-I`)**  
+   ```bash
+   curl -I https://example.com
+   ```
+   Retrieves only HTTP headers (e.g., server type, content type, etc.).
+
+3. **Follow Redirects (`-L`)**  
+   ```bash
+   curl -L http://example.com
+   ```
+   Follows any HTTP 3xx redirects until it reaches the final destination.
+
+4. **Include Response Headers in Output (`-i`)**  
+   ```bash
+   curl -i https://example.com
+   ```
+   Shows both HTTP headers and the body in the output.
+
+5. **Silent Mode (`-s`)**  
+   ```bash
+   curl -s https://example.com
+   ```
+   Suppresses the progress meter and error messages (useful for scripting).
+
+6. **Verbose Mode (`-v`)**  
+   ```bash
+   curl -v https://example.com
+   ```
+   Prints detailed information about the request and response (great for debugging).
+
+7. **Limit Rate of Transfer (`--limit-rate`)**  
+   ```bash
+   curl --limit-rate 100k https://example.com/file.iso -O
+   ```
+   Caps the download speed to 100 KB/s.
+
+---
+
+### Using HTTP Methods
+
+```bash
+# POST request
+curl -X POST -d "param1=value1&param2=value2" https://example.com/api
+```
+- **`-X POST`**: Explicitly sets the HTTP method to POST.  
+- **`-d`**: Sends the provided data in the request body.  
+
+```bash
+# PUT request
+curl -X PUT -d '{"name":"Dan"}' -H "Content-Type: application/json" https://example.com/users/1
+```
+- Sends JSON data with a `PUT` request.  
+- **`-H`** sets the `Content-Type` header.
+
+---
+
+### Authentication
+
+1. **Basic Authentication**  
+   ```bash
+   curl -u username:password https://example.com/protected
+   ```
+   Encodes credentials in the `Authorization` header.  
+
+2. **Bearer Tokens**  
+   ```bash
+   curl -H "Authorization: Bearer <token>" https://example.com/api
+   ```
+   Sends an OAuth or JWT token in the header.
+
+3. **Digest Authentication**  
+   ```bash
+   curl --digest -u username:password https://example.com/protected
+   ```
+   Uses Digest auth instead of Basic.
+
+---
+
+### Uploading Files
+
+```bash
+curl -F "file=@/path/to/file.jpg" https://example.com/upload
+```
+- **`-F`**: Uses multipart/form-data.  
+- The `@` symbol indicates a file to upload.
+
+---
+
+### Examples
+
+1. **Download a File and Rename**  
+   ```bash
+   curl -o myfile.txt https://example.com/data.txt
+   ```
+   Saves `data.txt` to `myfile.txt`.
+
+2. **View Only Headers**  
+   ```bash
+   curl -I -s https://example.com
+   ```
+   Quietly fetches just the HTTP response headers.
+
+3. **Follow Redirects and Show Progress**  
+   ```bash
+   curl -L -O https://example.com/redirected-file
+   ```
+   Automatically follows redirects and saves the final file, keeping the same name as on the server.
+
+4. **Upload Using Form Data**  
+   ```bash
+   curl -F "username=dan" -F "file=@/home/dan/pic.png" https://example.com/upload
+   ```
+   Sends form data with a file attached.
+
+5. **POST JSON Data**  
+   ```bash
+   curl -X POST -H "Content-Type: application/json" \
+        -d '{"msg":"Hello World!"}' \
+        https://api.example.com/messages
+   ```
+   Sends a JSON object in the body of a POST request.
+
+6. **Use a Proxy**  
+   ```bash
+   curl -x http://proxy.example.com:8080 https://example.com
+   ```
+   Routes the request through a proxy server.
+
+7. **Set a User Agent**  
+   ```bash
+   curl -A "MyCustomAgent/1.0" https://example.com
+   ```
+   Customizes the `User-Agent` header to mimic or identify a specific client.
+
+---
+
+### Tips and Best Practices
+
+- **Test APIs Quickly**: Curl is perfect for verifying endpoints in REST APIs. Combined with JSON data (`-H "Content-Type: application/json" -d …`), you can simulate requests from the command line.
+- **Scripting**: Use `-s` for silent mode and `-o` or `-O` to control how data is saved. Parse output with tools like `jq` (for JSON) or `grep`.
+- **Verbose Mode**: When requests fail, use `-v` or `--trace`/`--trace-ascii` for deeper inspection of headers and data.
+- **TLS/SSL**: If you encounter SSL certificate errors, you can bypass them with `-k` (insecure), though it’s better to fix certificates in production environments.
+- **Rate Limiting**: In automation scripts, `--limit-rate` helps prevent saturating bandwidth or overwhelming a server.
+- **Authentication Handling**: Sensitive credentials should be stored securely or passed via environment variables rather than hard-coded in scripts.

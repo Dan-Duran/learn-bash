@@ -1,0 +1,115 @@
+---
+title: "ping Command"
+date: "2025-01-12"
+description: "Check network connectivity to a host."
+videoId: ""
+---
+
+### Overview
+
+The `ping` command sends ICMP echo request packets to a host and listens for echo replies. It’s commonly used to verify whether a particular host is reachable, to measure latency (round-trip time), and to detect packet loss.
+
+---
+
+### Basic Usage
+
+```bash
+ping hostname_or_ip
+```
+- Sends continuous packets by default on most Unix-like systems.  
+- Press `Ctrl + C` to stop.
+
+```bash
+ping 8.8.8.8
+```
+- Checks connectivity to Google’s public DNS server.
+
+---
+
+### Common Options
+
+- **`-c <count>`**: Send a fixed number of packets, then stop.
+  ```bash
+  ping -c 4 example.com
+  ```
+- **`-i <interval>`**: Specify the interval (in seconds) between sending each packet.
+  ```bash
+  ping -i 2 example.com
+  ```
+- **`-W <timeout>` or `-w <deadline>`**: Set a timeout in seconds.
+  ```bash
+  ping -w 10 example.com
+  ```
+- **`-t <TTL>`**: Set the time-to-live for packets (how many hops allowed).
+  ```bash
+  ping -t 64 example.com
+  ```
+  On Linux, the equivalent is `-m <TTL>` or sometimes `-T`.
+
+- **`-a`**: Produce an audible beep when a response is received (not available on all systems).
+
+---
+
+### Interpreting Results
+
+Each line of output typically includes:
+- **icmp_seq**: The sequence number of the packet.  
+- **ttl**: Time-to-live left in the packet (how many router hops remain).  
+- **time**: Round-trip time (latency) in milliseconds.  
+
+The final summary shows:
+- **Packets transmitted**: Total echo requests sent.  
+- **Packets received**: Total echo replies received.  
+- **Packet loss**: The percentage of packets that didn’t come back.  
+- **Round-trip time statistics**: Minimum, average, maximum, and standard deviation of latency.
+
+---
+
+### Examples
+
+1. **Basic Connectivity Check**  
+   ```bash
+   ping google.com
+   ```
+   Continuously pings Google until you press `Ctrl + C`.
+
+2. **Send a Specific Number of Packets**  
+   ```bash
+   ping -c 5 8.8.8.8
+   ```
+   Sends exactly 5 ICMP packets, then stops.
+
+3. **Change the Interval**  
+   ```bash
+   ping -i 2 example.com
+   ```
+   Sends a new packet every 2 seconds instead of the default 1 second.
+
+4. **Set a Deadline**  
+   ```bash
+   ping -w 10 example.com
+   ```
+   Stops after 10 seconds, regardless of how many packets have been sent or received.
+
+5. **Audible Ping** (if supported)  
+   ```bash
+   ping -a example.com
+   ```
+   Sends a beep on each reply.
+
+6. **Limit by Packet Count and Timeout**  
+   ```bash
+   ping -c 4 -w 5 example.com
+   ```
+   Sends 4 packets but will also stop if 5 seconds elapse, whichever comes first.
+
+---
+
+### Tips and Best Practices
+
+- **Check DNS vs. IP**: If you suspect DNS issues, ping an IP (e.g., 8.8.8.8) rather than a hostname. If the IP works but the hostname doesn’t, you likely have a DNS problem.  
+- **Intervals**: Increasing the interval (`-i`) can reduce network load for long-running monitoring.  
+- **Permissions**: Some systems require elevated privileges to set certain options (like very short intervals).  
+- **Firewalls and Filtering**: Not all hosts reply to ping; firewalls may drop ICMP packets. A lack of reply doesn’t always mean the host is down.  
+- **Script Integration**: Use `ping -c` in scripts to test connectivity and parse the output for success/failure.  
+- **Combine with Other Tools**: If `ping` fails or shows high latency, investigate further with `traceroute`, `mtr`, or `nslookup/dig` for DNS troubleshooting.

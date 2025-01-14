@@ -1,0 +1,256 @@
+---
+title: "tcpdump Command"
+date: "2025-01-13"
+description: "A powerful packet analyzer for capturing and analyzing network traffic."
+videoId: ""
+---
+
+### Overview
+
+The `tcpdump` command is a powerful and widely-used network packet analyzer. It captures and displays network traffic passing through a network interface, making it invaluable for debugging, monitoring, and analyzing network activity.
+
+**Key Features:**
+- Capture packets on specified interfaces.
+- Filter traffic based on protocols, ports, or IP addresses.
+- Display packets in real-time with detailed headers.
+- Save captured traffic to files for offline analysis.
+- Decode and interpret protocols for in-depth inspection.
+
+---
+
+### Basic Usage
+
+```bash
+tcpdump [OPTIONS] [EXPRESSION]
+```
+
+- **OPTIONS**: Flags that modify the behavior of the command (e.g., verbosity or output file).
+- **EXPRESSION**: Filters to capture specific traffic (e.g., `host 192.168.1.1` or `port 80`).
+
+**Example:**
+```bash
+tcpdump -i eth0
+```
+- Captures packets on the `eth0` interface.
+
+---
+
+### Common Options
+
+1. **`-i` (Interface)**
+   ```bash
+   tcpdump -i eth0
+   ```
+   - Specifies the network interface to capture traffic on. If omitted, `tcpdump` selects the first active interface.
+
+2. **`-n`**
+   ```bash
+   tcpdump -n
+   ```
+   - Displays numeric IP addresses and port numbers, skipping DNS resolution.
+
+3. **`-nn`**
+   ```bash
+   tcpdump -nn
+   ```
+   - Skips both DNS and service name resolution for faster output.
+
+4. **`-c` (Count)**
+   ```bash
+   tcpdump -c 10
+   ```
+   - Captures only 10 packets and then stops.
+
+5. **`-w` (Write to File)**
+   ```bash
+   tcpdump -w capture.pcap
+   ```
+   - Saves captured packets to a file (`capture.pcap`) for later analysis.
+
+6. **`-r` (Read from File)**
+   ```bash
+   tcpdump -r capture.pcap
+   ```
+   - Reads and displays packets from a previously saved `.pcap` file.
+
+7. **`-v`, `-vv`, `-vvv`**
+   ```bash
+   tcpdump -vv
+   ```
+   - Increases the verbosity level for detailed packet headers.
+
+8. **`-X`**
+   ```bash
+   tcpdump -X
+   ```
+   - Displays packet contents in both hexadecimal and ASCII.
+
+9. **`-tt`**
+   ```bash
+   tcpdump -tt
+   ```
+   - Displays timestamps for captured packets.
+
+10. **`-s` (Snap Length)**
+    ```bash
+    tcpdump -s 0
+    ```
+    - Captures the full packet rather than truncating it (default is 96 bytes).
+
+11. **`-A`**
+    ```bash
+    tcpdump -A
+    ```
+    - Prints packet payloads in ASCII for human-readable inspection.
+
+---
+
+### Filtering Expressions
+
+1. **Host**
+   ```bash
+   tcpdump host 192.168.1.1
+   ```
+   - Captures traffic to/from the specified host.
+
+2. **Port**
+   ```bash
+   tcpdump port 80
+   ```
+   - Captures traffic on port `80`.
+
+3. **Protocol**
+   ```bash
+   tcpdump icmp
+   ```
+   - Captures only ICMP packets.
+
+4. **Source or Destination**
+   ```bash
+   tcpdump src 192.168.1.1
+   tcpdump dst 192.168.1.1
+   ```
+   - Captures packets with the specified source or destination IP.
+
+5. **Logical Operators**
+   ```bash
+   tcpdump host 192.168.1.1 and port 443
+   tcpdump host 192.168.1.1 or port 443
+   tcpdump not port 22
+   ```
+   - Combines filters using logical operators (`and`, `or`, `not`).
+
+6. **Subnet**
+   ```bash
+   tcpdump net 192.168.1.0/24
+   ```
+   - Captures traffic within the specified subnet.
+
+7. **Specific Ethernet Protocol**
+   ```bash
+   tcpdump ether proto 0x0806
+   ```
+   - Captures packets of a specific Ethernet protocol (e.g., ARP).
+
+8. **Broadcast and Multicast**
+   ```bash
+   tcpdump broadcast
+   tcpdump multicast
+   ```
+   - Captures broadcast or multicast traffic.
+
+---
+
+### Examples
+
+1. **Capture All Traffic on an Interface**
+   ```bash
+   tcpdump -i eth0
+   ```
+
+2. **Capture HTTP Traffic**
+   ```bash
+   tcpdump -i eth0 port 80
+   ```
+
+3. **Save Traffic to a File**
+   ```bash
+   tcpdump -i eth0 -w capture.pcap
+   ```
+
+4. **Read and Analyze Saved Traffic**
+   ```bash
+   tcpdump -r capture.pcap
+   ```
+
+5. **Capture ICMP Traffic**
+   ```bash
+   tcpdump -i eth0 icmp
+   ```
+
+6. **Monitor Traffic Between Two Hosts**
+   ```bash
+   tcpdump -i eth0 host 192.168.1.1 and 10.0.0.1
+   ```
+
+7. **Capture Only Outgoing Traffic**
+   ```bash
+   tcpdump -i eth0 src 192.168.1.1
+   ```
+
+8. **Capture Packets with Hex Dump**
+   ```bash
+   tcpdump -i eth0 -X
+   ```
+
+9. **Capture Full Packets**
+   ```bash
+   tcpdump -i eth0 -s 0
+   ```
+
+10. **Capture Traffic with Time Stamps**
+    ```bash
+    tcpdump -i eth0 -tt
+    ```
+
+---
+
+### Tips and Best Practices
+
+- **Run as Root**: Packet capture requires administrative privileges.
+  ```bash
+  sudo tcpdump -i eth0
+  ```
+
+- **Use Filters**: Avoid capturing unnecessary traffic by applying filters.
+  ```bash
+  tcpdump host 192.168.1.1
+  ```
+
+- **Analyze Saved Captures**: Use tools like Wireshark for detailed analysis of `.pcap` files.
+  ```bash
+  tcpdump -r capture.pcap
+  ```
+
+- **Avoid DNS Resolution**: Use the `-n` or `-nn` options to speed up output by skipping hostname and service name resolution.
+  ```bash
+  tcpdump -nn
+  ```
+
+- **Capture Full Packets**: Use `-s 0` to avoid truncating packet data, especially for protocol analysis.
+  ```bash
+  tcpdump -s 0 -i eth0
+  ```
+
+- **Log Output for Later Review**: Save output to a file with `-w` for offline review.
+  ```bash
+  tcpdump -w capture.pcap
+  ```
+
+- **Monitor Specific Protocols**: Filter by protocol to focus on relevant traffic (e.g., `tcp`, `udp`, `icmp`).
+
+- **Understand Timestamps**: Use `-tt` for raw timestamps or `-t` to suppress timestamps entirely.
+
+- **Use Snap Length for Efficiency**: Capture only the necessary packet length when full payloads aren't required.
+
+- **Respect Privacy and Policies**: Ensure you have permission to capture traffic and comply with organizational and legal guidelines.

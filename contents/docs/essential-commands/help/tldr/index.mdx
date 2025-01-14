@@ -1,0 +1,70 @@
+---
+title: "tldr Command"
+date: "2025-01-12"
+description: "Displays simplified and community-driven man pages."
+videoId: ""
+---
+
+### Overview
+
+The `tldr` (Too Long; Didn't Read) command provides simplified, practical examples for console commands. It serves as a more accessible alternative to traditional man pages by focusing on common use cases with clear examples.
+
+---
+
+### Basic Usage
+
+```bash
+tldr <command>
+```
+- Shows simplified help for the specified command
+- Example:
+  ```bash
+  tldr tar
+  ```
+  Shows common usage examples for the `tar` command.
+
+---
+
+### Common Options
+
+- `-u`, `--update`: Update the local cache
+- `-p`, `--platform`: Show page for specific platform
+- `-L`, `--language`: Show page in specified language
+- `-a`, `--list-all`: List all commands
+- `-f`, `--render`: Render a local file
+
+---
+
+### Examples
+
+1. **View Common Command Usage**  
+   ```bash
+   tldr git
+   tldr docker
+   ```
+
+2. **Update Local Pages**  
+   ```bash
+   tldr --update
+   ```
+
+3. **View Platform-Specific Help**  
+   ```bash
+   tldr --platform=linux tar
+   tldr --platform=osx brew
+   ```
+
+4. **List All Available Commands**  
+   ```bash
+   tldr --list-all
+   ```
+
+---
+
+### Tips and Best Practices
+
+- **Regular Updates**: Keep your local cache updated for the latest examples
+- **Platform Check**: Use the platform flag when commands differ between operating systems
+- **Offline Access**: Pages are cached locally after the first access
+- **Contribution**: Consider contributing examples to the community
+- **Installation**: Install via package manager or npm (`npm install -g tldr`)

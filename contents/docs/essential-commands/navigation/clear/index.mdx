@@ -1,0 +1,61 @@
+---
+title: "clear Command"
+date: "2025-01-12"
+description: "Clear the terminal screen."
+videoId: ""
+---
+
+### Overview
+
+The `clear` command simply clears your terminal screen. It’s especially useful to declutter your view after a lot of command output or logs have been printed. Once invoked, the terminal screen becomes empty, although the command history remains intact—just scroll up to see previous output.
+
+---
+
+### Basic Usage
+
+```bash
+clear
+```
+- Erases all visible text in the current terminal window, effectively giving you a fresh screen.
+
+---
+
+### How It Works
+
+Under the hood, `clear` usually checks the `TERM` environment variable (for example, `xterm`, `vt100`, etc.) to determine the proper terminal control codes needed to clear the screen. It sends these codes, which instruct the terminal to move the cursor to the top-left and erase everything in the visible area.
+
+---
+
+### Alternative Methods
+
+- **Keyboard Shortcut**: Press `Ctrl + L` in many shells to achieve the same effect as `clear`.
+- **`reset` Command**: If the terminal session is in a weird state (garbled text or glitchy behavior), `reset` can be used. It reinitializes the terminal, effectively clearing it and resetting many settings.
+
+---
+
+### Examples
+
+1. **Clear the Screen**  
+   ```bash
+   clear
+   ```
+   Moves your cursor to a blank terminal prompt.
+
+2. **Using the Shortcut**  
+   - Press `Ctrl + L` in Bash, Zsh, or most other shells.  
+
+3. **Resetting a Garbled Terminal**  
+   ```bash
+   reset
+   ```
+   Not only clears, but reinitializes the terminal if needed.
+
+---
+
+### Tips and Best Practices
+
+- **Frequent Use**: Clearing the screen regularly can help maintain clarity if you’re troubleshooting or running multiple commands.  
+- **History Retained**: Remember that `clear` doesn’t erase your command history; scroll up or use `history` to review past commands.  
+- **Terminal Type**: If `clear` doesn’t behave as expected, check your `$TERM` environment variable. Some unusual terminal types might not support the standard clear codes.  
+- **Shortcut Advantage**: For quick cleanup, try `Ctrl + L`; it’s faster than typing `clear`.  
+- **Troubleshooting**: If your terminal is in a strange state, use `reset` instead of `clear` to restore normal behavior.

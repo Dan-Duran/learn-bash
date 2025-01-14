@@ -1,0 +1,111 @@
+---
+title: "Loops"
+date: "2025-01-12"
+description: "Learn how to create and use loops in Bash scripting."
+videoId: ""
+---
+
+### Overview
+
+Loops in Bash allow you to execute a set of commands repeatedly. Bash provides several types of loops: for, while, and until. Each serves different purposes and can be used to iterate over lists, process files, or run commands based on conditions.
+
+---
+
+### Basic Usage
+
+```bash
+# For loop
+for item in list; do
+    command
+done
+
+# While loop
+while [ condition ]; do
+    command
+done
+```
+
+**Example**:
+```bash
+for i in 1 2 3; do
+    echo "Number: $i"
+done
+```
+- Prints each number in the sequence
+
+---
+
+### Common Types
+
+1. **For Loop**  
+   ```bash
+   # Basic sequence
+   for i in 1 2 3 4 5; do
+       echo "$i"
+   done
+
+   # C-style
+   for ((i=0; i<5; i++)); do
+       echo "$i"
+   done
+   ```
+
+2. **While Loop**  
+   ```bash
+   count=0
+   while [ $count -lt 5 ]; do
+       echo "$count"
+       ((count++))
+   done
+   ```
+
+3. **Until Loop**  
+   ```bash
+   count=0
+   until [ $count -ge 5 ]; do
+       echo "$count"
+       ((count++))
+   done
+   ```
+
+---
+
+### Examples
+
+1. **Process Files**  
+   ```bash
+   for file in *.txt; do
+       echo "Processing $file"
+       cat "$file"
+   done
+   ```
+
+2. **Read File Line by Line**  
+   ```bash
+   while read -r line; do
+       echo "Line: $line"
+   done < input.txt
+   ```
+
+3. **Infinite Loop**  
+   ```bash
+   while true; do
+       echo "Press q to quit"
+       read input
+       if [ "$input" = "q" ]; then
+           break
+       fi
+   done
+   ```
+
+---
+
+### Tips and Best Practices
+
+- Quote variables in conditions
+- Use meaningful loop variables
+- Avoid infinite loops
+- Include break/continue when needed
+- Control loop output
+- Test loop conditions
+- Use appropriate loop type for task

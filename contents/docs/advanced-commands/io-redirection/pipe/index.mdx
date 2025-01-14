@@ -1,0 +1,100 @@
+---
+title: "Pipe (|)" 
+date: "2025-01-12"
+description: "Connect the output of one command to the input of another."
+videoId: ""
+---
+
+### Overview
+
+A **pipe** (`|`) in Bash (and other Unix-like shells) connects the standard output (`stdout`) of one command to the standard input (`stdin`) of another. This lets you chain commands, transforming or filtering data in stages. Pipes are fundamental to the Unix philosophy of combining small, specialized tools to perform more complex tasks.
+
+---
+
+### Basic Usage
+
+```bash
+command1 | command2
+```
+- `command1` writes its output to the pipe instead of displaying it on the terminal.
+- `command2` reads from the pipe as though the data came from a file or user input.
+
+**Example**:
+```bash
+ls -l | grep ".sh"
+```
+- Lists files in long format, then pipes the output to `grep`, which filters only lines containing `.sh`.
+
+---
+
+### Multiple Pipes
+
+You can chain multiple commands to create more advanced pipelines:
+
+```bash
+command1 | command2 | command3 ...
+```
+
+**Example**:
+```bash
+ps aux | grep nginx | awk '{print $2}' 
+```
+- `ps aux` lists running processes.
+- `grep nginx` filters only lines mentioning `nginx`.
+- `awk '{print $2}'` extracts just the second column (often the PID).
+
+---
+
+### Common Examples
+
+1. **Searching Command Output**  
+   ```bash
+   dmesg | tail -n 20
+   ```
+   - Feeds kernel messages (`dmesg`) into `tail`, showing only the last 20 lines.
+
+2. **Sorting Output**  
+   ```bash
+   ls -l | sort -k5 -n
+   ```
+   - Lists files with `ls -l`, then sorts them numerically by the 5th column (file size).
+
+3. **Word Count**  
+   ```bash
+   cat file.txt | wc -l
+   ```
+   - Reads `file.txt` and counts the number of lines.
+
+4. **Filtering Logs**  
+   ```bash
+   cat /var/log/syslog | grep "ERROR" | less
+   ```
+   - Displays only lines with “ERROR,” and lets you scroll through them with `less`.
+
+5. **Combining with Other Tools**  
+   ```bash
+   ps aux | grep apache2 | awk '{print $2}' | xargs kill -9
+   ```
+   - Finds PIDs of `apache2` processes and kills them. (Careful with automation like this.)
+
+---
+
+### Why Pipes Are So Powerful
+
+- **Modularity**: Allows each command to do one task well—like searching, sorting, or formatting.
+- **Efficiency**: Data is passed directly from one command to another in memory, without writing to intermediate files.
+- **Flexibility**: You can easily swap out commands in a pipeline to adjust how data is filtered or transformed.
+
+---
+
+### Best Practices and Tips
+
+- **Don’t Overuse `cat`**: A common newbie pattern is `cat file.txt | grep foo`. Instead, prefer `grep foo file.txt` directly—unless you really need multiple pipes in sequence.
+- **Check Performance**: Some commands can handle multiple operations themselves (e.g., `sort` can also remove duplicates with `-u`). But simpler, smaller steps can be easier to read and maintain.
+- **Quoting**: If your commands or filters include special characters, ensure you quote them properly so the shell doesn’t misinterpret them.
+- **Combine with Redirection**: You can redirect input and output alongside pipes. For example:  
+  ```bash
+  grep "pattern" < inputfile | sort > sortedfile
+  ```
+- **Use xargs**: Sometimes you need to handle results from a pipe in bulk. `xargs` feeds piped data as arguments to another command.
+- **Scripting**: Pipelines are just as useful in shell scripts as in interactive mode. They can help process large sets of data step by step without creating temporary files.

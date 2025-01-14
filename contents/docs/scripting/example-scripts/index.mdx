@@ -1,0 +1,315 @@
+---
+title: "Example Scripts"
+date: "2025-01-12"
+description: "Real-world examples of Bash scripts combining various concepts."
+videoId: ""
+---
+
+### What's Included
+
+These examples showcase best practices for writing Bash scripts and provide a foundation for creating your own scripts. Each script demonstrates:
+
+- Proper script structure
+- Error handling
+- Input validation
+- Color output
+- Arrays and associative arrays
+- Functions
+- Loops
+- File operations
+- User interaction
+- Command line arguments
+- Logging
+
+---
+
+### How to Run the Scripts
+
+To put these best practices into action, start by copying the provided script examples using the "Copy" button. Open the script file in a text editor like `nano` to customize it according to your needs. After editing, make the script executable by running `chmod +x your_script.sh`. Finally, execute your script with `./your_script.sh`. This workflow ensures that your scripts are properly set up, secure, and ready for use.
+
+Feel free to explore and modify these scripts to suit your needs!
+
+### 1. Word Guessing Game
+
+```bash
+#!/usr/bin/env bash
+
+# Word Guessing Game
+# A simple game where player tries to guess a random word
+
+declare -a words=("bash" "script" "linux" "terminal" "command" "shell")
+declare -A colors=([red]="\033[0;31m" [green]="\033[0;32m" [reset]="\033[0m")
+
+# Select random word
+word=${words[$RANDOM % ${#words[@]}]}
+word_length=${#word}
+guesses=6
+
+# Initialize display array with underscores
+declare -a display
+for ((i=0; i<word_length; i++)); do
+    display[i]="_"
+done
+
+echo "Welcome to Word Guess!"
+echo "The word has $word_length letters"
+
+while ((guesses > 0)); do
+    # Show current state
+    echo -e "\nWord: ${display[*]}"
+    echo "Guesses left: $guesses"
+    
+    # Get player's guess
+    read -p "Enter a letter: " -n 1 guess
+    echo
+    
+    # Check if letter exists in word
+    found=false
+    for ((i=0; i<word_length; i++)); do
+        if [[ ${word:$i:1} == "$guess" ]]; then
+            display[i]=$guess
+            found=true
+        fi
+    done
+    
+    # Update guesses
+    if ! $found; then
+        echo -e "${colors[red]}Wrong!${colors[reset]}"
+        ((guesses--))
+    else
+        echo -e "${colors[green]}Correct!${colors[reset]}"
+    fi
+    
+    # Check for win
+    if [[ "${display[*]}" == "${word[*]}" ]]; then
+        echo -e "\n${colors[green]}Congratulations! You won!${colors[reset]}"
+        echo "The word was: $word"
+        exit 0
+    fi
+done
+
+echo -e "\n${colors[red]}Game Over!${colors[reset]}"
+echo "The word was: $word"
+```
+
+### 2. System Health Monitor
+
+```bash
+#!/usr/bin/env bash
+
+# System Health Monitor
+# Monitors system resources and logs warnings
+
+readonly LOG_FILE="system_health.log"
+readonly THRESHOLD_CPU=80
+readonly THRESHOLD_MEM=80
+readonly THRESHOLD_DISK=90
+
+log() {
+    local timestamp
+    timestamp=$(date '+%Y-%m-%d %H:%M:%S')
+    echo "[$timestamp] $*" >> "$LOG_FILE"
+}
+
+get_cpu_usage() {
+    local cpu
+    cpu=$(top -bn1 | grep "Cpu(s)" | awk '{print $2}' | cut -d. -f1)
+    echo "$cpu"
+}
+
+get_memory_usage() {
+    local memory
+    memory=$(free | grep Mem | awk '{print int($3/$2 * 100)}')
+    echo "$memory"
+}
+
+get_disk_usage() {
+    local disk
+    disk=$(df -h / | tail -n 1 | awk '{print int($5)}')
+    echo "$disk"
+}
+
+check_service() {
+    local service=$1
+    if systemctl is-active "$service" >/dev/null 2>&1; then
+        echo "running"
+    else
+        echo "stopped"
+    fi
+}
+
+# Main monitoring loop
+echo "Starting System Health Monitor..."
+log "Monitoring started"
+
+while true; do
+    cpu_usage=$(get_cpu_usage)
+    mem_usage=$(get_memory_usage)
+    disk_usage=$(get_disk_usage)
+    
+    # Check CPU
+    if ((cpu_usage > THRESHOLD_CPU)); then
+        log "WARNING: High CPU usage: $cpu_usage%"
+    fi
+    
+    # Check Memory
+    if ((mem_usage > THRESHOLD_MEM)); then
+        log "WARNING: High memory usage: $mem_usage%"
+    fi
+    
+    # Check Disk
+    if ((disk_usage > THRESHOLD_DISK)); then
+        log "WARNING: High disk usage: $disk_usage%"
+    fi
+    
+    # Display status
+    clear
+    cat << EOF
+=== System Health Monitor ===
+CPU Usage:    $cpu_usage%
+Memory Usage: $mem_usage%
+Disk Usage:   $disk_usage%
+SSH Service:  $(check_service ssh)
+HTTP Service: $(check_service apache2)
+
+Press Ctrl+C to exit
+Last checked: $(date '+%H:%M:%S')
+EOF
+    
+    sleep 5
+done
+```
+
+### 3. File Organizer
+
+```bash
+#!/usr/bin/env bash
+
+# File Organizer
+# Organizes files into directories based on their extensions
+
+declare -A file_types=(
+    ["image"]="jpg jpeg png gif"
+    ["document"]="pdf doc docx txt md"
+    ["archive"]="zip tar gz"
+    ["audio"]="mp3 wav flac"
+    ["video"]="mp4 avi mkv"
+)
+
+show_help() {
+    cat << EOF
+File Organizer
+Usage: $0 [OPTIONS] directory
+
+Options:
+    -h, --help      Show this help message
+    -d, --dry-run   Show what would be done without making changes
+    -v, --verbose   Show detailed output
+
+Example: $0 -v ~/Downloads
+EOF
+}
+
+log() {
+    local level=$1
+    shift
+    printf '[%s] %s\n' "$level" "$*"
+}
+
+get_file_type() {
+    local extension=$1
+    
+    for type in "${!file_types[@]}"; do
+        if [[ " ${file_types[$type]} " =~ [[:space:]]${extension}[[:space:]] ]]; then
+            echo "$type"
+            return
+        fi
+    done
+    echo "misc"
+}
+
+organize_files() {
+    local target_dir=$1
+    local dry_run=$2
+    local verbose=$3
+    
+    cd "$target_dir" || exit 1
+    
+    # Process each file
+    while IFS= read -r file; do
+        [[ -f "$file" ]] || continue
+        
+        # Get file extension and type
+        local extension=${file##*.}
+        extension=${extension,,}  # Convert to lowercase
+        local type
+        type=$(get_file_type "$extension")
+        
+        # Create type directory if it doesn't exist
+        if [[ ! -d "$type" && "$dry_run" == "false" ]]; then
+            mkdir -p "$type"
+        fi
+        
+        # Move file
+        if [[ "$dry_run" == "true" ]]; then
+            log "DRY-RUN" "Would move '$file' to '$type/'"
+        else
+            if mv "$file" "$type/" 2>/dev/null; then
+                [[ "$verbose" == "true" ]] && log "INFO" "Moved '$file' to '$type/'"
+            else
+                log "ERROR" "Failed to move '$file'"
+            fi
+        fi
+    done < <(ls)
+}
+
+# Parse command line arguments
+dry_run=false
+verbose=false
+target_dir=""
+
+while (( $# > 0 )); do
+    case "$1" in
+        -h|--help)
+            show_help
+            exit 0
+            ;;
+        -d|--dry-run)
+            dry_run=true
+            shift
+            ;;
+        -v|--verbose)
+            verbose=true
+            shift
+            ;;
+        *)
+            if [[ -z "$target_dir" ]]; then
+                target_dir=$1
+                shift
+            else
+                log "ERROR" "Unknown argument: $1"
+                exit 1
+            fi
+            ;;
+    esac
+done
+
+# Validate input
+if [[ -z "$target_dir" ]]; then
+    log "ERROR" "No directory specified"
+    show_help
+    exit 1
+fi
+
+if [[ ! -d "$target_dir" ]]; then
+    log "ERROR" "Directory does not exist: $target_dir"
+    exit 1
+fi
+
+# Run organization
+log "INFO" "Starting file organization in: $target_dir"
+organize_files "$target_dir" "$dry_run" "$verbose"
+log "INFO" "Organization complete"
+```
+
+These scripts demonstrate various Bash scripting concepts, including arrays, functions, loops, conditional statements, and command-line argument parsing. Feel free to modify and experiment with them!

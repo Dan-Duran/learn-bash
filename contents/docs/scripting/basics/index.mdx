@@ -1,0 +1,105 @@
+---
+title: "Scripting Basics"
+date: "2025-01-12"
+description: "Learn the fundamental concepts of Bash scripting."
+videoId: ""
+---
+
+### Overview
+
+Bash scripting allows you to automate tasks by combining commands, control structures, and variables into reusable scripts. A script is essentially a text file containing a series of commands that the shell executes in sequence.
+
+---
+
+### Basic Script Structure
+
+```bash
+#!/bin/bash
+
+# Comments start with #
+# First, define variables
+name="World"
+
+# Then add your commands
+echo "Hello, $name!"
+
+# Exit with a status code
+exit 0
+```
+
+- Every script should start with a shebang
+- Comments help document your code
+- Commands execute in order, top to bottom
+- Exit codes indicate success (0) or failure (non-zero)
+
+---
+
+### Common Elements
+
+1. **Running Scripts**  
+   ```bash
+   chmod +x script.sh    # Make executable
+   ./script.sh          # Run script
+   bash script.sh       # Alternative method
+   ```
+
+2. **Comments**  
+   ```bash
+   # Single line comment
+   echo "Hello" # End of line comment
+   ```
+
+3. **Variables**  
+   ```bash
+   name="John"          # No spaces around =
+   echo "Hello, $name"  # Use $ to reference
+   ```
+
+4. **Command Output**  
+   ```bash
+   current_date=$(date)  # Command substitution
+   echo "Today is $current_date"
+   ```
+
+---
+
+### Examples
+
+1. **Simple Backup Script**  
+   ```bash
+   #!/bin/bash
+   source_dir="/home/user/documents"
+   backup_dir="/backup"
+   
+   cp -r "$source_dir" "$backup_dir"
+   echo "Backup completed!"
+   ```
+
+2. **Welcome Message**  
+   ```bash
+   #!/bin/bash
+   echo "Welcome to the system!"
+   date
+   echo "Currently logged in as: $(whoami)"
+   ```
+
+3. **Basic System Info**  
+   ```bash
+   #!/bin/bash
+   echo "Memory Usage:"
+   free -h
+   echo "Disk Space:"
+   df -h
+   ```
+
+---
+
+### Tips and Best Practices
+
+- Always start with a shebang line
+- Make scripts executable before running
+- Use meaningful variable names
+- Quote your variables when using them
+- Add comments to explain complex logic
+- Keep scripts modular and focused
+- Test scripts before using in production

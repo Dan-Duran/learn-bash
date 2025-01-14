@@ -1,0 +1,129 @@
+---
+title: "mv Command"
+date: "2025-01-12"
+description: "Move or rename files and directories."
+videoId: ""
+---
+
+### Overview
+
+The `mv` (move) command allows you to move or rename files and directories. Moving a file to a different directory is effectively cutting it from one location and pasting it into another. Renaming is just moving a file within the same directory but changing its name.
+
+---
+
+### Basic Usage
+
+```bash
+mv source_file target_file
+```
+- Renames `source_file` to `target_file` if both are in the same directory.
+
+```bash
+mv source_file /path/to/directory
+```
+- Moves `source_file` to the specified directory, keeping its original filename.
+
+```bash
+mv file1 file2 file3 /path/to/directory
+```
+- Moves multiple files (`file1`, `file2`, `file3`) to `/path/to/directory`.
+
+---
+
+### Overwriting Behavior
+
+By default, `mv` overwrites files without asking. Use the following options to control or confirm overwriting:
+
+1. **Interactive Mode (`-i`)**  
+   ```bash
+   mv -i source_file target_file
+   ```
+   Prompts you before overwriting the target file if it already exists.
+
+2. **Force Overwrite (`-f`)**  
+   ```bash
+   mv -f source_file target_file
+   ```
+   Suppresses prompts and overwrites existing files.
+
+3. **No Overwrite (`-n`)**  
+   ```bash
+   mv -n source_file target_file
+   ```
+   Skips the move operation if the target file exists.
+
+---
+
+### Additional Options
+
+- **`-v` (Verbose)**  
+  ```bash
+  mv -v source_file target_file
+  ```
+  Displays each move operation as it happens—useful for seeing which files are being moved or renamed.
+
+- **`-u` (Update)**  
+  ```bash
+  mv -u source_file target_file
+  ```
+  Moves the file only if the source is newer than the destination, or if the destination doesn’t exist.
+
+---
+
+### Examples
+
+1. **Renaming a File**  
+   ```bash
+   mv old_name.txt new_name.txt
+   ```
+   Changes `old_name.txt` to `new_name.txt` in the current directory.
+
+2. **Moving a File to a Different Directory**  
+   ```bash
+   mv document.pdf /home/dan/backup/
+   ```
+   Moves `document.pdf` into the `/home/dan/backup/` directory.
+
+3. **Moving Multiple Files**  
+   ```bash
+   mv img1.jpg img2.jpg /home/dan/pictures/
+   ```
+   Moves `img1.jpg` and `img2.jpg` into `/home/dan/pictures/`.
+
+4. **Prompt Before Overwriting**  
+   ```bash
+   mv -i config.yaml /etc/app/
+   ```
+   Asks for confirmation if `config.yaml` already exists in `/etc/app/`.
+
+5. **Avoid Overwriting**  
+   ```bash
+   mv -n report.txt /home/dan/reports/
+   ```
+   Skips moving `report.txt` if there’s already a file with the same name in `/home/dan/reports/`.
+
+6. **Verbose Move**  
+   ```bash
+   mv -v data.csv /home/dan/archive/
+   ```
+   Shows a line of output confirming the move operation.
+
+7. **Renaming Directories**  
+   ```bash
+   mv old_directory new_directory
+   ```
+   Effectively renames `old_directory` to `new_directory` if both are in the same parent path.
+
+---
+
+### Tips and Best Practices
+
+- **Check Your Destination**: Always confirm the correct path before moving important files.  
+- **Using `mv` for Renaming**: Remember that renaming is just moving a file or directory within the same location but with a new name.  
+- **Interactive Mode**: `mv -i` is especially helpful if you frequently move files that might overwrite existing data.  
+- **Handling Spaces**: If files or directories have spaces in their names, wrap them in quotes or escape them:
+  ```bash
+  mv "My Document.pdf" /home/dan/docs/
+  ```  
+- **Directory Moves**: When moving directories, `mv` will move all contents within that directory.  
+- **Scripting**: In automated scripts, be cautious with `mv -f` to avoid unintended overwrites. Always validate paths or use safety checks.

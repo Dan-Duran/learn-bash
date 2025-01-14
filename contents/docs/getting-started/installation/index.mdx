@@ -1,0 +1,31 @@
+---
+title: "Installation"
+date: "2025-01-12"
+description: "Set up Bash on your system."
+videoId: ""
+---
+
+### Installation
+
+Depending on your operating system, installing or accessing Bash can be straightforward:
+
+**Linux:**  
+- Most distributions come with Bash pre-installed.  
+- You can verify by opening a terminal and running `bash --version`.  
+
+**macOS:**  
+- Bash is included by default, though newer macOS versions may ship with Zsh as the default shell.  
+- If desired, you can install a newer version of Bash via [Homebrew](https://brew.sh/):  
+  ```bash
+  brew install bash
+  ```
+- Update your login shell by editing `/etc/shells` and running `chsh -s /usr/local/bin/bash`.  
+
+**Windows:**  
+- Install [Git for Windows](https://git-scm.com/download/win) to use Git Bash, which provides a Bash-like terminal.  
+- Alternatively, install the [Windows Subsystem for Linux](https://learn.microsoft.com/en-us/windows/wsl/about) (WSL) to run a full Linux environment on Windows.  
+
+After installation, open your terminal (or Git Bash on Windows) and verify with:
+```bash
+bash --version
+```

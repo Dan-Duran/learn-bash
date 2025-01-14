@@ -1,0 +1,108 @@
+---
+title: "Arrays"
+date: "2025-01-12"
+description: "Understanding arrays and how to manipulate them in Bash."
+videoId: ""
+---
+
+### Overview
+
+Arrays in Bash are variables that can hold multiple values. Bash supports both indexed arrays (with numeric indices) and associative arrays (with string indices). Arrays are zero-based, meaning the first element is at index 0.
+
+---
+
+### Basic Usage
+
+```bash
+# Declare indexed array
+fruits=("apple" "banana" "orange")
+
+# Access elements
+echo "${fruits[0]}"  # First element
+echo "${fruits[@]}"  # All elements
+```
+
+**Example**:
+```bash
+colors=("red" "green" "blue")
+echo "First color: ${colors[0]}"
+```
+- Creates an array of colors and prints the first element
+
+---
+
+### Common Operations
+
+1. **Array Declaration**  
+   ```bash
+   # Indexed array
+   declare -a numbers=(1 2 3 4 5)
+   
+   # Associative array
+   declare -A ages
+   ages=([john]=25 [mary]=30)
+   ```
+
+2. **Array Manipulation**  
+   ```bash
+   # Add element
+   array+=("new_element")
+   
+   # Remove element
+   unset array[2]
+   
+   # Length of array
+   echo "${#array[@]}"
+   ```
+
+3. **Array Iteration**  
+   ```bash
+   # Loop through elements
+   for item in "${array[@]}"; do
+       echo "$item"
+   done
+   
+   # Loop through indices
+   for i in "${!array[@]}"; do
+       echo "Index $i: ${array[$i]}"
+   done
+   ```
+
+---
+
+### Examples
+
+1. **Process Files**  
+   ```bash
+   files=(*txt)
+   for file in "${files[@]}"; do
+       echo "Processing $file"
+   done
+   ```
+
+2. **Associative Array**  
+   ```bash
+   declare -A user_info
+   user_info=([name]="John" [email]="john@example.com")
+   echo "Name: ${user_info[name]}"
+   ```
+
+3. **Array Operations**  
+   ```bash
+   numbers=(1 2 3 4 5)
+   numbers+=(6 7)          # Append
+   echo "${numbers[@]}"    # Print all
+   echo "${#numbers[@]}"   # Length
+   ```
+
+---
+
+### Tips and Best Practices
+
+- Always quote array references
+- Use declare for explicit array creation
+- Remember arrays are zero-based
+- Use associative arrays for key-value data
+- Check array bounds before access
+- Use meaningful array names
+- Clean up arrays when done

@@ -1,0 +1,72 @@
+---
+title: "Command Structure"
+date: "2025-01-12"
+description: "Understanding how commands are structured in Bash."
+videoId: ""
+---
+
+### Command Structure
+
+Every Bash command follows a basic structure:
+
+```bash
+command [options] [arguments]
+```
+
+Let's break this down:
+
+1. **Command**  
+   - The program or action you want to run
+   - Must be typed exactly (remember: case-sensitive)
+   - Examples: `ls`, `cd`, `mkdir`
+
+2. **Options (Flags)**  
+   - Modify how the command behaves
+   - Start with `-` (short form) or `--` (long form)
+   - Examples:
+     - `ls -l` (long format)
+     - `ls --all` (show hidden files)
+   - Can be combined: `ls -la`
+
+3. **Arguments**  
+   - What the command acts upon
+   - Usually files, directories, or text
+   - Examples:
+     - `cd Documents`
+     - `mkdir Projects`
+
+### Real Examples
+
+```bash
+# Simple command
+ls
+
+# Command with option
+ls -l
+
+# Command with argument
+cd Documents
+
+# Command with option and argument
+cp -r Documents Backup
+
+# Command with multiple options and arguments
+ls -la Documents Downloads
+```
+
+### Reading Command Help
+
+When you see command documentation:
+- Square brackets `[ ]` mean optional
+- Vertical bar `|` means "or"
+- Angle brackets `< >` mean required
+
+Example from documentation:
+```bash
+cp [-r] <source> <destination>
+```
+This means:
+- `-r` is optional
+- Both source and destination are required
+
+Remember: Most commands accept `--help` or `-h` to show basic usage information.
