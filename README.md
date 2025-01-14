@@ -41,6 +41,8 @@ npm run dev
 yarn dev
 ```
 
+Your app should now be running on http://localhost:3000
+
 ## ⭐ Features
 
 ### 🐭 Frameworks
