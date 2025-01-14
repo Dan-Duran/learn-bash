@@ -1,0 +1,215 @@
+---
+title: "iptables Command"
+date: "2025-01-13"
+description: "Manage Linux kernel's netfilter firewall to control network traffic."
+videoId: ""
+---
+
+### Overview
+
+The `iptables` command is a powerful utility for configuring the Linux kernel's built-in netfilter firewall. It allows system administrators to define rules that control the flow of incoming, outgoing, and forwarded network traffic based on various criteria like IP addresses, ports, and protocols.
+
+**Key Features:**
+- **Packet Filtering**: Allow, block, or modify packets based on rules.
+- **Stateful Inspection**: Maintain and filter traffic based on connection states.
+- **Network Address Translation (NAT)**: Translate IP addresses and ports for masquerading or load balancing.
+- **Logging**: Record information about packets for monitoring or debugging.
+- **Custom Chains**: Create and use custom rule chains for modular and reusable configurations.
+
+### Basic Usage
+
+```bash
+iptables [OPTIONS] COMMAND [CHAIN] [RULE-SPECIFICATION]
+```
+
+- **OPTIONS**: Flags that modify the behavior of the command (e.g., `-v` for verbose output).
+- **COMMAND**: The action to perform (e.g., `-A`, `-D`, `-L`).
+- **CHAIN**: The chain to apply the rule to (e.g., `INPUT`, `OUTPUT`, `FORWARD`).
+- **RULE-SPECIFICATION**: Defines the match conditions and target action.
+
+**Example:**
+```bash
+iptables -A INPUT -p tcp --dport 80 -j ACCEPT
+```
+- Allows incoming TCP traffic on port `80`.
+
+### Common Chains
+
+1. **INPUT**
+   - Handles incoming packets destined for the host.
+
+2. **OUTPUT**
+   - Handles packets originating from the host.
+
+3. **FORWARD**
+   - Handles packets routed through the host.
+
+4. **PREROUTING**
+   - Alters packets as they arrive (used for NAT).
+
+5. **POSTROUTING**
+   - Alters packets as they leave (used for NAT).
+
+---
+
+### Common Commands
+
+1. **`-A` (Append Rule)**
+   ```bash
+   iptables -A INPUT -p tcp --dport 22 -j ACCEPT
+   ```
+   - Appends a rule to allow SSH traffic on port `22`.
+
+2. **`-I` (Insert Rule)**
+   ```bash
+   iptables -I INPUT 1 -p icmp -j DROP
+   ```
+   - Inserts a rule at the top of the `INPUT` chain to block ICMP traffic.
+
+3. **`-D` (Delete Rule)**
+   ```bash
+   iptables -D INPUT -p tcp --dport 22 -j ACCEPT
+   ```
+   - Deletes a rule allowing SSH traffic on port `22`.
+
+4. **`-L` (List Rules)**
+   ```bash
+   iptables -L -v
+   ```
+   - Lists all rules with detailed information.
+
+5. **`-F` (Flush Rules)**
+   ```bash
+   iptables -F
+   ```
+   - Removes all rules from all chains.
+
+6. **`-P` (Set Default Policy)**
+   ```bash
+   iptables -P INPUT DROP
+   ```
+   - Sets the default policy for the `INPUT` chain to `DROP`.
+
+7. **`-N` (Create New Chain)**
+   ```bash
+   iptables -N MY_CHAIN
+   ```
+   - Creates a custom chain called `MY_CHAIN`.
+
+8. **`-j` (Jump to Target)**
+   ```bash
+   iptables -A INPUT -p tcp --dport 80 -j ACCEPT
+   ```
+   - Specifies the target action (`ACCEPT`, `DROP`, `REJECT`, or `LOG`).
+
+9. **`-t` (Specify Table)**
+   ```bash
+   iptables -t nat -A PREROUTING -p tcp --dport 80 -j DNAT --to-destination 192.168.1.10:8080
+   ```
+   - Specifies the `nat` table for NAT-related rules.
+
+10. **`--help`**
+    ```bash
+    iptables --help
+    ```
+    - Displays help information.
+
+---
+
+### Examples
+
+1. **Allow Incoming HTTP Traffic**
+   ```bash
+   iptables -A INPUT -p tcp --dport 80 -j ACCEPT
+   ```
+
+2. **Block All Incoming Traffic Except SSH**
+   ```bash
+   iptables -P INPUT DROP
+   iptables -A INPUT -p tcp --dport 22 -j ACCEPT
+   ```
+
+3. **Forward Traffic Between Interfaces**
+   ```bash
+   iptables -A FORWARD -i eth0 -o wlan0 -j ACCEPT
+   ```
+
+4. **Set Up Port Forwarding**
+   ```bash
+   iptables -t nat -A PREROUTING -p tcp --dport 8080 -j DNAT --to-destination 192.168.1.100:80
+   ```
+
+5. **Log Dropped Packets**
+   ```bash
+   iptables -A INPUT -j LOG --log-prefix "Dropped Packet: "
+   ```
+
+6. **Limit Connections per IP**
+   ```bash
+   iptables -A INPUT -p tcp --dport 22 -m connlimit --connlimit-above 3 -j REJECT
+   ```
+
+7. **Rate-Limit ICMP Packets**
+   ```bash
+   iptables -A INPUT -p icmp -m limit --limit 1/s -j ACCEPT
+   ```
+
+8. **Drop All Traffic from a Specific IP**
+   ```bash
+   iptables -A INPUT -s 192.168.1.20 -j DROP
+   ```
+
+9. **List Rules for the NAT Table**
+   ```bash
+   iptables -t nat -L -v
+   ```
+
+10. **Delete All Rules**
+    ```bash
+    iptables -F
+    ```
+
+---
+
+### Tips and Best Practices
+
+- **Use `sudo` for Privileged Commands**: Most `iptables` commands require root privileges.
+  ```bash
+  sudo iptables -L
+  ```
+
+- **Test Rules Before Making Permanent**: Avoid locking yourself out by testing rules first. Use a temporary shell session:
+  ```bash
+  iptables -A INPUT -p tcp --dport 22 -j ACCEPT
+  ```
+
+- **Persist Rules**: Rules are temporary and will reset after a reboot. Use tools like `iptables-save` and `iptables-restore` or configure persistence in your distribution.
+  ```bash
+  sudo iptables-save > /etc/iptables/rules.v4
+  ```
+
+- **Be Cautious with Default Policies**: Set default policies (`DROP` or `ACCEPT`) carefully to avoid unintended blocks.
+  ```bash
+  iptables -P INPUT DROP
+  ```
+
+- **Monitor Logs**: Use the `LOG` target to debug rules and monitor dropped or allowed traffic.
+  ```bash
+  iptables -A INPUT -j LOG --log-prefix "INPUT Drop: "
+  ```
+
+- **Understand Rule Order**: Rules are processed in order. Place specific rules before general ones to avoid conflicts.
+
+- **Use Tables and Chains Appropriately**: Familiarize yourself with the default tables (`filter`, `nat`, `mangle`, and `raw`) and their purposes.
+
+- **Rate Limit Connections**: Prevent abuse by limiting connections to services like SSH.
+  ```bash
+  iptables -A INPUT -p tcp --dport 22 -m limit --limit 3/minute -j ACCEPT
+  ```
+
+- **Backup Your Rules**: Regularly back up your `iptables` rules to ensure quick recovery in case of misconfiguration.
+  ```bash
+  sudo iptables-save > iptables-backup.rules
+  ```
+
+- **Transition to `nftables`**: Many distributions are moving to `nftables` as a replacement for `iptables`. Familiarize yourself with `nftables` for future compatibility.

@@ -8,7 +8,7 @@ import Link from "next/link";
 export default function Home() {
   return (
     <>
-      <div className="flex sm:min-h-[71vh] min-h-[68vh] flex-col items-center justify-center text-center px-2 py-8">
+      <div className="flex sm:min-h-[58vh] min-h-[58vh] flex-col items-center justify-center text-center px-2 py-4">
         <Link
           href="https://github.com/Dan-Duran/learn-bash"
           target="_blank"
@@ -28,15 +28,18 @@ export default function Home() {
           <GET/>
           <DownloadButton/>
         </div>
-        <span className="flex flex-row items-center gap-2 text-zinc-400 text-md mt-7 -mb-12 max-[800px]:mb-12">
+        <span className="flex flex-row items-center gap-2 text-zinc-400 text-xl mt-7 -mb-12 max-[800px]:mb-12">
           <TerminalIcon className="w-4 h-4 mr-1" /> ~ ls -lah
         </span>
       </div>
-      <div className="relative flex flex-col items-center justify-center overflow-hidden rounded-lg border bg-background md:shadow-xl">
-        <div className="w-full max-w-[1000px]">
-          <Video />
+      
+      <div className="relative w-full flex justify-center mb-16">
+        <div className="relative w-full flex flex-col items-center justify-center overflow-hidden rounded-lg border bg-background md:shadow-xl">
+          <BorderBeam size={200} duration={12} delay={9} />
+          <div className="w-full">
+            <Video />
+          </div>
         </div>
-        <BorderBeam size={200} duration={12} delay={9} />
       </div>
     </>
   );

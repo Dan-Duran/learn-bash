@@ -1,0 +1,147 @@
+---
+title: "route Command"
+date: "2025-01-13"
+description: "Manage and view routing tables in Unix-like operating systems."
+videoId: ""
+---
+
+### Overview
+
+The `route` command is a networking utility used to view and manipulate the IP routing table in Unix-like operating systems. It allows users to add, delete, and modify routes, making it a vital tool for managing network paths and troubleshooting connectivity issues.
+
+> **Note**: In many modern Linux distributions, the `route` command has been replaced by `ip route` from the `iproute2` suite.
+
+---
+
+### Basic Usage
+
+```bash
+route [OPTIONS] [COMMAND]
+```
+
+- **OPTIONS**: Flags that modify the behavior of the command.
+- **COMMAND**: Actions like `add`, `del`, or `show` to manage routes.
+
+**Example:**
+```bash
+route -n
+```
+- Displays the current routing table in numeric format.
+
+---
+
+### Common Options
+
+1. **Display the Routing Table**
+   ```bash
+   route
+   ```
+   - Displays the kernel's routing table with resolved hostnames.
+
+2. **Numeric Output**
+   ```bash
+   route -n
+   ```
+   - Outputs the routing table with numeric IP addresses (no DNS resolution).
+
+3. **Add a Route**
+   ```bash
+   sudo route add -net 192.168.1.0 netmask 255.255.255.0 gw 192.168.1.1
+   ```
+   - Adds a route to the `192.168.1.0/24` subnet via gateway `192.168.1.1`.
+
+4. **Delete a Route**
+   ```bash
+   sudo route del -net 192.168.1.0 netmask 255.255.255.0
+   ```
+   - Deletes the route to `192.168.1.0/24`.
+
+5. **Add a Default Gateway**
+   ```bash
+   sudo route add default gw 192.168.1.1
+   ```
+   - Sets `192.168.1.1` as the default gateway.
+
+6. **Delete the Default Gateway**
+   ```bash
+   sudo route del default gw 192.168.1.1
+   ```
+   - Removes the default gateway.
+
+---
+
+### Examples
+
+1. **Display the Routing Table**
+   ```bash
+   route
+   ```
+
+2. **Show Numeric Routing Table**
+   ```bash
+   route -n
+   ```
+
+3. **Add a Route to a Specific Network**
+   ```bash
+   sudo route add -net 10.0.0.0 netmask 255.255.255.0 gw 192.168.1.1
+   ```
+
+4. **Remove a Route to a Network**
+   ```bash
+   sudo route del -net 10.0.0.0 netmask 255.255.255.0
+   ```
+
+5. **Set a Default Gateway**
+   ```bash
+   sudo route add default gw 192.168.1.254
+   ```
+
+6. **Delete the Default Gateway**
+   ```bash
+   sudo route del default gw 192.168.1.254
+   ```
+
+7. **Add a Host-Specific Route**
+   ```bash
+   sudo route add -host 192.168.1.100 gw 192.168.1.1
+   ```
+
+8. **Delete a Host-Specific Route**
+   ```bash
+   sudo route del -host 192.168.1.100
+   ```
+
+---
+
+### Tips and Best Practices
+
+- **Run with `sudo` for Changes**: Modifying the routing table requires administrative privileges.
+  ```bash
+  sudo route add default gw 192.168.1.1
+  ```
+
+- **Use `-n` for Faster Output**: The `-n` flag avoids DNS lookups, speeding up output and preventing errors if DNS is misconfigured.
+  ```bash
+  route -n
+  ```
+
+- **Persist Changes**: Routes added with `route` are temporary and reset after a reboot. To make them permanent, add them to your system's network configuration files:
+  - On Debian/Ubuntu: `/etc/network/interfaces`
+  - On Red Hat/CentOS: `/etc/sysconfig/network-scripts/`
+
+- **Verify Routing Changes**: After modifying routes, use `ping` or `traceroute` to verify connectivity.
+  ```bash
+  ping -c 4 10.0.0.1
+  ```
+
+- **Transition to `ip route`**: The `ip` command provides a more modern and powerful alternative to `route`.
+  ```bash
+  ip route add 192.168.1.0/24 via 192.168.1.1
+  ```
+
+- **Remove Redundant Routes**: Regularly audit the routing table to ensure it reflects the desired network topology.
+
+- **Understand Default Gateways**: Always set an appropriate default gateway for networks with external connectivity.
+
+- **Test in a Lab Environment**: Before making significant changes to routing on production systems, test them in a controlled environment.

@@ -13,8 +13,8 @@ export function DownloadButton() {
     <Button variant="ghost">
       <a
         className="flex"
-        href="git-cheatsheet.pdf"
-        download="git-cheatsheet.pdf"
+        href="Bash-Cheat-Sheet.pdf"
+        download="Bash-Cheat-Sheet.pdf"
 
         // onMouseEnter={() => setIsHovered(true)} // Commented out unused event handler
         // onMouseLeave={() => setIsHovered(false)} // Commented out unused event handler

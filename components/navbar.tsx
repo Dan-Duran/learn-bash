@@ -21,8 +21,13 @@ export const NAVLINKS = [
     href: `/docs${page_routes[0].href}`,
   },
   {
+    title: "Cheat Sheet",
+    href: "/Bash-Cheat-Sheet.pdf",
+    newWindow: true,
+  },
+  {
     title: "Guides",
-    href: "#",
+    href: "/docs/resources/guides",
   },
   {
     title: "YouTube",
@@ -128,8 +133,11 @@ export function NavMenu({ isSheet = false }) {
             key={item.title + item.href}
             activeClassName="!text-primary md:font-semibold font-medium"
             absolute
+            exact={item.title === "Guides"}
             className="flex items-center gap-1 dark:text-stone-300/85 text-stone-800"
             href={item.href}
+            target={item.newWindow || item.external ? "_blank" : undefined}
+            rel={item.newWindow || item.external ? "noopener noreferrer" : undefined}
           >
             {item.title}{" "}
             {item.external && (

@@ -15,6 +15,13 @@ export function Footer() {
             >
               Dan-Duran
             </Link>
+            {" · "} 
+            <Link
+              className="px-1 underline underline-offset-2"
+              href="https://getcyber.me"
+            >
+              GetCyber
+            </Link>
           </p>
         </div>
 
@@ -36,10 +43,6 @@ export function FooterButtons() {
         <HeartIcon className="h-4 w-4 mr-2 text-red-600 fill-current" />
         Sponsor
       </Link>
-      {/* Future Icons:
-          <HexagonIcon className="h-4 w-4 mr-2" />
-          <TriangleIcon className="h-4 w-4 mr-2" />
-      */}
     </>
   );
 }

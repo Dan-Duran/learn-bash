@@ -9,6 +9,7 @@ type AnchorProps = ComponentProps<typeof Link> & {
   absolute?: boolean;
   activeClassName?: string;
   disabled?: boolean;
+  exact?: boolean;
 };
 
 export default function Anchor({
@@ -16,13 +17,20 @@ export default function Anchor({
   className = "",
   activeClassName = "",
   disabled,
+  exact = false,
   children,
   ...props
 }: AnchorProps) {
   const path = usePathname();
-  let isMatch = absolute
-    ? props.href.toString().split("/")[1] == path.split("/")[1]
-    : path === props.href;
+  let isMatch;
+
+  if (exact) {
+    isMatch = path === props.href.toString();
+  } else if (absolute) {
+    isMatch = props.href.toString().split("/")[1] === path.split("/")[1];
+  } else {
+    isMatch = path.startsWith(props.href.toString());
+  }
 
   if (props.href.toString().includes("http")) isMatch = false;
 
@@ -30,6 +38,7 @@ export default function Anchor({
     return (
       <div className={cn(className, "cursor-not-allowed")}>{children}</div>
     );
+    
   return (
     <Link className={cn(className, isMatch && activeClassName)} {...props}>
       {children}

@@ -1,0 +1,216 @@
+---
+title: "nmap Command"
+date: "2025-01-13"
+description: "Network scanning tool for discovering hosts, services, and vulnerabilities."
+videoId: ""
+---
+
+### Overview
+
+The `nmap` (Network Mapper) command is a powerful and flexible open-source tool for network discovery, management, and security auditing. It can scan networks to identify hosts, open ports, services, operating systems, and potential vulnerabilities. `nmap` is widely used by system administrators, network engineers, and security professionals for troubleshooting and penetration testing.
+
+**Key Features:**
+- **Host Discovery**: Detect live hosts in a network.
+- **Port Scanning**: Identify open ports and running services.
+- **Service and Version Detection**: Determine the software version of services.
+- **Operating System Detection**: Guess the operating system of hosts.
+- **Scriptable Engine**: Run custom scripts for vulnerability detection and information gathering.
+- **Flexible Output Formats**: Export results in XML, JSON, or plain text.
+
+---
+
+### Basic Usage
+
+```bash
+nmap [OPTIONS] [TARGET]
+```
+
+- **TARGET**: The IP address, hostname, or subnet to scan.
+- **OPTIONS**: Flags to modify the scan behavior.
+
+**Example:**
+```bash
+nmap example.com
+```
+- Scans the `example.com` host for open ports.
+
+---
+
+### Common Options
+
+1. **Host Discovery**
+   ```bash
+   nmap -sn 192.168.1.0/24
+   ```
+   - Performs a ping scan to discover live hosts in the `192.168.1.0/24` subnet.
+
+2. **Port Scanning**
+   ```bash
+   nmap -p 22,80,443 example.com
+   ```
+   - Scans ports `22`, `80`, and `443` on `example.com`.
+
+3. **Service and Version Detection**
+   ```bash
+   nmap -sV example.com
+   ```
+   - Identifies services and their versions running on open ports.
+
+4. **Operating System Detection**
+   ```bash
+   nmap -O example.com
+   ```
+   - Attempts to detect the target's operating system.
+
+5. **Aggressive Scan**
+   ```bash
+   nmap -A example.com
+   ```
+   - Combines service detection, OS detection, and traceroute.
+
+6. **Scan Specific IP Range**
+   ```bash
+   nmap 192.168.1.1-50
+   ```
+   - Scans hosts from `192.168.1.1` to `192.168.1.50`.
+
+7. **Output Options**
+   - Save results to a file:
+     ```bash
+     nmap -oN output.txt example.com
+     ```
+   - Save results in XML format:
+     ```bash
+     nmap -oX output.xml example.com
+     ```
+
+8. **Script Scanning**
+   ```bash
+   nmap --script=vuln example.com
+   ```
+   - Runs vulnerability detection scripts against `example.com`.
+
+9. **Scan Stealthily**
+   ```bash
+   nmap -sS example.com
+   ```
+   - Performs a stealthy SYN scan.
+
+10. **UDP Scanning**
+    ```bash
+    nmap -sU example.com
+    ```
+    - Scans for open UDP ports.
+
+---
+
+### Examples
+
+1. **Basic Host Scan**
+   ```bash
+   nmap example.com
+   ```
+   - Scans `example.com` for open ports.
+
+2. **Scan a Subnet**
+   ```bash
+   nmap 192.168.1.0/24
+   ```
+   - Discovers live hosts in the `192.168.1.0/24` network.
+
+3. **Detect Services and Versions**
+   ```bash
+   nmap -sV example.com
+   ```
+   - Identifies services and versions running on the target.
+
+4. **Scan All Ports**
+   ```bash
+   nmap -p- example.com
+   ```
+   - Scans all 65,535 TCP ports on `example.com`.
+
+5. **Perform an Aggressive Scan**
+   ```bash
+   nmap -A example.com
+   ```
+   - Combines OS detection, service detection, and traceroute.
+
+6. **Check for Vulnerabilities**
+   ```bash
+   nmap --script=vuln example.com
+   ```
+   - Runs preloaded vulnerability detection scripts.
+
+7. **Save Results to a File**
+   ```bash
+   nmap -oN scan_results.txt example.com
+   ```
+   - Saves the scan results in a readable text file.
+
+8. **Perform a Stealth Scan**
+   ```bash
+   nmap -sS example.com
+   ```
+   - Scans the target using SYN packets for stealth.
+
+9. **Scan with Custom Scripts**
+   ```bash
+   nmap --script=http-title example.com
+   ```
+   - Retrieves the title of web pages hosted on `example.com`.
+
+10. **Bypass Firewalls with Fragmented Packets**
+    ```bash
+    nmap -f example.com
+    ```
+    - Sends fragmented packets to evade simple firewalls.
+
+---
+
+### Tips and Best Practices
+
+- **Run as Root for Advanced Features**: Many `nmap` options, like SYN scans or OS detection, require root privileges.
+  ```bash
+  sudo nmap -sS example.com
+  ```
+
+- **Use Specific Targets**: Avoid scanning broad ranges unnecessarily to reduce load and avoid legal issues.
+
+- **Save Results**: Use output options (`-oN`, `-oX`, etc.) to store scan results for later analysis.
+  ```bash
+  nmap -oN results.txt example.com
+  ```
+
+- **Leverage NSE Scripts**: The Nmap Scripting Engine (NSE) provides powerful scripts for vulnerability detection, malware scans, and service enumeration.
+  ```bash
+  nmap --script ssl-enum-ciphers example.com
+  ```
+
+- **Stealth Scanning**: Use `-sS` for stealthy scans to minimize detection by intrusion detection systems (IDS).
+
+- **Scan Safely**: Always obtain permission before scanning networks or hosts you do not own.
+
+- **Use `nmap` for Reconnaissance**: Combine with other tools like `metasploit` or `Wireshark` for penetration testing workflows.
+
+- **Understand Rate Limits**: Adjust the scan speed (`-T1` to `-T5`) to avoid being flagged by rate-limiting systems.
+  ```bash
+  nmap -T4 example.com
+  ```
+
+- **Check Firewall Rules**: Use `--reason` to identify why certain ports are open or closed.
+  ```bash
+  nmap --reason example.com
+  ```
+
+- **Stay Updated**: Regularly update `nmap` to access the latest scripts and features.
+  ```bash
+  sudo apt update && sudo apt install nmap
+  ```
+
+- **Combine with Ping**: Use `-sn` for a quick ping sweep of a subnet.
+  ```bash
+  nmap -sn 10.0.0.0/24
+  ```
+
+- **Respect Network Policies**: Scanning can be intrusive. Ensure scans comply with local and organizational policies.

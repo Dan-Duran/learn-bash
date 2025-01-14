@@ -250,6 +250,15 @@ export type EachRoute = {
         { title: "Best Practices", href: "/best-practices" },
         { title: "Example Scripts", href: "/example-scripts" }
     ]
+ },
+ {
+    title: "Resources",
+    href: "/resources", 
+    noLink: true,
+    items: [
+        { title: "Guides", href: "/guides" },
+        { title: "Stacks & Credits", href: "/stacks" },
+    ]
  }
  ];
  

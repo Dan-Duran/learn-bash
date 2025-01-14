@@ -1,0 +1,200 @@
+---
+title: "mtr Command"
+date: "2025-01-13"
+description: "Network diagnostic tool combining traceroute and ping functionality for real-time analysis."
+videoId: ""
+---
+
+### Overview
+
+The `mtr` (My Traceroute) command is a dynamic network diagnostic tool that combines the functionality of `traceroute` and `ping`. It provides real-time insights into the route packets take to reach a target host and measures the latency and packet loss at each hop. `mtr` is invaluable for diagnosing network performance issues, identifying bottlenecks, and troubleshooting connectivity problems.
+
+**Key Features:**
+- **Real-Time Updates**: Continuously displays network path changes and latency metrics.
+- **Packet Loss Analysis**: Highlights hops where packet loss occurs.
+- **Customizable Output**: Provides detailed statistics and supports text or graphical interfaces.
+- **Multiple Protocol Support**: Works with ICMP (default), UDP, or TCP.
+
+---
+
+### Basic Usage
+
+```bash
+mtr [OPTIONS] HOST
+```
+
+- **HOST**: The target hostname or IP address to analyze.
+- **OPTIONS**: Flags to modify the behavior of `mtr`.
+
+**Example:**
+```bash
+mtr example.com
+```
+- Displays the network path to `example.com` in real-time.
+
+---
+
+### Common Options
+
+1. **`--report`**
+   ```bash
+   mtr --report example.com
+   ```
+   - Runs `mtr` for a specified number of cycles and outputs a summary report instead of real-time updates.
+
+2. **`--report-cycles <N>`**
+   ```bash
+   mtr --report --report-cycles 5 example.com
+   ```
+   - Runs `mtr` for `N` cycles (e.g., `5`) and generates a report.
+
+3. **`-n`**
+   ```bash
+   mtr -n example.com
+   ```
+   - Disables DNS resolution, displaying IP addresses only.
+
+4. **`-r` (Report Mode)**
+   ```bash
+   mtr -r example.com
+   ```
+   - Outputs a one-time report in text format.
+
+5. **`-c <N>`**
+   ```bash
+   mtr -c 10 example.com
+   ```
+   - Sets the number of pings (cycles) to send for each hop.
+
+6. **`-i <SECONDS>`**
+   ```bash
+   mtr -i 2 example.com
+   ```
+   - Sets the interval between ICMP requests in seconds.
+
+7. **`-p`**
+   ```bash
+   mtr -p example.com
+   ```
+   - Uses privileged mode for more accurate results (requires `sudo`).
+
+8. **`-4` / `-6`**
+   ```bash
+   mtr -4 example.com
+   ```
+   - Forces the use of IPv4 (`-4`) or IPv6 (`-6`).
+
+9. **`--tcp`**
+   ```bash
+   mtr --tcp example.com
+   ```
+   - Uses TCP packets instead of the default ICMP.
+
+10. **`--udp`**
+    ```bash
+    mtr --udp example.com
+    ```
+    - Uses UDP packets instead of the default ICMP.
+
+---
+
+### Examples
+
+1. **Run a Real-Time Trace**
+   ```bash
+   mtr example.com
+   ```
+   - Continuously displays the route to `example.com` with real-time updates.
+
+2. **Generate a Summary Report**
+   ```bash
+   mtr --report example.com
+   ```
+   - Outputs a concise summary of the route.
+
+3. **Run with IPv6**
+   ```bash
+   mtr -6 ipv6.example.com
+   ```
+   - Traces the route using IPv6.
+
+4. **Trace Without DNS Resolution**
+   ```bash
+   mtr -n example.com
+   ```
+   - Displays only IP addresses, avoiding potential delays from DNS lookups.
+
+5. **Use TCP Packets**
+   ```bash
+   mtr --tcp example.com
+   ```
+   - Sends TCP packets to test routes where ICMP might be blocked.
+
+6. **Limit to 5 Cycles**
+   ```bash
+   mtr --report --report-cycles 5 example.com
+   ```
+   - Runs 5 cycles and outputs a report.
+
+7. **Set a 2-Second Interval Between Probes**
+   ```bash
+   mtr -i 2 example.com
+   ```
+   - Sends probes every 2 seconds.
+
+8. **Run as Root for Privileged Mode**
+   ```bash
+   sudo mtr -p example.com
+   ```
+   - Uses privileged mode for accurate latency and packet loss data.
+
+9. **Trace a Route Using UDP**
+   ```bash
+   mtr --udp example.com
+   ```
+   - Sends UDP packets instead of ICMP.
+
+10. **Analyze a Specific Number of Hops**
+    ```bash
+    mtr --max-ttl 10 example.com
+    ```
+    - Limits the analysis to the first 10 hops.
+
+---
+
+### Tips and Best Practices
+
+- **Run as Root for Accurate Results**: Use `sudo` to enable privileged mode for more accurate latency and loss measurements.
+  ```bash
+  sudo mtr example.com
+  ```
+
+- **Avoid DNS Delays**: Use the `-n` option to skip DNS resolution, speeding up results and avoiding potential false metrics caused by slow DNS lookups.
+  ```bash
+  mtr -n example.com
+  ```
+
+- **Save Reports**: Redirect `mtr` output to a file for logging or sharing.
+  ```bash
+  mtr --report example.com > mtr_report.txt
+  ```
+
+- **Test Using TCP for Firewalled Hosts**: Many networks block ICMP. Use `--tcp` to simulate typical application traffic for more realistic diagnostics.
+  ```bash
+  mtr --tcp example.com
+  ```
+
+- **Monitor Packet Loss**: Pay attention to packet loss percentages at each hop to identify potential bottlenecks or issues.
+
+- **Analyze Long-Term Behavior**: Run `mtr` with a high number of cycles (`-c`) to observe long-term trends in latency and packet loss.
+  ```bash
+  mtr --report --report-cycles 100 example.com
+  ```
+
+- **Use with Scripts for Automation**: Integrate `mtr` into scripts to automate network monitoring and diagnostics.
+
+- **Combine with Other Tools**: Pair `mtr` with tools like `ping`, `traceroute`, and `tcpdump` for comprehensive network troubleshooting.
+
+- **Interpret Output Carefully**: Packet loss at intermediate hops is not always an issue; some routers deprioritize ICMP packets for performance reasons.
+
+- **Use `mtr` on Both Ends for Bi-Directional Testing**: Running `mtr` from both source and target hosts provides a complete picture of network performance.
