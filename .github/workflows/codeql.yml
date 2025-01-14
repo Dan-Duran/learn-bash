@@ -19,7 +19,7 @@ on:
     branches: [ "main" ]
   schedule:
     - cron: '36 10 * * 5'
-#  workflow_dispatch: # on can't be empty, so we use this to trigger manually. Remove when enabling the above inputs.
+#  workflow_dispatch: 
 
 jobs:
   analyze:
