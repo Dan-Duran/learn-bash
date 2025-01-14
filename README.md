@@ -6,7 +6,7 @@ Learn Bash is a free, open-source platform for mastering command line and shell 
   <a href="https://github.com/Dan-Duran/learn-bash/stargazers"><img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/Dan-Duran/learn-bash"></a>
   <a href="https://github.com/Dan-Duran/learn-bash/blob/main/LICENSE"><img alt="License" src="https://img.shields.io/badge/License-MIT-yellow.svg"></a>
 </div>
-<video alt="Bash Guide" src="https://github.com/user-attachments/assets/ea2661ad-59dc-4427-87cd-ceb3b09f78c1" width="100%"></video>
+<video alt="Bash Guide" src="https://github.com/user-attachments/assets/3d2de286-9aa3-4991-abdb-f21858e17294" width="100%"></video>
 
 
 
