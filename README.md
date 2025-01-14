@@ -8,19 +8,44 @@ Learn Bash is a free, open-source platform for mastering command line and shell 
 </div>
 <video alt="Bash Guide" src="https://github.com/user-attachments/assets/3d2de286-9aa3-4991-abdb-f21858e17294" width="100%"></video>
 
-
-
 ## ⚡ Live 
 
 Try it out for yourself!
 
 Visit: [https://bash.getcyber.me](https://bash.getcyber.me)
 
+
+## 🔧 Prerequisites
+
+- Node.js 18+ (React 18.3.1)
+- npm or yarn
+- Git
+
+## 📥 Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/Dan-Duran/learn-bash.git
+
+# Navigate to the directory
+cd learn-bash
+
+# Install dependencies
+npm install 
+# or
+yarn install
+
+# Run the development server
+npm run dev
+# or
+yarn dev
+```
+
 ## ⭐ Features
 
 ### 🐭 Frameworks
 
-- **[Next.js 14.2.22](https://nextjs.org/)** - The React Framework for the Web (with **App Directory**)
+- **[Next.js](https://nextjs.org/)** - The React Framework for the Web (with **App Directory**)
 
 ### 🐮 Platforms
 
