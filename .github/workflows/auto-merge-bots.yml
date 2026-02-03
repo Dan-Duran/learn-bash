@@ -1,0 +1,21 @@
+name: Auto-merge Bot PRs
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  auto-merge:
+    runs-on: ubuntu-latest
+    if: |
+      github.actor == 'snyk-bot' || 
+      github.actor == 'snyk[bot]' || 
+      github.actor == 'dependabot[bot]'
+    steps:
+      - name: Enable auto-merge
+        run: gh pr merge --auto --squash --delete-branch ${{ github.event.pull_request.number }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
