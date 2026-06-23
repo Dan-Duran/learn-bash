@@ -28,12 +28,9 @@ Learn Bash is a free, open-source platform for mastering command line and shell 
 > </details>
 > 
 
-## ⚡ Live 
+## ⚡ Video Demo 
 
-Try it out for yourself!
-
-Visit: [https://bash.getcyber.me](https://bash.getcyber.me)
-
+https://github.com/user-attachments/assets/52340b8f-232b-4f85-8e90-86c6724ff425
 
 ## 🔧 Prerequisites
 
