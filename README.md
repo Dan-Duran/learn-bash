@@ -108,7 +108,7 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 Special thanks to the open-source community and creators whose work has made this project possible.
 
 #### Vicky/spaciousejar
-- [Vicky/spaciousejar](https://github.com/spaciousejar): For building this amazing Open Source app! Learn Git with her at [Vicky/spaciousejar](https://github.com/spaciousejar/learn-git-with-me)
+- [Vicky/spaciousejar](https://github.com/spaciousejar): For building this amazing Open Source app! Learn Git with this awesome dude at [Vicky/spaciousejar](https://github.com/spaciousejar/learn-git-with-me)
 #### Awesome Lists
 - [Awesome Bash](https://github.com/awesome-lists/awesome-bash/): A curated list of delightful Bash scripts and resources.
 #### RehanSaeed
